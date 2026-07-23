@@ -1,0 +1,13 @@
+# Godot
+.godot/
+*.import
+export_presets.cfg
+
+# Builds
+build/
+*.apk
+*.aab
+
+# IDE
+.vscode/
+.idea/
