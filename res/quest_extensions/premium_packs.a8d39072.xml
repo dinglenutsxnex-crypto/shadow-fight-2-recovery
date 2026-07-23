@@ -1,0 +1,2392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+
+
+<!-- ==============================================================================================================-->
+<!-- ================================================= OFFER PACK BOSS 1 =================================================-->
+<!-- ==============================================================================================================-->
+ 
+
+  <Quest Name="LynxBeatenWeaponOffer" Priority="990" >
+      <Events>
+            <FightEnd />
+      </Events>
+
+      <Conditions>
+          <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+          <Equal Value1="_$FightResult" Value2="Win" />
+          <Equal Value1="_$Fight" Value2="ZONE_1|BOSS_LYNX|6" />
+          <Equal Value1="?Item[Premium_Pack_WeaponOfferZone1].Quantity" Value2="0" /> <!-- offer has not been bought-->
+
+          
+      </Conditions>
+
+      <Actions>
+            <ActivateTimer Name="Timer_WeaponOfferZone1" Value="86400" />
+            <ShowMapButton Name="Button_WeaponOfferZone1" Image="weapon_boss_claws_Sales_sale" Timer="Timer_WeaponOfferZone1" ShowType="Story" />
+            <Activate ActionID="WeaponOfferZone1Dialog" />
+      </Actions>
+  </Quest>
+	
+    
+  <Quest Name="WeaponOfferZone1Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_WeaponOfferZone1" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone1Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="WeaponOfferZone1Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone1Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+          <Dialog Type="MultilineBig" Title="WeaponOfferZone1Title" Image="Offer_Lynx" ImageScale="1" ContentOffsetX="100"> <!-- FIX -->
+            <Line Text="dlgMainWeaponOffer" />
+            <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_WeaponOfferZone1].RealPrice}" TextColor="0xfefe95" OffsetY="30"/> 
+            <Button Type="Right" Color="Green" Text="dlgBuyButton">
+              <BuyItem Name="Premium_Pack_WeaponOfferZone1" Currency="Real" />
+            </Button>
+            <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+              <ClearQuestQueue Name="WeaponOfferZone1Dialog" />
+              <Dialog Type="Multiline" Title="WeaponOfferZone1Title" Image="Offer_Lynx" ImageScale="1" ImageOffsetY="-50" ContentOffsetX="100">  <!-- FIX -->
+                <Line Text="dlgFirstPaymentRefusalNY" />
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Button>
+          </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="WeaponOfferZone1Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_WeaponOfferZone1" />
+	  <Equal Value1="?Pack[ZONE_RAID].IsAvailable" Value2="1" /> <!-- скачан ли пак второй зоны -->
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone1Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="WeaponOfferZone1Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone1Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone1Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="WeaponOfferZone1Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone1Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_LYNX_CLAWS_PAID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1"  />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_LYNX_CLAWS_PAID].UpgradeLevel" />
+      <EndTimer Name="Timer_WeaponOfferZone1"/>
+      <HideMapButton Name="Button_WeaponOfferZone1"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <UpdateShopItems />
+      <OpenShop Tab="Weapon" Item="WEAPON_LYNX_CLAWS_PAID"/>
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="WeaponOfferZone1Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_WeaponOfferZone1" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_WeaponOfferZone1"/>
+      <HideMapButton Name="Button_WeaponOfferZone1"/>
+      <SetVariable Name="WeaponOfferZone1_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="WeaponOfferZone1LastChance" />  
+	  
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="WeaponOfferZone1OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_WeaponOfferZone1].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Less Value1="_WeaponOfferZone1Counter" Value2="1" />
+      <Greater Value1="?Timer[Timer_WeaponOfferZone1].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <SetVariable Name="WeaponOfferZone1Counter" Scope="Global" Value="1" />
+      <Activate ActionID="WeaponOfferZone1Dialog" />
+    </Actions>
+  </Quest>  
+  
+ <!-- проверка на выход на карту -->
+  <Quest Name="WeaponOfferZone1_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_WeaponOfferZone1_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="WeaponOfferZone1LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="WeaponOfferZone1LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone1LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="WeaponOfferZone1_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_WeaponOfferZone1"/>
+			<Dialog Type="MultilineBig" Title="WeaponOfferZone1Title" Image="Offer_Lynx" ImageScale="1" ContentOffsetX="100" ><!-- FIX -->
+				<Line Text="dlgMainWeaponOffer_LastChance"  />
+				<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_WeaponOfferZone1].RealPrice}" TextColor="0xfefe95" OffsetY="30" />
+				<Button Type="Right" Color="Green" Text="dlgBuyButton">
+				  <BuyItem Name="Premium_Pack_WeaponOfferZone1" Currency="Real" />
+				</Button>
+				<Button Type="Left" Color="Red" Text="dlgStoryBtnReject" >
+				  <ClearQuestQueue Name="WeaponOfferZone1Dialog" />
+				</Button>
+			</Dialog>	
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="WeaponOfferZone1LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+  
+    
+<!-- ==============================================================================================================-->
+<!-- ================================================= OFFER PACK BOSS 1 =================================================-->
+<!-- ==============================================================================================================-->
+  
+    
+  
+
+<!-- ==============================================================================================================-->
+<!-- ================================================= OFFER PACK BOSS 2 =================================================-->
+<!-- ==============================================================================================================-->
+ 
+
+
+  <Quest Name="HermitBeatenWeaponOffer" Priority="990" >
+      <Events>
+            <FightEnd />
+      </Events>
+
+      <Conditions>
+          <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+          <Equal Value1="_$FightResult" Value2="Win" />
+          <Equal Value1="_$Fight" Value2="ZONE_2|BOSS_HERMIT|6" />
+          <Equal Value1="?Item[Premium_Pack_WeaponOfferZone2].Quantity" Value2="0" />  
+
+          
+      </Conditions>
+
+      <Actions>
+            <ActivateTimer Name="Timer_WeaponOfferZone2" Value="86400" />
+            <ShowMapButton Name="Button_WeaponOfferZone2" Image="weapon_hermit_swords_Sales_sale" Timer="Timer_WeaponOfferZone2" ShowType="Story" />
+            <Activate ActionID="WeaponOfferZone2Dialog" />
+      </Actions>
+  </Quest>
+	
+    
+  <Quest Name="WeaponOfferZone2Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_WeaponOfferZone2" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone2Dialog" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone2Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone2Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+          <Dialog Type="MultilineBig" Title="WeaponOfferZone2Title" Image="Offer_Hermit" ImageScale="1" ImageOffsetY="-50" ContentOffsetX="70" > 
+            <Line Text="dlgMainWeaponOffer" />
+            <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_WeaponOfferZone2].RealPrice}" TextColor="0xfefe95" OffsetY="75" /> 
+            <Button Type="Right" Color="Green" Text="dlgBuyButton">
+              <BuyItem Name="Premium_Pack_WeaponOfferZone2" Currency="Real" />
+            </Button>
+            <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+              <ClearQuestQueue Name="WeaponOfferZone2Dialog" />
+              <Dialog Type="Multiline" Title="WeaponOfferZone2Title" Image="Offer_Hermit" ImageScale="1" ImageOffsetY="-75" ContentOffsetX="150">  
+                <Line Text="dlgFirstPaymentRefusalNY" />
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Button>
+          </Dialog>
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone2Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_WeaponOfferZone2" />
+	  <Equal Value1="?Pack[CLANS].IsAvailable" Value2="1" /> 
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone2Bought" />
+    </Actions>
+  </Quest>
+  
+
+  <Quest Name="WeaponOfferZone2Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone2Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone2Give" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone2Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone2Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_HERMIT_SWORDS_PAID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1"  />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_HERMIT_SWORDS_PAID].UpgradeLevel" />
+      <EndTimer Name="Timer_WeaponOfferZone2"/>
+      <HideMapButton Name="Button_WeaponOfferZone2"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <UpdateShopItems />
+      <OpenShop Tab="Weapon" Item="WEAPON_HERMIT_SWORDS_PAID"/>
+    </Actions>
+  </Quest>
+  
+
+  <Quest Name="WeaponOfferZone2Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_WeaponOfferZone2" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_WeaponOfferZone2"/>
+      <HideMapButton Name="Button_WeaponOfferZone2"/>
+	  <SetVariable Name="WeaponOfferZone2_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="WeaponOfferZone2LastChance" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone2OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_WeaponOfferZone2].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_WeaponOfferZone2].Value" Value2="0" />
+      <Less Value1="_WeaponOfferZone2Counter" Value2="1" />
+    </Conditions>
+    <Actions>
+      <SetVariable Name="WeaponOfferZone2Counter" Scope="Global" Value="1" />
+      <Activate ActionID="WeaponOfferZone2Dialog" />
+    </Actions>
+  </Quest>  
+  
+
+  <Quest Name="WeaponOfferZone2_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_WeaponOfferZone2_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="WeaponOfferZone2LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone2LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone2LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="WeaponOfferZone2_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_WeaponOfferZone2"/>
+			<Dialog Type="Multiline" Title="WeaponOfferZone2Title" Image="Offer_Hermit"  ImageOffsetY="-50" MinContentHeight="800" ImageScale="1" ContentOffsetX="100" >
+				<Line Text="dlgMainWeaponOffer_LastChance"  />
+				<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_WeaponOfferZone2].RealPrice}" TextColor="0xfefe95" OffsetY="-75" />
+				<Button Type="Right" Color="Green" Text="dlgBuyButton">
+				  <BuyItem Name="Premium_Pack_WeaponOfferZone2" Currency="Real" />
+				</Button>
+				<Button Type="Left" Color="Red" Text="dlgStoryBtnReject" >
+				  <ClearQuestQueue Name="WeaponOfferZone2Dialog" />
+				</Button>
+			</Dialog>	
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="WeaponOfferZone2LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+
+    
+<!-- ==============================================================================================================-->
+<!-- ================================================= OFFER PACK BOSS 2 =================================================-->
+<!-- ==============================================================================================================-->
+
+   
+    
+<!-- ==============================================================================================================-->
+<!-- ================================================= OFFER PACK BOSS 3 =================================================-->
+<!-- ==============================================================================================================-->
+ 
+
+
+  <Quest Name="ButcherBeatenWeaponOffer" Priority="990" >
+      <Events>
+            <FightEnd />
+      </Events>
+
+      <Conditions>
+          <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+          <Equal Value1="_$FightResult" Value2="Win" />
+          <Equal Value1="_$Fight" Value2="ZONE_3|BOSS_BUTCHER|6" />
+          <Equal Value1="?Item[Premium_Pack_WeaponOfferZone3].Quantity" Value2="0" />  
+
+          
+      </Conditions>
+
+      <Actions>
+            <ActivateTimer Name="Timer_WeaponOfferZone3" Value="86400" />
+            <ShowMapButton Name="Button_WeaponOfferZone3" Image="weapon_butcher_knives_Sales_sale" Timer="Timer_WeaponOfferZone3" ShowType="Story" />
+            <Activate ActionID="WeaponOfferZone3Dialog" />
+      </Actions>
+  </Quest>
+	
+    
+  <Quest Name="WeaponOfferZone3Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_WeaponOfferZone3" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone3Dialog" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone3Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone3Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+          <Dialog Type="MultilineBig" Title="WeaponOfferZone3Title" Image="Offer_Butcher" ImageScale="1" ContentOffsetX="70"> 
+            <Line Text="dlgMainWeaponOffer" />
+            <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_WeaponOfferZone3].RealPrice}" TextColor="0xfefe95" OffsetY="75" /> 
+            <Button Type="Right" Color="Green" Text="dlgBuyButton">
+              <BuyItem Name="Premium_Pack_WeaponOfferZone3" Currency="Real" />
+            </Button>
+            <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+              <ClearQuestQueue Name="WeaponOfferZone3Dialog" />
+              <Dialog Type="Multiline" Title="WeaponOfferZone3Title" Image="Offer_Butcher" ImageScale="1" ImageOffsetY="-50" ContentOffsetX="100"> 
+                <Line Text="dlgFirstPaymentRefusalNY" />
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Button>
+          </Dialog>
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone3Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_WeaponOfferZone3" />
+	  <Equal Value1="?Pack[ZONE_RAID].IsAvailable" Value2="1" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone3Bought" />
+    </Actions>
+  </Quest>
+  
+ 
+  <Quest Name="WeaponOfferZone3Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone3Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WeaponOfferZone3Give" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone3Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone3Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_BUTCHER_KNIVES_PAID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1"  />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_BUTCHER_KNIVES_PAID].UpgradeLevel" />
+      <EndTimer Name="Timer_WeaponOfferZone3"/>
+      <HideMapButton Name="Button_WeaponOfferZone3"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <UpdateShopItems />
+      <OpenShop Tab="Weapon" Item="WEAPON_BUTCHER_KNIVES_PAID"/>
+    </Actions>
+  </Quest>
+  
+
+  <Quest Name="WeaponOfferZone3Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_WeaponOfferZone3" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_WeaponOfferZone3"/>
+      <HideMapButton Name="Button_WeaponOfferZone3"/>
+	  <SetVariable Name="WeaponOfferZone3_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="WeaponOfferZone3LastChance" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone3OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_WeaponOfferZone3].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_WeaponOfferZone3].Value" Value2="0" />
+      <Less Value1="_WeaponOfferZone3Counter" Value2="1" />
+    </Conditions>
+    <Actions>
+      <SetVariable Name="WeaponOfferZone3Counter" Scope="Global" Value="1" />
+      <Activate ActionID="WeaponOfferZone3Dialog" />
+    </Actions>
+  </Quest>  
+  
+
+  <Quest Name="WeaponOfferZone3_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_WeaponOfferZone3_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="WeaponOfferZone3LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+
+  <Quest Name="WeaponOfferZone3LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WeaponOfferZone3LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="WeaponOfferZone3_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_WeaponOfferZone3"/>
+			<Dialog Type="Multiline" Title="WeaponOfferZone3Title" Image="Offer_Butcher" ImageScale="1"  ImageOffsetY="-50"  ContentOffsetX="100" >
+				<Line Text="dlgMainWeaponOffer_LastChance"  />
+				<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_WeaponOfferZone3].RealPrice}" TextColor="0xfefe95" OffsetY="-50" />
+				<Button Type="Right" Color="Green" Text="dlgBuyButton">
+				  <BuyItem Name="Premium_Pack_WeaponOfferZone3" Currency="Real" />
+				</Button>
+				<Button Type="Left" Color="Red" Text="dlgStoryBtnReject" >
+				  <ClearQuestQueue Name="WeaponOfferZone3Dialog" />
+				</Button>
+			</Dialog>	
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="WeaponOfferZone3LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+  
+ 
+<!-- ==============================================================================================================-->
+<!-- ================================================= OFFER PACK BOSS 3 =================================================-->
+<!-- ==============================================================================================================-->
+  
+   
+  
+<!-- ==============================================================================================================-->
+<!-- ================================================= ZONE2 PACK =================================================-->
+<!-- ==============================================================================================================--> 
+
+
+<!-- набор яростного воина - зона 1 -->
+  <!-- активация после 9го турнира -->
+  
+    <Quest Name="PremiumPackZone1Launch" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_1|Tournament|9" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+	  <Equal Value1="?Item[Premium_Pack_Zone1].Quantity" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActivateTimer Name="Timer_PremiumPackZone1" Value="86400" />
+      <ShowMapButton Name="Button_PremiumPackZone1" Image="premium_pack_zone1" Timer="Timer_PremiumPackZone1" ShowType="Story" />
+      <Activate ActionID="PremiumPackZone1Dialog" />
+    </Actions>
+  </Quest>
+    
+
+  <!-- вызов диалога по кнопке на карте -->
+  <Quest Name="PremiumPackZone1Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_PremiumPackZone1" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone1Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="PremiumPackZone1Dialog" Unresumable="1" Priority="100">
+    <Events>
+		<Activate />
+    </Events>
+    <Conditions>
+		<Equal Value1="_$ActionID" Value2="PremiumPackZone1Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="MultilineBig" Title="dlgSuperStarterPackTitle" Image="premium_pack_zone1" ImageScale="1.25" ProfitImage="profit50">
+        <Line Text="dlgSuperStarterPackOfferW{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgSuperStarterPackOfferA{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgSuperStarterPackOfferH{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgStarterPackOffer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone1].RecieveBonus}"/>
+        <Line Text="dlgStarterPackOffer3{img::MiscSprites.tick_red}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone1].RecieveGold}"/>
+        <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone1].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Premium_Pack_Zone1" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="PremiumPackZone1Dialog" />
+          <Dialog Type="Multiline" Title="dlgSuperStarterPackTitle" Image="premium_pack_zone1">
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_PremiumPackZone1" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="PremiumPackZone1Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_Zone1" />
+      <Equal Value1="_$StoryTutorialStep" Value2="END" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone1Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="PremiumPackZone1Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone1Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone1Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackZone1Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone1Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_KUSARIGAMA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SUPER_SPIKED|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_GREEN_MASK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_KUSARIGAMA].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SUPER_SPIKED].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_GREEN_MASK].UpgradeLevel" />
+
+      <EndTimer Name="Timer_PremiumPackZone1"/>
+      <HideMapButton Name="Button_PremiumPackZone1"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_SUPER_KUSARIGAMA"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="PremiumPackZome1Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_PremiumPackZone1" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_PremiumPackZone1"/>
+      <HideMapButton Name="Button_PremiumPackZone1"/>
+	  <SetVariable Name="PremiumPackZone1_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="PremiumPackZone1LastChance" />
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="PremiumPackZone1OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_Zone1].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Equal Value1="_TmpPacks02" Value2="0" />
+      <Greater Value1="?Timer[Timer_PremiumPackZone1].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <SetVariable Name="TmpPacks02" Scope="Users" Value="1" />
+      <Activate ActionID="PremiumPackZone1Dialog" />
+    </Actions>
+  </Quest>  
+  
+   <!-- проверка на выход на карту -->
+  <Quest Name="PremiumPackZone1_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_PremiumPackZone1_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="PremiumPackZone1LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="PremiumPackZone1LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone1LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="PremiumPackZone1_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_PremiumPackZone1"/>
+			<Dialog Type="Multiline" Title="dlgSuperStarterPackTitle" Image="premium_pack_zone1" ImageScale="0.9"> 
+				<Line Text="LastChance" />
+				<Line Text="LastChance1" />
+				<Button Type="Right" Color="Green" Text="dlgStoryBtnShowme" >
+				  <Dialog Type="MultilineBig" Title="dlgSuperStarterPackTitle" Image="premium_pack_zone1" ImageScale="1.25" ProfitImage="profit50">
+					<Line Text="dlgSuperStarterPackOfferW{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgSuperStarterPackOfferA{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgSuperStarterPackOfferH{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgStarterPackOffer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone1].RecieveBonus}"/>
+					<Line Text="dlgStarterPackOffer3{img::MiscSprites.tick_red}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone1].RecieveGold}"/>
+					<Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+					<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone1].RealPrice}" TextColor="0xfefe95" />
+					<Button Type="Right" Color="Green" Text="dlgBuyButton">
+					  <BuyItem Name="Premium_Pack_Zone1" Currency="Real" />
+					</Button>
+					<Button Type="Left" Color="Red" Text="compareCloseBtn" >
+					  <ClearQuestQueue Name="PremiumPackZone1LastChance" />
+					</Button>
+				  </Dialog>
+				</Button>
+			</Dialog>
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="PremiumPackZone1LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+
+  
+  
+  
+  
+  
+<!-- ==============================================================================================================-->
+<!-- ================================================= ZONE2 PACK =================================================-->
+<!-- ==============================================================================================================--> 
+  
+<!-- набор  - зона 2 -->
+  <!-- активация после турнира -->
+  <Quest Name="PremiumPackZone2Launch" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_2|Tournament|2" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="?Item[Premium_Pack_Zone2].Quantity" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActivateTimer Name="Timer_PremiumPackZone2" Value="86400" />
+      <ShowMapButton Name="Button_PremiumPackZone2" Image="starter_pack_dark_chest_Sales_sale" Timer="Timer_PremiumPackZone2" ShowType="Story" />
+      <Activate ActionID="PremiumPackZone2Dialog" />
+    </Actions>
+  </Quest>
+
+  
+  <!-- вызов диалога по кнопке на карте -->
+  <Quest Name="PremiumPackZone2Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_PremiumPackZone2" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone2Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="PremiumPackZone2Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone2Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="MultilineBig" Title="dlgPackZone2Title" Image="img_starter_pack_dark_chest" ImageScale="1.25" ProfitImage="profit50">
+        <Line Text="dlgPackZone2OfferW{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone2OfferA{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone2OfferH{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone2OfferR{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone2Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone2].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone2].RecieveGold}"/>
+        <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone2].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Premium_Pack_Zone2" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="PremiumPackZone2Dialog" />
+          <Dialog Type="Multiline" Title="dlgPackZone2Title" Image="img_starter_pack_dark_chest" ContentOffsetX="30"> 
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_PremiumPackZone2" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="PremiumPackZone2Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_Zone2" />
+	  <Equal Value1="?Pack[ZONE_2].IsAvailable" Value2="1" /> <!-- скачан ли пак второй зоны -->
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone2Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="PremiumPackZone2Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone2Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone2Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackZone2Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone2Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_HW14_SCYTHE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SUPER_CROW|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_VIKING|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_SHURIKENS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_HW14_SCYTHE].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SUPER_CROW].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_VIKING].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SHURIKENS].UpgradeLevel" />
+
+      <EndTimer Name="Timer_PremiumPackZone2"/>
+      <HideMapButton Name="Button_PremiumPackZone2"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_HW14_SCYTHE"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="PremiumPackZome2Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_PremiumPackZone2" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_PremiumPackZone2"/>
+      <HideMapButton Name="Button_PremiumPackZone2"/>
+	  <SetVariable Name="PremiumPackZone2_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="PremiumPackZone2LastChance" />
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="PremiumPackZone2OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_Zone2].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_PremiumPackZone2].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone2Dialog" />
+    </Actions>
+  </Quest>  
+  
+ <!-- проверка на выход на карту -->
+  <Quest Name="PremiumPackZone2_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_PremiumPackZone2_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="PremiumPackZone2LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="PremiumPackZone2LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone2LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="PremiumPackZone2_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_PremiumPackZone2"/>
+			<Dialog Type="Multiline" Title="dlgPackZone2Title" Image="img_starter_pack_dark_chest" ImageScale="0.9"> 
+				<Line Text="LastChance" />
+				<Line Text="LastChance1" />
+				<Button Type="Right" Color="Green" Text="dlgStoryBtnShowme" >
+				  <Dialog Type="MultilineBig" Title="dlgPackZone2Title" Image="img_starter_pack_dark_chest" ImageScale="1.25" ProfitImage="profit50">
+					<Line Text="dlgPackZone2OfferW{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone2OfferA{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone2OfferH{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone2OfferR{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone2Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone2].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone2].RecieveGold}"/>
+					<Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+					<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone2].RealPrice}" TextColor="0xfefe95" />
+					<Button Type="Right" Color="Green" Text="dlgBuyButton">
+					  <BuyItem Name="Premium_Pack_Zone2" Currency="Real" />
+					</Button>
+					<Button Type="Left" Color="Red" Text="compareCloseBtn" >
+					  <ClearQuestQueue Name="PremiumPackZone2LastChance" />
+					</Button>
+				  </Dialog>
+				</Button>
+			</Dialog>
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="PremiumPackZone2LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+  
+
+  
+  
+  
+  
+  
+  
+<!-- ==============================================================================================================-->
+<!-- ================================================= ZONE3 PACK =================================================-->
+<!-- ==============================================================================================================-->
+ 
+   <!-- активация после турнира -->
+  <Quest Name="PremiumPackZone3Launch" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_3|Tournament|2" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="?Item[Premium_Pack_Zone3].Quantity" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActivateTimer Name="Timer_PremiumPackZone3" Value="86400" />
+      <ShowMapButton Name="Button_PremiumPackZone3" Image="starter_pack_zone3_Sales_sale" Timer="Timer_PremiumPackZone3" ShowType="Story" />
+      <Activate ActionID="PremiumPackZone3Dialog" />
+    </Actions>
+  </Quest>
+
+  
+  <!-- вызов диалога по кнопке на карте -->
+  <Quest Name="PremiumPackZone3Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_PremiumPackZone3" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone3Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="PremiumPackZone3Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone3Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="MultilineBig" Title="dlgPackZone3Title" Image="starter_pack_zone3" ImageScale="1.25" ProfitImage="profit55">
+        <Line Text="dlgPackZone3OfferW{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone3OfferA{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone3OfferH{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone3OfferM{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone3].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone3].RecieveGold}"/>
+        <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone3].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Premium_Pack_Zone3" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="PremiumPackZone3Dialog" />
+          <Dialog Type="Multiline" Title="dlgPackZone3Title" Image="starter_pack_zone3"> 
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_PremiumPackZone3" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="PremiumPackZone3Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_Zone3" />
+	  <Equal Value1="?Pack[ZONE_3].IsAvailable" Value2="1" /> <!-- скачан ли пак 3 зоны -->
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone3Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="PremiumPackZone3Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone3Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone3Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackZone3Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone3Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_BIG_SWORD|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SPIKE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SPIKE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_FIRE_BALL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_BIG_SWORD].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SPIKE].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SPIKE].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_FIRE_BALL].UpgradeLevel" />
+
+      <EndTimer Name="Timer_PremiumPackZone3"/>
+      <HideMapButton Name="Button_PremiumPackZone3"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_SUPER_BIG_SWORD"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="PremiumPackZone3Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_PremiumPackZone3" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_PremiumPackZone3"/>
+      <HideMapButton Name="Button_PremiumPackZone3"/>
+	  <SetVariable Name="PremiumPackZone3_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="PremiumPackZone3LastChance" />
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="PremiumPackZone3OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_Zone3].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_PremiumPackZone3].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone3Dialog" />
+    </Actions>
+  </Quest>  
+  
+ <!-- проверка на выход на карту -->
+  <Quest Name="PremiumPackZone3_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_PremiumPackZone3_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="PremiumPackZone3LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="PremiumPackZone3LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone3LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="PremiumPackZone3_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_PremiumPackZone3"/>
+			<Dialog Type="Multiline" Title="dlgPackZone3Title" Image="starter_pack_zone3" ImageScale="0.9"> 
+				<Line Text="LastChance" />
+				<Line Text="LastChance1" />
+				<Button Type="Right" Color="Green" Text="dlgStoryBtnShowme" >
+				  <Dialog Type="MultilineBig" Title="dlgPackZone3Title" Image="starter_pack_zone3" ImageScale="1.25" ProfitImage="profit55">
+					<Line Text="dlgPackZone3OfferW{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone3OfferA{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone3OfferH{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone3OfferM{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone3].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone3].RecieveGold}"/>
+					<Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+					<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone3].RealPrice}" TextColor="0xfefe95" />
+					<Button Type="Right" Color="Green" Text="dlgBuyButton">
+					  <BuyItem Name="Premium_Pack_Zone3" Currency="Real" />
+					</Button>
+					<Button Type="Left" Color="Red" Text="compareCloseBtn" >
+					  <ClearQuestQueue Name="PremiumPackZone3LastChance" />
+					</Button>
+				  </Dialog>
+				</Button>
+			</Dialog>
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="PremiumPackZone3LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<!--==============================================================================================================-->
+<!--================================================= ZONE 4 PACK ================================================-->
+<!--==============================================================================================================-->
+ 
+   <!-- активация после турнира -->
+  <Quest Name="PremiumPackZone4Launch" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_4|Tournament|2" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="?Item[Premium_Pack_Zone4].Quantity" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActivateTimer Name="Timer_PremiumPackZone4" Value="86400" />
+      <ShowMapButton Name="Button_PremiumPackZone4" Image="starter_pack_zone4_Sales_sale" Timer="Timer_PremiumPackZone4" ShowType="Story" />
+      <Activate ActionID="PremiumPackZone4Dialog" />
+    </Actions>
+  </Quest>
+
+  
+  <!-- вызов диалога по кнопке на карте -->
+  <Quest Name="PremiumPackZone4Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_PremiumPackZone4" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone4Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="PremiumPackZone4Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone4Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="MultilineBig" Title="dlgPackZone4Title" Image="starter_pack_zone4" ImageScale="1.25" ProfitImage="profit60">
+        <Line Text="dlgPackZone4OfferW{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone4OfferA{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone4OfferH{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone4OfferR{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone4OfferM{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone4].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone4].RecieveGold}"/>
+        <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone4].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Premium_Pack_Zone4" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="PremiumPackZone4Dialog" />
+          <Dialog Type="Multiline" Title="dlgPackZone4Title" Image="starter_pack_zone4"> 
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_PremiumPackZone4" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="PremiumPackZone4Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_Zone4" />
+	  <Equal Value1="?Pack[ZONE_4].IsAvailable" Value2="1" /> <!-- скачан ли пак 3 зоны -->
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone4Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="PremiumPackZone4Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone4Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone4Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackZone4Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone4Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_KHOPESH|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_DRAGON|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SUPER_SCARAB|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_MASS_BOMB|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_NEEDLE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GivePerk ApplyTo="Item" Item="RANGED_NEEDLE">
+        <Perk Name="PERK_ITEM_SPECIAL_FRENZY_RANGED">
+          <Set Aspect="4000"/> <!-- нужно так, потому что GivePerk лишь обрезает значение, но само не выставляет -->
+        </Perk>
+	  </GivePerk>
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_KHOPESH].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_DRAGON].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SUPER_SCARAB].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_MASS_BOMB].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_NEEDLE].UpgradeLevel" />
+      
+      <EndTimer Name="Timer_PremiumPackZone4"/>
+      <HideMapButton Name="Button_PremiumPackZone4"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_SUPER_KHOPESH"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="PremiumPackZone4Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_PremiumPackZone4" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_PremiumPackZone4"/>
+      <HideMapButton Name="Button_PremiumPackZone4"/>
+	  <SetVariable Name="PremiumPackZone4_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="PremiumPackZone4LastChance" />
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="PremiumPackZone4OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_Zone4].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_PremiumPackZone4].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone4Dialog" />
+    </Actions>
+  </Quest>  
+  
+ <!-- проверка на выход на карту -->
+  <Quest Name="PremiumPackZone4_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_PremiumPackZone4_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="PremiumPackZone4LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="PremiumPackZone4LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone4LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="PremiumPackZone4_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_PremiumPackZone4"/>
+			<Dialog Type="Multiline" Title="dlgPackZone4Title" Image="starter_pack_zone4" ImageScale="0.9"> 
+				<Line Text="LastChance" />
+				<Line Text="LastChance1" />
+				<Button Type="Right" Color="Green" Text="dlgStoryBtnShowme" >
+				  <Dialog Type="MultilineBig" Title="dlgPackZone4Title" Image="starter_pack_zone4" ImageScale="1.25" ProfitImage="profit60">
+					<Line Text="dlgPackZone4OfferW{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone4OfferA{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone4OfferH{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone4OfferR{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone4OfferM{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone4].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone4].RecieveGold}"/>
+					<Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+					<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone4].RealPrice}" TextColor="0xfefe95" />
+					<Button Type="Right" Color="Green" Text="dlgBuyButton">
+					  <BuyItem Name="Premium_Pack_Zone4" Currency="Real" />
+					</Button>
+					<Button Type="Left" Color="Red" Text="compareCloseBtn" >
+					  <ClearQuestQueue Name="PremiumPackZone4LastChance" />
+					</Button>
+				  </Dialog>
+				</Button>
+			</Dialog>
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="PremiumPackZone4LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<!--==============================================================================================================-->
+<!--================================================= ZONE 5 PACK ================================================-->
+<!--==============================================================================================================-->
+ 
+   <!-- активация после турнира -->
+  <Quest Name="PremiumPackZone5Launch" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_5|Tournament|2" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="?Item[Premium_Pack_Zone5].Quantity" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActivateTimer Name="Timer_PremiumPackZone5" Value="86400" />
+      <ShowMapButton Name="Button_PremiumPackZone5" Image="starter_pack_zone5_Sales_sale" Timer="Timer_PremiumPackZone5" ShowType="Story" />
+      <Activate ActionID="PremiumPackZone5Dialog" />
+    </Actions>
+  </Quest>
+
+  
+  <!-- вызов диалога по кнопке на карте -->
+  <Quest Name="PremiumPackZone5Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_PremiumPackZone5" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone5Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="PremiumPackZone5Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone5Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="MultilineBig" Title="dlgPackZone5Title" Image="starter_pack_zone5" ImageScale="1.25" ProfitImage="profit65">
+        <Line Text="dlgPackZone5OfferW{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone5OfferA{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone5OfferH{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone5OfferR{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone5OfferM{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{200}{img::MiscSprites.gold}{1600000}"/>
+        <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone5].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Premium_Pack_Zone5" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="PremiumPackZone5Dialog" />
+          <Dialog Type="Multiline" Title="dlgPackZone5Title" Image="starter_pack_zone5"> 
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_PremiumPackZone5" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="PremiumPackZone5Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_Zone5" />
+	  <Equal Value1="?Pack[ZONE_5].IsAvailable" Value2="1" /> <!-- скачан ли пак зоны -->
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone5Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="PremiumPackZone5Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone5Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone5Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackZone5Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone5Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_STAFF|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_DARK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SUPER_HORNED|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_FIRE_PILLAR|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_SHURIKEN_OF_DARKNESS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_STAFF].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_DARK].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SUPER_HORNED].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_FIRE_PILLAR].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SHURIKEN_OF_DARKNESS].UpgradeLevel" />
+      
+      <EndTimer Name="Timer_PremiumPackZone5"/>
+      <HideMapButton Name="Button_PremiumPackZone5"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_SUPER_STAFF"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="PremiumPackZone5Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_PremiumPackZone5" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_PremiumPackZone5"/>
+      <HideMapButton Name="Button_PremiumPackZone5"/>
+	  <SetVariable Name="PremiumPackZone5_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="PremiumPackZone5LastChance" />
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="PremiumPackZone5OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_Zone5].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_PremiumPackZone5].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone5Dialog" />
+    </Actions>
+  </Quest>  
+  
+ <!-- проверка на выход на карту -->
+  <Quest Name="PremiumPackZone5_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_PremiumPackZone5_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="PremiumPackZone5LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="PremiumPackZone5LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone5LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="PremiumPackZone5_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_PremiumPackZone5"/>
+			<Dialog Type="Multiline" Title="dlgPackZone5Title" Image="starter_pack_zone5" ImageScale="0.9"> 
+				<Line Text="LastChance" />
+				<Line Text="LastChance1" />
+				<Button Type="Right" Color="Green" Text="dlgStoryBtnShowme" >
+				  <Dialog Type="MultilineBig" Title="dlgPackZone5Title" Image="starter_pack_zone5" ImageScale="1.25" ProfitImage="profit65">
+					<Line Text="dlgPackZone5OfferW{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone5OfferA{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone5OfferH{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone5OfferR{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone5OfferM{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone5].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone5].RecieveGold}"/>
+					<Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+					<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone5].RealPrice}" TextColor="0xfefe95" />
+					<Button Type="Right" Color="Green" Text="dlgBuyButton">
+					  <BuyItem Name="Premium_Pack_Zone5" Currency="Real" />
+					</Button>
+					<Button Type="Left" Color="Red" Text="compareCloseBtn" >
+					  <ClearQuestQueue Name="PremiumPackZone5LastChance" />
+					</Button>
+				  </Dialog>
+				</Button>
+			</Dialog>
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="PremiumPackZone5LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+  
+  
+  
+  
+  
+  
+<!--==============================================================================================================-->
+<!--================================================= ZONE 6 PACK ================================================-->
+<!--==============================================================================================================-->
+ 
+   <!-- активация после турнира -->
+  <Quest Name="PremiumPackZone6Launch" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_6|Tournament|2" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="?Item[Premium_Pack_Zone6].Quantity" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActivateTimer Name="Timer_PremiumPackZone6" Value="86400" />
+      <ShowMapButton Name="Button_PremiumPackZone6" Image="starter_pack_zone6_Sales_sale" Timer="Timer_PremiumPackZone6" ShowType="Story" />
+      <Activate ActionID="PremiumPackZone6Dialog" />
+    </Actions>
+  </Quest>
+
+  
+  <!-- вызов диалога по кнопке на карте -->
+  <Quest Name="PremiumPackZone6Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_PremiumPackZone6" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone6Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="PremiumPackZone6Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone6Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="MultilineBig" Title="dlgPackZone6Title" Image="starter_pack_zone6" ImageScale="1.25" ProfitImage="profit70">
+        <Line Text="dlgPackZone6OfferW{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone6OfferA{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgPackZone6OfferH{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone6OfferR{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone6OfferM{img::MiscSprites.tick_red}"/>
+		<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone6].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone6].RecieveGold}"/>
+        <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone6].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Premium_Pack_Zone6" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="PremiumPackZone6Dialog" />
+          <Dialog Type="Multiline" Title="dlgPackZone6Title" Image="starter_pack_zone6"> 
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_PremiumPackZone6" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="PremiumPackZone6Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_Zone6" />
+	  <Equal Value1="?Pack[ZONE_6].IsAvailable" Value2="1" /> <!-- скачан ли пак зоны -->
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone6Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="PremiumPackZone6Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone6Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone6Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackZone6Give" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone6Give" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_INDIAN_KATAR|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SUPER_SAMURAI|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SUPER_SAMURAI|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_ASTEROID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_SUPER_DAGGERS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_INDIAN_KATAR].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SUPER_SAMURAI].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SUPER_SAMURAI].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_ASTEROID].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SUPER_DAGGERS].UpgradeLevel" />
+      
+      <EndTimer Name="Timer_PremiumPackZone6"/>
+      <HideMapButton Name="Button_PremiumPackZone6"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_INDIAN_KATAR"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="PremiumPackZone6Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_PremiumPackZone6" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_PremiumPackZone6"/>
+      <HideMapButton Name="Button_PremiumPackZone6"/>
+	  <SetVariable Name="PremiumPackZone6_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="PremiumPackZone6LastChance" />
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="PremiumPackZone6OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_Zone6].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_PremiumPackZone6].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZone6Dialog" />
+    </Actions>
+  </Quest>  
+  
+ <!-- проверка на выход на карту -->
+  <Quest Name="PremiumPackZone6_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_PremiumPackZone6_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="PremiumPackZone6LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="PremiumPackZone6LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZone6LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="PremiumPackZone6_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_PremiumPackZone6"/>
+			<Dialog Type="Multiline" Title="dlgPackZone6Title" Image="starter_pack_zone6" ImageScale="0.9"> 
+				<Line Text="LastChance" />
+				<Line Text="LastChance1" />
+				<Button Type="Right" Color="Green" Text="dlgStoryBtnShowme" >
+				  <Dialog Type="MultilineBig" Title="dlgPackZone6Title" Image="starter_pack_zone6" ImageScale="1.25" ProfitImage="profit70">
+					<Line Text="dlgPackZone6OfferW{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone6OfferA{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone6OfferH{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone6OfferR{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone6OfferM{img::MiscSprites.tick_red}"/>
+					<Line Text="dlgPackZone3Offer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{?Item[Premium_Pack_Zone6].RecieveBonus}{img::MiscSprites.gold}{?Item[Premium_Pack_Zone6].RecieveGold}"/>
+					<Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+					<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_Zone6].RealPrice}" TextColor="0xfefe95" />
+					<Button Type="Right" Color="Green" Text="dlgBuyButton">
+					  <BuyItem Name="Premium_Pack_Zone6" Currency="Real" />
+					</Button>
+					<Button Type="Left" Color="Red" Text="compareCloseBtn" >
+					  <ClearQuestQueue Name="PremiumPackZone6LastChance" />
+					</Button>
+				  </Dialog>
+				</Button>
+			</Dialog>
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="PremiumPackZone6LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest> 
+  
+   
+<!--==============================================================================================================-->
+<!--================================================= Raid ZONE 4 PACK ================================================-->
+<!--==============================================================================================================-->
+ 
+   <!-- активация после турнира -->
+  <Quest Name="PremiumPackZoneRaid4Launch" Priority="100"> 
+    <Events>
+      <Activate/>
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZoneRaid4Launch" />
+      <Equal Value1="?Item[Premium_Pack_ZoneRaid4].Quantity" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActivateTimer Name="Timer_PremiumPackZoneRaid4" Value="86400" />
+      <ShowMapButton Name="Button_PremiumPackZoneRaid4" Image="NeoWandererChestSmall_Sales_sale" Timer="Timer_PremiumPackZoneRaid4" ShowType="Raid" />
+      <Activate ActionID="PremiumPackZoneRaid4Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- вызов диалога по кнопке на карте -->
+  <Quest Name="PremiumPackZoneRaid4Press">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_PremiumPackZoneRaid4" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZoneRaid4Dialog" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. покупка или таймер на повтор предложения -->
+  <Quest Name="PremiumPackZoneRaid4Dialog" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZoneRaid4Dialog" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Multiline" Title="SetUi_NEO_WANDERER_Title" TextOffset="150;0" Image="AnnounceRaidZone4Offer" ImageScale="1" >
+			<Line Text="dlgOfferRaidZone4Desc"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_ZoneRaid4].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Premium_Pack_ZoneRaid4" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <Dialog Type="Multiline" Title="SetUi_NEO_WANDERER_Title" Image="AnnounceRaidZone4Offer" ImageScale="1" TextOffset="150;0"> 
+            <Line Text="dlgStarterPackRefusal">
+				  <Timer Name="Timer_PremiumPackZoneRaid4" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- проверка транзакции -->
+  <Quest Name="PremiumPackZoneRaid4Bought_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$Purchase].Name" Value2="Premium_Pack_ZoneRaid4" />
+	  <Equal Value1="?Pack[CLANS].IsAvailable" Value2="1" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZoneRaid4Bought" />
+    </Actions>
+  </Quest>
+  
+  <!-- действия в случае успешной транзакции -->
+  <Quest Name="PremiumPackZoneRaid4Bought" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZoneRaid4Bought" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZoneRaid4Give" />
+    </Actions>
+  </Quest>
+
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackZoneRaid4Give" Priority="100" Unresumable="0">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZoneRaid4Give" />
+    </Conditions>
+    <Actions>
+		<GiveItem Name="?Concat[WEAPON_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="WEAPON_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+
+		<GiveItem Name="?Concat[ARMOR_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="ARMOR_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+		
+		<GiveItem Name="?Concat[HELM_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="HELM_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+		
+		<GiveItem Name="?Concat[RANGED_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="RANGED_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+		
+		<GiveItem Name="?Concat[MAGIC_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="MAGIC_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[RANGED_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[MAGIC_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+
+		<EndTimer Name="Timer_PremiumPackZoneRaid4"/>
+		<HideMapButton Name="Button_PremiumPackZoneRaid4"/>
+		<Activate ActionID="AllStarterPacks_SilentUpdate" />
+		<OpenShop Tab="Weapon" Item="WEAPON_C1_Z4_NEO_WANDERER"/>
+		<UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <!-- скрытие кнопки по окончанию таймера -->
+  <Quest Name="PremiumPackZoneRaid4Dismiss" Priority="100">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_PremiumPackZoneRaid4" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_PremiumPackZoneRaid4"/>
+      <HideMapButton Name="Button_PremiumPackZoneRaid4"/>
+	  <SetVariable Name="PremiumPackZoneRaid4_CheckFight" Scope="Users" Value="1" />
+	  <Activate ActionID="PremiumPackZoneRaid4LastChance" />
+    </Actions>
+  </Quest>
+
+  <!-- повтор предложения на рестарте игры -->
+  <Quest Name="PremiumPackZoneRaid4OnRestart" Priority="1000" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[Premium_Pack_ZoneRaid4].Quantity" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+	  <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_PremiumPackZoneRaid4].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="PremiumPackZoneRaid4Dialog" />
+    </Actions>
+  </Quest>  
+  
+ <!-- проверка на выход на карту -->
+  <Quest Name="PremiumPackZoneRaid4_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_PremiumPackZoneRaid4_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+			<Then>
+				<Activate ActionID="PremiumPackZoneRaid4LastChance" />
+			</Then>
+		</If>	
+	  <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="PremiumPackZoneRaid4LastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackZoneRaid4LastChance" />
+    </Conditions>
+    <Actions Place="Map">
+		<If>
+			<Conditions>
+				<Equal Value1="_$SceneTo" Value2="Map" />
+			</Conditions>
+        <Then>
+			<SetVariable Name="PremiumPackZoneRaid4_CheckFight" Scope="Users" Value="0" />
+			<EndTimer Name="Timer_PremiumPackZoneRaid4"/>
+			<Dialog Type="Multiline" Title="SetUi_NEO_WANDERER_Title" Image="AnnounceRaidZone4Offer" ImageScale="1" TextOffset="150;0"> 
+				<Line Text="dlgOfferRaidZone4DescLastChance" />
+				<PriceLine Text="dlgStarterPackPrice{?Item[Premium_Pack_ZoneRaid4].RealPrice}" TextColor="0xfefe95" />
+				<Button Type="Right" Color="Green" Text="dlgBuyButton">
+				  <BuyItem Name="Premium_Pack_ZoneRaid4" Currency="Real" />
+				</Button>
+				<Button Type="Left" Color="Red" Text="compareCloseBtn" >
+				  <ClearQuestQueue Name="PremiumPackZoneRaid4LastChance" />
+				</Button>
+			</Dialog>
+		</Then>
+        <Else>
+			<ClearQuestQueue Name="PremiumPackZoneRaid4LastChance" />
+        </Else>
+		</If>	
+    </Actions>
+  </Quest>  
+  <!--==============================================================================================================-->
+<!--=================================================  ================================================-->
+<!--==============================================================================================================-->
+ 
+  
+<Quest Name="NY20OfferGive" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="NY20OfferGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[NY20_HELM_HAT|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[NY20_HELM_HAT].UpgradeLevel" />
+      <EndTimer Name="Timer_NY20Offer"/>
+      <HideMapButton Name="Button_NY20Offer"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Helm" Item="NY20_HELM_HAT"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest> 
+
+  
+<Quest Name="NY21OfferGive" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="NY21OfferGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[ARMOR_NY18_MANTLE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_NY18_MANTLE].UpgradeLevel" />
+      <EndTimer Name="Timer_NY21Offer"/>
+      <HideMapButton Name="Button_NY21Offer"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+	  <OpenShop Tab="Armor" Item="ARMOR_NY18_MANTLE"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  
+<Quest Name="CNY23OfferGive" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="CNY23OfferGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_CHNY21_JIAN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_CHNY21_JIAN].UpgradeLevel" />
+      <EndTimer Name="Timer_CNY23Offer"/>
+      <HideMapButton Name="Button_CNY23Offer"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_CHNY21_JIAN"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+<Quest Name="IE21OfferGive" Priority="100">   <!-- checked -->
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="IE21OfferGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_IND21_GLAIVEBOW|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <GiveItem Name="?Concat[RANGED_IND21_CHAKRAM|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_IND21_GLAIVEBOW].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_IND21_CHAKRAM].UpgradeLevel" />
+      <EndTimer Name="Timer_IE21Offer"/>
+      <HideMapButton Name="Button_IE21Offer"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_IND21_GLAIVEBOW"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="AE21OfferGive" Priority="100">   
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="AE21OfferGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[HELM_AE21_ROACH|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_AE21_ROACH].UpgradeLevel" />
+      <EndTimer Name="Timer_AE21Offer"/>
+      <HideMapButton Name="Button_AE21Offer"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Helm" Item="HELM_AE21_ROACH"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="Summer21OfferGive" Priority="100">   
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="Summer21OfferGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUMMER21_SWORD|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUMMER21_SWORD].UpgradeLevel" />
+      <EndTimer Name="Timer_Summer21Offer"/>
+      <HideMapButton Name="Button_Summer21Offer"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Weapon" Item="WEAPON_SUMMER21_SWORD"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="CNY22OfferGive" Priority="100">  
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="CNY22OfferGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[MAGIC_CHNY22_WATERBALL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <GiveItem Name="?Concat[RANGED_CHNY22_WEIGHED_KUNAI|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_CHNY22_WATERBALL].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_CHNY22_WEIGHED_KUNAI].UpgradeLevel" />
+      
+      <EndTimer Name="Timer_CNY22Offer"/>
+      <HideMapButton Name="Button_CNY22Offer"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Magic" Item="MAGIC_CHNY22_WATERBALL"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  
+  
+  <!-- give pack to user -->
+  <Quest Name="PremiumPackBoatFestivalGive" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="PremiumPackBoatFestivalGive" />
+    </Conditions>
+    <Actions>
+	  <GiveItem Name="?Concat[RANGED_BOAT_FESTIVAL_SUPER_SHURIKEN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_BOAT_FESTIVAL_SUPER_SHURIKEN].UpgradeLevel" />
+
+      <EndTimer Name="Timer_PremiumPackBoatFestival"/>
+      <HideMapButton Name="Button_PremiumPackBoatFestival"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <OpenShop Tab="Ranged" Item="RANGED_BOAT_FESTIVAL_SUPER_SHURIKEN"/>
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+
+</Quests>

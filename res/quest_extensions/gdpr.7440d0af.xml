@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+
+  <!--      -->
+  <!-- GDPR -->
+  <!--      -->
+
+  <!-- Запуск перед логином -->
+  <Quest Name="ActivateShowGDPR" Priority="9998" Unresumable="1">
+    <Events>
+      <ShowGDPRConsent />
+    </Events>
+    <Conditions>
+      <Equal Not="1" Value1="_GDPROnStartAccepted" Value2="1" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="ShowGDPR" /> 
+    </Actions>
+  </Quest>
+
+  <!-- Переоткрытие после перехода по URL -->
+  <Quest Name="ReactivateShowGDPR" Priority="9998" Unresumable="1">
+    <Events>
+      <Activate/>
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ReactivateShowGDPR" /> 
+    </Conditions>
+    <Actions>
+      <Activate ActionID="ShowGDPR" /> 
+    </Actions>
+  </Quest>
+
+  <Quest Name="ShowGDPR" Priority="9998" Unresumable="1">
+    <Events>
+      <Activate/>
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ShowGDPR" /> 
+    </Conditions>
+    <Actions>
+      <Dialog Type="Native" Title="headGDPR" IgnoreBack="1">
+        <Line Text="textGDPR" />
+        <Line Text="textGDPR1" />
+        <Button Type="Close" >
+          <Activate ActionID="ReactivateShowGDPR" /> 
+        </Button>   
+        <Button Type="Left" Color="Green" Text="EULA" >
+          <OpenUrl URL="http://nekki.com/agreement.php" />
+          <Activate ActionID="ReactivateShowGDPR" /> 
+        </Button>
+        <Button Type="Middle" Color="Green" Text="PP" >
+          <OpenUrl URL="http://nekki.com/privacy.php" />
+          <Activate ActionID="ReactivateShowGDPR" /> 
+        </Button>
+        <Button Type="Right" Color="Green" Text="Agreedbtn" >
+          <SetVariable Scope="Users" Name="GDPROnStartAccepted" Value="1" />
+          <RunCallback Name="OnGDPRRequestEnd" />
+        </Button>   
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!--                  -->
+  <!-- Расторжение GDPR -->
+  <!--                  -->
+
+  <!-- Запуск из настроек -->
+  <Quest Name="ActivateWithdrawGDPRConsent" Priority="9999" Unresumable="1">
+    <Events>
+      <WithdrawGDPRConsent />
+    </Events>
+    <Actions>
+      <Activate ActionID="WithdrawGDPRConsent" /> 
+    </Actions>
+  </Quest>
+
+  <!-- Переоткрытие после перехода по URL -->
+  <Quest Name="ReactivateWithdrawGDPRConsent" Priority="9999" Unresumable="1">
+    <Events>
+      <Activate/>
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ReactivateWithdrawGDPRConsent" /> 
+    </Conditions>
+    <Actions>
+      <Activate ActionID="WithdrawGDPRConsent" /> 
+    </Actions>
+  </Quest>
+
+  <Quest Name="WithdrawGDPRConsent" Priority="9999" Unresumable="1">
+    <Events>
+      <Activate/>
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="WithdrawGDPRConsent" /> 
+    </Conditions>
+    <Actions>
+      <Dialog Type="MultiLineScroll" Title="headGDPRRefuse" IgnoreBack="1">
+        <Line Text="GDPRRefuse" FontSize="80"/>
+        <LineButton Text="EULA" TextColor="0x3366BB" ButtonUrl="http://nekki.com/agreement.php" ButtonHeight="80" />
+        <LineButton Text="PP" TextColor="0x3366BB" ButtonUrl="http://nekki.com/privacy.php" ButtonHeight="80" />
+        <Line Text="GDPRRefuse1" FontSize="80"/>
+        <Line Text="GDPRRefuseNote" FontSize="80"/>       
+        <Button Type="Right" Color="Red" Text="Settings_GDPR" >
+          <SetVariable Scope="Users" Name="GDPROnStartAccepted" Value="0" />
+          <Activate ActionID="ReactivateShowGDPR" /> 
+        </Button>
+        <Button Type="Left" Color="Green" Text="CANCEL" >
+          <RunCallback Name="OnGDPRRequestEnd" />
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+</Quests>

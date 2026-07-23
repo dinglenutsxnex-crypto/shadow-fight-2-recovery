@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Forge>
+  <AspectScale>
+    <Aspect MaxLevel="1" Value="55"/>
+    <Aspect Level="2" Value="60"/>
+    <Aspect Level="3" Value="90"/>
+    <Aspect Level="4" Value="115"/>
+    <Aspect Level="5" Value="150"/>
+    <Aspect Level="6" Value="185"/>
+    <Aspect Level="7" Value="226"/>
+    <Aspect Level="8" Value="261"/>
+    <Aspect Level="9" Value="296"/>
+    <Aspect Level="10" Value="331"/>
+    <Aspect Level="11" Value="366"/>
+    <Aspect Level="12" Value="401"/>
+    <Aspect Level="13" Value="442"/>
+    <Aspect Level="14" Value="477"/>
+    <Aspect Level="15" Value="512"/>
+    <Aspect Level="16" Value="547"/>
+    <Aspect Level="17" Value="582"/>
+    <Aspect Level="18" Value="617"/>
+    <Aspect Level="19" Value="658"/>
+    <Aspect Level="20" Value="693"/>
+    <Aspect Level="21" Value="728"/>
+    <Aspect Level="22" Value="763"/>
+    <Aspect Level="23" Value="798"/>
+    <Aspect Level="24" Value="833"/>
+    <Aspect Level="25" Value="874"/>
+    <Aspect Level="26" Value="909"/>
+    <Aspect Level="27" Value="944"/>
+    <Aspect Level="28" Value="979"/>
+    <Aspect Level="29" Value="1014"/>
+    <Aspect Level="30" Value="1049"/>
+    <Aspect Level="31" Value="1090"/>
+    <Aspect Level="32" Value="1125"/>
+    <Aspect Level="33" Value="1160"/>
+    <Aspect Level="34" Value="1195"/>
+    <Aspect Level="35" Value="1230"/>
+    <Aspect Level="36" Value="1265"/>
+    <Aspect Level="37" Value="1306"/>
+    <Aspect Level="38" Value="1347"/>
+    <Aspect Level="39" Value="1388"/>
+    <Aspect Level="40" Value="1429"/>
+    <Aspect Level="41" Value="1470"/>
+    <Aspect Level="42" Value="1511"/>
+    <Aspect Level="43" Value="1552"/>
+    <Aspect Level="44" Value="1587"/>
+    <Aspect Level="45" Value="1622"/>
+    <Aspect Level="46" Value="1657"/>
+    <Aspect Level="47" Value="1692"/>
+    <Aspect Level="48" Value="1727"/>
+    <Aspect Level="49" Value="1762"/>
+    <Aspect Level="50" Value="1797"/>
+    <Aspect Level="51" Value="1832"/>
+    <Aspect MinLevel="52" Value="1867"/>
+  </AspectScale>
+</Forge>

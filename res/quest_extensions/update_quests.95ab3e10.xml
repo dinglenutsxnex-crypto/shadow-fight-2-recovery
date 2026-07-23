@@ -1,0 +1,276 @@
+<Quests>
+  <Quest Name="UpdateTo1'0'1'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'1'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.0.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="1" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'1'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'2'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'2'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.1.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="2" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'2'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'3'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'3'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.2.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="3" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'3'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'4'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'4'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.3.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="4" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'4'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'5'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'5'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.4.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="5" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'5'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'6'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'6'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.5.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="6" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'6'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'7'0Part1" Priority="999">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'7'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.6.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <If>
+        <Conditions>
+          <Equal Value1="?Item[WEAPON_LYNX_CLAWS].Quantity" Value2="1" />
+          <Equal Value1="?Item[WEAPON_LYNX_CLAWS,PERK_ITEM_SPECIAL_TIME_BOMB_WEAPON].PerkExists" Value2="1" Not="1" />
+        </Conditions>
+        <Then>
+          <GiveItemPerk ItemName="WEAPON_LYNX_CLAWS" PerkName="PERK_ITEM_SPECIAL_TIME_BOMB_WEAPON" />
+        </Then>
+      </If>
+      <If>
+        <Conditions>
+          <Equal Value1="?Item[WEAPON_HERMIT_SWORDS].Quantity" Value2="1" />
+          <Equal Value1="?Item[WEAPON_HERMIT_SWORDS,PERK_ITEM_SPECIAL_ENFEEBLE_WEAPON].PerkExists" Value2="1" Not="1" />
+        </Conditions>
+        <Then>
+          <GiveItemPerk ItemName="WEAPON_HERMIT_SWORDS" PerkName="PERK_ITEM_SPECIAL_ENFEEBLE_WEAPON" />
+        </Then>
+      </If>
+      <If>
+        <Conditions>
+          <Equal Value1="?Item[WEAPON_BUTCHER_KNIVES].Quantity" Value2="1" />
+          <Equal Value1="?Item[WEAPON_BUTCHER_KNIVES,PERK_ITEM_SPECIAL_BLEEDING_WEAPON].PerkExists" Value2="1" Not="1" />
+        </Conditions>
+        <Then>
+          <GiveItemPerk ItemName="WEAPON_BUTCHER_KNIVES" PerkName="PERK_ITEM_SPECIAL_BLEEDING_WEAPON" />
+        </Then>
+      </If>
+      <If>
+        <Conditions>
+          <Equal Value1="?Item[WEAPON_WASP_NAGINATA].Quantity" Value2="1" />
+          <Equal Value1="?Item[WEAPON_WASP_NAGINATA,PERK_ITEM_SPECIAL_PRECISION_WEAPON].PerkExists" Value2="1" Not="1" />
+        </Conditions>
+        <Then>
+          <GiveItemPerk ItemName="WEAPON_WASP_NAGINATA" PerkName="PERK_ITEM_SPECIAL_PRECISION_WEAPON" />
+        </Then>
+      </If>
+      <If>
+        <Conditions>
+          <Equal Value1="?Item[WEAPON_WIDOW_FANS].Quantity" Value2="1" />
+          <Equal Value1="?Item[WEAPON_WIDOW_FANS,PERK_ITEM_SPECIAL_LIFESTEAL_WEAPON].PerkExists" Value2="1" Not="1" />
+        </Conditions>
+        <Then>
+          <GiveItemPerk ItemName="WEAPON_WIDOW_FANS" PerkName="PERK_ITEM_SPECIAL_LIFESTEAL_WEAPON" />
+        </Then>
+      </If>
+      <If>
+        <Conditions>
+          <Equal Value1="?Item[WEAPON_SHOGUN_KATANA].Quantity" Value2="1" />
+          <Equal Value1="?Item[WEAPON_SHOGUN_KATANA,PERK_ITEM_SPECIAL_OVERHEAT_WEAPON].PerkExists" Value2="1" Not="1" />
+        </Conditions>
+        <Then>
+          <GiveItemPerk ItemName="WEAPON_SHOGUN_KATANA" PerkName="PERK_ITEM_SPECIAL_OVERHEAT_WEAPON" />
+        </Then>
+      </If>
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'7'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'7'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.6.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="7" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'7'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'8'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'8'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.7.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="8" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'8'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'9'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'9'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.8.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="9" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'9'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'10'0Part1" Priority="999">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'10'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.9.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <FixPaidZeroAspects />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'10'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'10'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.9.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="10" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'10'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'11'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'11'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.10.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="11" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'11'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'12'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'12'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.11.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="12" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'12'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+  <Quest Name="UpdateTo1'0'13'0Final" Priority="990">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'13'0Mark" Value2="1" Not="1" />
+      <Equal Value1="?DataVersion[].Full" Value2="1.0.12.0" CompareType="Versions" />
+      <Equal Value1="_$ActionID" Value2="Update" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetDataVersion Production="1" Major="0" Minor="13" DataVersion="0" />
+      <SetVariable Scope="Users" Name="UpdateTo1'0'13'0Mark" Value="1" />
+      <Activate ActionID="Update" Locked="1" />
+    </Actions>
+  </Quest>
+</Quests>

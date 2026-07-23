@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>Shadow Fight 2 - Play Online</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Shadow Fight 2 is a nail-biting mix of classical Fighting and RPG." />
+    <meta name="viewport" content="initial-scale=1, width=device-width, interactive-widget=resizes-content" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+			body {
+				margin: 0px;
+				overflow: hidden;
+				background-color: black;
+			}
+		</style>
+
+  <script src="./microsite-game-interface.js"></script>
+		<script>
+			window.GameInterface.init([
+				"fflate.4d6ec944.js",
+				"imageloader.665d5d2b.js",
+				"support.56d9ad37.js",
+				"sf2.4904b063.js"
+			]).then(() => SF2.main());
+		</script>
+	</head>
+	<body>
+    <noscript>
+      <p>Play Shadow Fight 2 online in your browser. Enable JavaScript to start the game.</p>
+    </noscript>
+	</body>
+</html>

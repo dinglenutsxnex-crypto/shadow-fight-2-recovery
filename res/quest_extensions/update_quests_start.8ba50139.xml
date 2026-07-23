@@ -1,0 +1,14 @@
+<Quests>
+  <Quest Name="UpdateStart" Priority="1000" Unresumable="1">
+    <Events>
+      <SessionStart />
+    </Events>
+    <Conditions>
+      <Equal Value1="_UpdateTo1'0'13'0Mark" Value2="1" Not="1" />
+    </Conditions>
+    <Actions>
+      <AttachQuestFile File="quest_extensions/update_quests.xml" />
+      <Activate ActionID="Update" />
+    </Actions>
+  </Quest>
+</Quests>

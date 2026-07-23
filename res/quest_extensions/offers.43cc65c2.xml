@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Quests>
+  <!--                      -->
+  <!--    СТАРТ ОФФЕРОВ     -->
+  <!--                      -->
+
+  <!-- Старт офферов на старте игры -->
+  <Quest Name="CheckOffersStartOnSessionStart" Unresumable="1" Priority="0" Group="Offers">
+    <Events>
+      <SceneLoaded />
+    </Events>
+    <Conditions>
+      <Equal Value1="_CheckOffersOnSessionStart" Value2="1" Not="1" />
+      <Operator Type="Or">
+        <Equal Value1="_$CurrentScene" Value2="Dojo" />
+        <Equal Value1="_$CurrentScene" Value2="Map" />
+        <Equal Value1="_$CurrentScene" Value2="Shop" />
+        <Equal Value1="_$CurrentScene" Value2="Profile" />
+      </Operator>
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Global" Name="CheckOffersOnSessionStart" Value="1" />
+      <CheckOffersStart />
+      <Activate ActionID="ShowOfferBuyDialogForJustStartedOffers" />
+    </Actions>
+  </Quest>
+
+  <!-- Старт офферов после боя -->
+  <Quest Name="CheckOffersStartOnFightEnd" Unresumable="1" Priority="0" Group="Offers">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Actions>
+      <CheckOffersStart />
+      <Activate ActionID="ShowOfferBuyDialogForJustStartedOffers" />
+    </Actions>
+  </Quest>
+
+  <!-- Старт офферов после покупки -->
+  <Quest Name="CheckOffersStartOnPurchase" Unresumable="1" Priority="0" Group="Offers">
+    <Events>
+      <Purchase />
+    </Events>
+    <Actions>
+      <CheckOffersStart /> 
+      <Activate ActionID="ShowOfferBuyDialogForJustStartedOffers" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="ShowOfferBuyDialogForJustStartedOffers" Unresumable="1" Priority="0" Group="Offers">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ShowOfferBuyDialogForJustStartedOffers" />
+      <Equal Value1="?SysInfo[].DailyOffersAvailable" Value2="1" />
+    </Conditions>
+    <Actions>
+      <!-- Смотрим есть ли оффер с State == JustStarted -->
+      <SetVariable Scope="Global" Name="CurrentOffer" Value="?Offers[].FirstJustStarted" />
+      <If>
+        <Conditions>
+          <!-- Если в CurrentOffer пустая строка или 0, значит нужного оффера нет -->
+          <Equal Value1="_CurrentOffer" Value2="" Not="1" />
+          <Equal Value1="_CurrentOffer" Value2="0" Not="1" />
+          <!-- Иначе проверяем, что такой оффер существует в принципе -->
+          <Equal Value1="?Offer[_CurrentOffer].Exists" Value2="1" />
+        </Conditions>
+        <Then>
+          <!-- Если есть, запоминаем текущую операцию и открываем диалог покупки -->
+          <!-- Позднее после закрытия диалога OfferBuyDialog будет снова вызвана текушая операция, которая записана в CurrentOfferOperation -->
+          <SetVariable Scope="Global" Name="CurrentOfferOperation" Value="ShowOfferBuyDialogForJustStartedOffers" />
+          <ChangeOfferState Name="_CurrentOffer" Value="Active" />
+          <Activate ActionID="ShowOfferBuyDialog" />
+        </Then>
+        <Else>
+          <!-- Если нет обнуляем текущую операцию и на этом завершаем обработку JustStarted офферов -->
+          <SetVariable Scope="Global" Name="CurrentOfferOperation" Value="" />
+        </Else>
+      </If> 
+    </Actions>
+  </Quest>
+
+  <!--                      -->
+  <!--    КЛИК ПО КНОПКЕ    -->
+  <!--                      -->
+
+  <Quest Name="OfferMapButtonClick" Unresumable="1" Priority="0" Group="Offers">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Offer[_$ButtonName].Exists" Value2="1" />
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Global" Name="CurrentOffer" Value="_$ButtonName" />
+      <Activate ActionID="ShowOfferBuyDialog" />
+    </Actions>
+  </Quest>
+
+  <!--                      -->
+  <!--    ПОСЛЕДНИЙ ШАНС    -->
+  <!--                      -->
+
+  <Quest Name="CheckOffersLastChance" Unresumable="1" Priority="-1000" Group="Offers">
+    <Events>
+      <SceneLoaded />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Equal Value1="_$CurrentScene" Value2="Dojo" />
+    </Conditions>
+    <Actions>
+      <!-- т.к. откладываем старт квеста, чтобы последний шанс был выполнен после старта офферов -->
+      <Wait Frames="1" />
+      <Activate ActionID="ShowOfferLastChanсeDialogForLastChanceOffers" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="ShowOfferLastChanсeDialogForLastChanceOffers" Unresumable="1" Priority="0" Group="Offers">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ShowOfferLastChanсeDialogForLastChanceOffers" />
+    </Conditions>
+    <Actions>
+      <!-- Смотрим есть ли оффер с State == LastChance -->
+      <SetVariable Scope="Global" Name="CurrentOffer" Value="?Offers[].FirstLastChance" />
+      <If>
+        <Conditions>
+          <!-- Если в CurrentOffer пустая строка или 0, значит нужного оффера нет -->
+          <Equal Value1="_CurrentOffer" Value2="" Not="1" />
+          <Equal Value1="_CurrentOffer" Value2="0" Not="1" />
+          <!-- Иначе проверяем, что такой оффер существует в принципе -->
+          <Equal Value1="?Offer[_CurrentOffer].Exists" Value2="1" />
+        </Conditions>
+        <Then>
+          <!-- Если есть, запоминаем текущую операцию и открываем диалог покупки -->
+          <!-- Позднее после закрытия диалога OfferBuyDialog будет снова вызвана текушая операция, которая записана в CurrentOfferOperation -->
+          <SetVariable Scope="Global" Name="CurrentOfferOperation" Value="ShowOfferLastChanсeDialogForLastChanceOffers" />
+          <Activate ActionID="ShowOfferLastChanсeDialog" />
+        </Then>
+        <Else>
+          <!-- Если нет обнуляем текущую операцию и на этом завершаем обработку JustStarted офферов -->
+          <SetVariable Scope="Global" Name="CurrentOfferOperation" Value="" />
+        </Else>
+      </If> 
+    </Actions>
+  </Quest>
+
+  <!--                      -->
+  <!--   ФОКУС НА ПРЕДМЕТЕ  -->
+  <!--                      -->
+
+  <Quest Name="OfferFocusOnBuy" Unresumable="1" Priority="-100" Group="Offers">
+    <Events>
+      <OfferItemRecieved />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Offer[_$Offer].AllItemsRecieved" Value2="1" />
+      <!-- Если в Offer[_$Offer].FocusOnBuy пустая строка или 0, значит для оффера не нужно делать фокус на предмете -->
+      <Equal Value1="?Offer[_$Offer].FocusOnBuy" Value2="" Not="1" />
+      <Equal Value1="?Offer[_$Offer].FocusOnBuy" Value2="0" Not="1" />
+    </Conditions>
+    <Actions>
+      <OpenShop Tab="?Item[?Offer[_$Offer].FocusOnBuy].SliderType" Item="?Offer[_$Offer].FocusOnBuy" />
+    </Actions>
+  </Quest>
+
+  <!--                      -->
+  <!-- НАЧИСЛЕНИЕ ПРЕДМЕТОВ -->
+  <!--   (ВОССТАНОВЛЕНИЕ)   -->
+  <!--                      -->
+
+  <Quest Name="CheckItemsFromPurchasedOffers" Unresumable="1" Priority="-2000" Group="Offers">
+    <Events>
+      <SceneLoaded />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Player[].HasPayments" Value2="1" /> 
+      <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Equal Value1="_CheckItemsFromPurchasedOffers" Value2="1" Not="1" />
+      <Operator Type="Or">
+        <Equal Value1="_$CurrentScene" Value2="Dojo" />
+        <Equal Value1="_$CurrentScene" Value2="Map" />
+        <Equal Value1="_$CurrentScene" Value2="Shop" />
+        <Equal Value1="_$CurrentScene" Value2="Profile" />
+      </Operator>
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Global" Name="CheckItemsFromPurchasedOffers" Value="1" />
+      <!-- т.к. откладываем старт квеста, чтобы восстановление предметов купленных офФеров было выполнено после старта офферов и последнего шанса -->
+      <Wait Frames="2" />
+      <CheckItemsFromPurchasedOffers />
+    </Actions>
+  </Quest>
+
+  <!-- Перезапускаем проверку, если игрок перешел в новую зону, чтобы выдать содержимое офферов, до которых он дошел -->
+  <Quest Name="EnableCheckItemsFromPurchasedOffers">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Or>
+        <Equal Value1="_$Fight" Value2="ZONE_1|BOSS_LYNX|6" />
+        <Equal Value1="_$Fight" Value2="ZONE_2|BOSS_HERMIT|6" />
+        <Equal Value1="_$Fight" Value2="ZONE_3|BOSS_BUTCHER|6" />
+        <Equal Value1="_$Fight" Value2="ZONE_4|BOSS_WASP|6" />
+        <Equal Value1="_$Fight" Value2="ZONE_5|BOSS_HUNTRESS|6" />
+        <Equal Value1="_$Fight" Value2="ZONE_6|BOSS_SAMURAI|6" />
+      </Or>
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Global" Name="CheckItemsFromPurchasedOffers" Value="0" />
+    </Actions>
+  </Quest>
+
+  <!--                      -->
+  <!--   СЛУЖЕБНЫЕ КВЕСТЫ   -->
+  <!--                      -->
+
+  <!-- Диалог покупки оффер -->
+  <Quest Name="ShowOfferBuyDialog" Unresumable="1" AllowDoubles="1" Priority="0" Group="Offers">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ShowOfferBuyDialog" />
+    </Conditions>
+    <Actions>
+      <If>
+        <Conditions>
+          <Equal Value1="?Offer[_CurrentOffer].TimerActive" Value2="0" />
+        </Conditions>
+        <Then>
+          <SetVariable Scope="Local" Name="CloseButtonAlias" Value="compareCloseBtn" />
+        </Then>
+        <Else>
+          <SetVariable Scope="Local" Name="CloseButtonAlias" Value="dlgLaterBtn" />
+        </Else>
+      </If> 
+      <Dialog Type="Multiline" Title="?Offer[_CurrentOffer].Title" Item="_CurrentOffer" Image="?Offer[_CurrentOffer].Image" ImageScale="1" ProfitImage="?Offer[_CurrentOffer].ProfitImage" ContentOffsetX="30">
+        <Line Text="?Offer[_CurrentOffer].Description"/>
+        <PriceLine Text="dlgStarterPackPrice{?Offer[_CurrentOffer].RealPrice}" TextColor="0xfefe95" />
+        <Line Text="dlgStarterPackTimeLeft" Hide="?Offer[_CurrentOffer].TimerActive == 0">
+          <Timer Name="?Offer[_CurrentOffer].TimerName" ShowDays="1" />
+        </Line>
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyOffer Name="_CurrentOffer" />
+        </Button>
+        <Button Type="Middle" Color="Beige" Text="dlgOfferContent">
+          <Activate ActionID="ShowOfferContentDialog" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="_CloseButtonAlias" >
+          <!-- Если таймер оффера истек, требуем подтверждения игрока чтобы закрыть оффер -->
+          <If>
+            <Conditions>
+              <Equal Value1="?Offer[_CurrentOffer].TimerActive" Value2="0" />
+            </Conditions>
+            <Then>       
+              <Dialog Type="Multiline" Title="?Offer[_CurrentOffer].Title" Item="_CurrentOffer" Image="?Offer[_CurrentOffer].Image" ImageScale="1">
+                <Line Text="discount1RegularWeaponConfirm" />
+                <Button Type="Right" Color="Green" Text="dlgBuyButton">
+                  <BuyOffer Name="_CurrentOffer" />
+                </Button>
+                <Button Type="Left" Color="Red" Text="compareCloseBtn">
+                  <ChangeOfferState Name="_CurrentOffer" Value="End" />
+                </Button>
+              </Dialog>
+            </Then>
+          </If>
+          <!-- Если оффер активен и мы еще не напоминали, напомним игроку о том, что оффер можно будет повторно просмотреть по кнопке -->
+      		<If>
+      			<Conditions>
+      				<Equal Value1="_OfferBtnInfo" Value2="0"/>
+      				<Equal Value1="?Offer[_CurrentOffer].State" Value2="Active"/>
+      			</Conditions>
+      			<Then>
+      				<Dialog Type="Multiline" Title="?Offer[_CurrentOffer].Title" Item="_CurrentOffer" Image="?Offer[_CurrentOffer].Image" ImageScale="1" TextOffset="0;0"> 
+      					<Line Text="dlgStarterPackRefusalMapBtnTut"/>
+      					<Button Type="Right" Color="Beige" Text="OK" />
+      				</Dialog>
+      				<SetVariable Scope="Global" Name="OfferBtnInfo" Value="1" />
+      			</Then>
+      		</If>
+          <!-- Если есть запущенная операция-обработчик офферов, запускаем следующую итерацию ее работы  -->
+          <If>
+            <Conditions>
+              <Equal Value1="_CurrentOfferOperation" Value2="" Not="1" />
+            </Conditions>
+            <Then>
+              <Activate ActionID="_CurrentOfferOperation" />
+            </Then>
+          </If> 
+		    </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- Диалог отображения контента оффера -->
+  <Quest Name="ShowOfferContentDialog" Unresumable="1" AllowDoubles="1" Priority="0" Group="Offers">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ShowOfferContentDialog" />
+    </Conditions>
+    <Actions>
+      <Dialog Type="ShowLoot" Loot="_CurrentOffer" Title="?Offer[_CurrentOffer].Title" >
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyOffer Name="_CurrentOffer" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="compareCloseBtn" >
+          <Activate ActionID="ShowOfferBuyDialog" />
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!-- Диалог последнего шанса на покупку оффера -->
+  <Quest Name="ShowOfferLastChanсeDialog" Unresumable="1" AllowDoubles="1" Priority="0" Group="Offers">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="ShowOfferLastChanсeDialog" />
+    </Conditions>
+    <Actions>
+      <Dialog Type="Multiline" Title="?Offer[_CurrentOffer].Title" Item="_CurrentOffer" Image="?Offer[_CurrentOffer].Image" ImageScale="1" TextOffset="0;0">
+        <Line Text="LastChance"/>
+        <Line Text="LastChance1"/>
+        <Button Type="Right" Color="Green" Text="dlgStoryBtnShowme">
+          <Activate ActionID="ShowOfferBuyDialog" />
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <!--                      -->
+  <!--  НАЧИСЛЕНИЕ ПЕРКОВ   -->
+  <!--   (ВОССТАНОВЛЕНИЕ    -->
+  <!--      ПРИ НАКАТЕ)     -->
+  <Quest Name="RestorePurchasedOffersItemsPerks" Unresumable="1" AllowDoubles="1" Priority="1000000" Group="Offers">
+    <Events>
+      <SceneLoaded />
+    </Events>
+    <Conditions>
+      <Equal Value1="_RestorePurchasedOffersItemsPerks" Value2="1" />
+      <Equal Value1="_$StoryTutorialStep" Value2="END" />
+      <Operator Type="Or">
+        <Equal Value1="_$CurrentScene" Value2="Dojo" />
+        <Equal Value1="_$CurrentScene" Value2="Map" />
+        <Equal Value1="_$CurrentScene" Value2="Shop" />
+        <Equal Value1="_$CurrentScene" Value2="Profile" />
+      </Operator>
+    </Conditions>
+    <Actions>
+      <RestoreOfferItemsPerks />
+      <SetVariable Scope="Users" Name="RestorePurchasedOffersItemsPerks" Value="0" />
+    </Actions>
+  </Quest>
+</Quests>

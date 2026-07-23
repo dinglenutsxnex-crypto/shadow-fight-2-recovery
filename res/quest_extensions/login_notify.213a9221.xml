@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+  
+  <Quest Name="ApplicationStartAccountLoginNotify" Priority="9998" Unresumable="1" AllowDoubles="1">
+    <Events>
+      <GamingServiceLoginEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Operator Type="Or">
+        <Equal Value1="?SysInfo[].OsName" Value2="IOS" />
+        <Equal Value1="?SysInfo[].OsName" Value2="ANDROID" />
+      </Operator>
+      <Equal Value1="?SysInfo[].GamingServiceHasAccount" Value2="0" />
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Local" Name="ShowLoginButton" Value="1" />
+      <Switch Value="?SysInfo[].GamingServiceName" >
+        <Case Value="GameCenter" >
+          <SetVariable Scope="Local" Name="DialogText" Value="dlgNoAccountWarning_iOS" />
+          <SetVariable Scope="Local" Name="ShowLoginButton" Value="0" />
+        </Case>
+        <Case Value="GooglePlayGames" >
+          <SetVariable Scope="Local" Name="DialogText" Value="dlgOldAndroidNoAccountWarning" />
+        </Case>
+        <Case Value="Facebook" >
+          <SetVariable Scope="Local" Name="DialogText" Value="dlgOldAndroidNoAccountWarningSamsung" />
+        </Case>
+        <Case Value="Huawei" >
+          <If>
+            <Conditions>
+              <Equal Value1="?SysInfo[].GamingServiceLogin" Value2="1" />
+            </Conditions>
+            <Then>
+              <SetVariable Scope="Local" Name="DialogText" Value="dlgOldAndroidNoAccountWarningHuawei" />
+              <SetVariable Scope="Local" Name="ShowLoginButton" Value="0" />
+            </Then>
+            <Else>
+              <SetVariable Scope="Local" Name="DialogText" Value="dlgOldAndroidNoLoginWarningHuawei" />
+            </Else>
+          </If>
+        </Case>
+        <!-- For UnityEditor GamingService Emulator testing -->
+        <Default>
+          <SetVariable Scope="Local" Name="DialogText" Value="dlgNoAccountWarning_iOS" />
+          <SetVariable Scope="Local" Name="ShowLoginButton" Value="0" />
+        </Default>
+      </Switch>
+      <If>
+        <Conditions>
+          <Equal Value1="_ShowLoginButton" Value2="1" />
+        </Conditions>
+        <Then>
+          <Dialog IgnoreBack="1" Title="dlgWarning" Type="Scroll">
+            <Line Text="_DialogText"/>
+            <Line Text="FirstRequeredLoginInfo{%?SysInfo[].GamingServiceName}"/>
+            <Button Color="Green" Text="dlgLoginButton" Type="Right">
+              <RunCallback Name="ApplicationStartAccountLoginNotifyComplete" >
+                <Arg Value="RetryLogin" />
+              </RunCallback>
+            </Button>
+            <Button Color="Beige" Text="compareCloseBtn" Type="Left">
+              <RunCallback Name="ApplicationStartAccountLoginNotifyComplete" >
+                <Arg Value="Continue" />
+              </RunCallback>
+            </Button>
+          </Dialog>
+        </Then>
+        <Else>
+          <Dialog IgnoreBack="1" Title="dlgWarning" Type="Scroll">
+            <Line Text="_DialogText"/>
+			<Line Text="FirstRequeredLoginInfo{%?SysInfo[].GamingServiceName}"/>
+            <Button Color="Green" Text="OK" Type="Right">
+              <RunCallback Name="ApplicationStartAccountLoginNotifyComplete" >
+                <Arg Value="Continue" />
+              </RunCallback>
+            </Button>
+          </Dialog>
+        </Else>
+      </If>   
+    </Actions>
+  </Quest>
+</Quests>

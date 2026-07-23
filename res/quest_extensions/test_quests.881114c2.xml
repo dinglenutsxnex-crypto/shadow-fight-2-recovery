@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Quests>
+
+  <Quest Name="Test_UpdateScene" Priority="9998">
+
+    <Actions>
+        <UpdateScene />
+    </Actions>
+  </Quest>  
+ 	
+		
+  <Quest Name="Test_StartEvent" Priority="9999">
+	<Events>
+		<SessionStart /> 
+    </Events>
+    <Conditions>
+		<Greater Value1="_EventToggleGag" Value2="0"/>
+    </Conditions>
+	<Actions>
+		<Switch Value="_EventToggleGag" >
+			<Case Value="1" >
+				<SetVariable Scope="Users" Name="EventStart" Value="?SysInfo[].Time - 100"/>  
+				<SetVariable Scope="Users" Name="EventEnd" Value="?SysInfo[].Time + 3600"/> 
+				<ShowDebugLine Name="EventToggle " Text="_EventToggleGag" Color="{250,250,0}" />
+				
+			</Case>
+			<Case Value="2" >
+				<SetVariable Scope="Users" Name="EventStart" Value="?SysInfo[].Time - 500"/>  
+				<SetVariable Scope="Users" Name="EventEnd" Value="?SysInfo[].Time -100"/>  
+			   <ShowDebugLine Name="EventToggle " Text="_EventToggleGag" Color="{250,250,0}" />
+
+			</Case>
+			<Default>
+				<ShowDebugLine Name="EventToggle " Text="_EventToggleGag" Color="{250,250,0}" />
+			</Default>
+		</Switch>
+
+    </Actions>
+  </Quest> 
+  
+  <Quest Name="Test_EventToggle" Priority="9999">
+    <Actions>
+		<SetVariable Scope="Users" Name="EventToggleGag" Value="_EventToggleGag +1"/>  
+        <If>
+            <Conditions>
+                <GreaterEqual Value1="_EventToggleGag" Value2="3" /> 
+            </Conditions>
+            <Then>
+                <SetVariable Scope="Users" Name="EventToggleGag" Value="0"/>  
+            </Then>
+        </If>
+	   <ShowDebugLine Name="EventToggle " Text="_EventToggleGag" Color="{250,250,0}" />
+    </Actions>
+  </Quest>
+
+  
+  
+    <Quest Name="Test_OpenPortal" Priority="9999">
+    <Actions>
+		<SetVariable Scope="Users" Name="GatekeeperGreetings" Value="1" />
+		<SetVariable Scope="Users" Name="ReturnAfterEnterPortal" Value="1" />
+		<SetVariable Scope="Users" Name="PortalEnter_Passed" Value="1" />
+		<ShowBattle Name="ZONE_RAID3|BOSS_11|" Hidden="0" Instant="1" />
+		<SetBattleVisibility Name="ZONE_RAID3|BOSS_11|" IsVisible="1"  />
+	    <ToggleItems Label="RAID_ZONE_4" Toggle="on" />
+		<UpdateScene/>
+    </Actions>
+  </Quest>
+  
+      <Quest Name="Test_ShowBossesZone4" Priority="9999">
+    <Actions>
+		<ShowBattle Name="ZONE_RAID3|BOSS_11|" Hidden="0" Instant="1" />
+		<ShowBattle Name="ZONE_RAID3|BOSS_12|" Hidden="0" Instant="1" />
+		<ShowBattle Name="ZONE_RAID3|BOSS_13|" Hidden="0" Instant="1" />
+		<ShowBattle Name="ZONE_RAID3|BOSS_14|" Hidden="0" Instant="1" />
+		<SetBattleVisibility Name="ZONE_RAID3|BOSS_11|" IsVisible="1"  />
+		<SetBattleVisibility Name="ZONE_RAID3|BOSS_12|" IsVisible="1"  />
+		<SetBattleVisibility Name="ZONE_RAID3|BOSS_13|" IsVisible="1" />
+		<SetBattleVisibility Name="ZONE_RAID3|BOSS_14|" IsVisible="1" />
+		<SetVariable Scope="Users" Name="RaidWinAfterSaturn" Value="1" />
+		<SetVariable Scope="Users" Name="RaidWinAfterGatekeeper" Value="1" />
+		<SetVariable Scope="Users" Name="RaidWinAfterBlackness" Value="1" />
+
+    </Actions>
+  </Quest>
+
+  <Quest Name="Test_OpenRaids" Priority="9999">
+    <Actions>
+      <SetFightWin FightName="ZONE_1|BOSS_LYNX|1" WinCount="1" />
+      <SetFightWin FightName="ZONE_1|BOSS_LYNX|2" WinCount="1" />
+      <Run Name="RaidTutorialLauncherFightEnd" />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="Test_SkupRaidTutor" Priority="9999">
+    <Actions>
+		<SetVariable Scope="Users" Name="RaidTutorPart1Done" Value="1" /> <!-- отключаем повтор первой части -->
+		<SetVariable Scope="Users" Name="RaidProfileTutorialStart" Value="1" />
+		<SetVariable Scope="Users" Name="RaidProfileTutorialEnd" Value="1" />
+		<SetRaidInfoTutorialStep Value="TutorialComplete" />
+		<SetVariable Scope="Users" Name="RaidTutorialCompleted" Value="1" />
+		<SetVariable Scope="Users" Name="RaidShopTutor" Value="1" />
+		<SetVariable Scope="Users" Name="Raid_Shards_Tutorial_Started" Value="1" />
+		<SetVariable Scope="Users" Name="Raid_Shards_Tutorial_Ended" Value="1" />	 
+		<SetVariable Scope="Users" Name="DailyTutorialComplete" Value="1" />
+		<SetVariable Scope="Users" Name="PlayerInfoTutorialComplete" Value="1" />
+		<SetVariable Scope="Users" Name="RaidHardBossTutorial" Value="1" />
+	  <ToggleItems Label="CLANS" Toggle="on" />
+	  <ToggleItems Label="ZONE_RAID" Toggle="on" />
+    </Actions>
+  </Quest>
+
+
+      
+    <Quest Name="Test_Give_Currency" Priority="9999">
+        <Actions>
+            <GiveCurrency Type="Bonus" Value="500" Sound="snd_buy" />
+        </Actions>
+    </Quest>
+    
+    <Quest Name="Test_Give_Stranger_1" Priority="9999">
+        <Actions>
+
+            <SetVariable Scope="Local" Name="StrangerTriggerLevelTest" Value="?UniformIntRandom[8,11]" />
+            <Fight Name="?Concat[ZONE_1|Stranger|lvl,_StrangerTriggerLevelTest]" />
+        </Actions>
+    </Quest>
+    
+    <Quest Name="Test_Give_Stranger_2" Priority="9999">
+        <Actions>
+            <SetVariable Scope="Local" Name="StrangerTriggerLevelTest" Value="?UniformIntRandom[8,12]" />
+            <Fight Name="?Concat[ZONE_2|Stranger|lvl,_StrangerTriggerLevelTest]" />
+
+        </Actions>
+    </Quest>
+    
+    <Quest Name="Test_Give_Stranger_3" Priority="9999">
+        <Actions>
+            <SetVariable Scope="Local" Name="StrangerTriggerLevelTest" Value="?UniformIntRandom[14,18]" />
+            <Fight Name="?Concat[ZONE_3|Stranger|lvl,_StrangerTriggerLevelTest]" />
+
+        </Actions>
+    </Quest>
+    
+    <Quest Name="Test_Give_Stranger_4" Priority="9999">
+        <Actions>
+            <SetVariable Scope="Local" Name="StrangerTriggerLevelTest" Value="?UniformIntRandom[20,24]" />
+            <Fight Name="?Concat[ZONE_4|Stranger|lvl,_StrangerTriggerLevelTest]" />
+
+        </Actions>
+    </Quest>
+    
+    <Quest Name="Test_Give_Stranger_5" Priority="9999">
+        <Actions>
+            <SetVariable Scope="Local" Name="StrangerTriggerLevelTest" Value="?UniformIntRandom[26,30]" />
+            <Fight Name="?Concat[ZONE_5|Stranger|lvl,_StrangerTriggerLevelTest]" />
+
+        </Actions>
+    </Quest>
+    
+    <Quest Name="Test_Give_Stranger_6" Priority="9999">
+        <Actions>
+            <SetVariable Scope="Local" Name="StrangerTriggerLevelTest" Value="?UniformIntRandom[32,36]" />
+            <Fight Name="?Concat[ZONE_6|Stranger|lvl,_StrangerTriggerLevelTest]" />
+
+        </Actions>
+    </Quest>
+    
+    <Quest Name="Test_Give_Stranger_7" Priority="9999">
+        <Actions>
+            <SetVariable Scope="Local" Name="StrangerTriggerLevelTest" Value="?UniformIntRandom[39,43]" />
+          <Fight Name="?Concat[ZONE_6|Stranger_INTERMISSION|lvl,_StrangerTriggerLevelTest]" />
+
+        </Actions>
+    </Quest>
+	
+	 <Quest Name="Test_DialogTMP" > 
+    <Actions>		
+      <Dialog Type="MultilineTMP" Title="NAME_LYNX" Image="boss_lynx">
+        <Line Text="lynx_beaten" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnMore" />
+      </Dialog>	
+    </Actions>
+  </Quest>
+    
+ <Quest Name="Test_Dialog" > 
+    <Actions>		
+      <Dialog Type="Regular" Title="NAME_LYNX" Image="boss_lynx">
+        <Line Text="lynx_beaten" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnMore" />
+      </Dialog>	
+      <Dialog Type="Stranger" Title="NAME_LYNX" Image="boss_lynx">
+        <Line Text="lynx_beaten" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnMore" />
+      </Dialog>
+      <Dialog Type="Multiline" Title="NAME_LYNX" Image="boss_lynx">
+        <Line Text="lynx_beaten" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnMore" />
+      </Dialog>	 
+      <Dialog Type="MultilineBig" Title="NAME_LYNX" Image="boss_lynx">
+        <Line Text="lynx_beaten" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnMore" />
+      </Dialog>	
+      <Dialog Type="Simple" Title="NAME_LYNX" Image="boss_lynx">
+        <Line Text="lynx_beaten" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnMore" />
+      </Dialog>		  
+    </Actions>
+  </Quest>	
+  
+   <Quest Name="PredictionFortuneCookieTest" Priority="2500">
+    <Conditions>
+		<Less Value1="_PredictionIt" Value2="44" />
+    </Conditions>
+    <Actions>
+		<SetVariable Scope="Users" Name="PredictionIt" Value="_PredictionIt + 1" />
+      <ClearQuestQueue Name="PredictionFortuneCookie|NY23PurchasePredictionFortuneCookie|PredictionFortuneCookieTest" />
+      <Dialog Type="Multiline" Title="preCrowPredict" Image="img_cookie19">
+		<Line Text="?Concat[FreezePredictBeginning,_PredictionIt]" />
+		<Line Text="?Concat[FreezePredictEnding,_PredictionIt]" />
+		<Button Type="Left" Color="Beige" Text="OK" />
+		<Button Type="Right" Color="Green" Text="dlgPredictBye{img::MiscSprites.ruby}{2}" > 
+			<Run Name="PredictionFortuneCookieTest" />
+		</Button>				
+      </Dialog>
+
+    </Actions>
+  </Quest>
+  
+   <Quest Name="Test_Gift" Priority="9999">
+		<Actions> 
+				<GiveGift Name="Anniversary10ThGift" Value="1" Recurring="0" Sound="snd_buy"/>
+		</Actions> 
+	</Quest>
+	
+    <Quest Name="Test_ErrorGift" Priority="9999">
+		<Actions> 
+				<GiveGift Name="Anniversary10ThGif" Value="1" Recurring="0" Sound="snd_buy"/>
+		</Actions> 
+	</Quest>
+	
+    <Quest Name="Test_NotGift" Priority="9999">
+		<Actions> 
+				<GiveGift Name="Pack_Zone4OfferSmall" Value="1" Recurring="0" Sound="snd_buy"/>
+		</Actions> 
+	</Quest>
+	
+	<Quest Name="Test_StartOffer" Priority="9999">
+    <Actions>
+	
+
+      <SetVariable Scope="Users" Name="DailyOffer_Enabled" Value="1" />
+	  
+      <SetVariable Scope="Local" Name="OffersTestDuration" Value="300" />
+      <SetVariable Scope="Local" Name="OffersStartTime" Value="?SysInfo[].Time" />
+	  
+      <SetVariable Scope="Users" Name="DailyOfferStart_1" Value="_OffersStartTime - 1" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_1" Value="_DailyOfferStart_1 + _OffersTestDuration" />
+	  
+      <SetVariable Scope="Users" Name="DailyOfferStart_2" Value="_DailyOfferEnd_1" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_2" Value="_DailyOfferStart_2 + _OffersTestDuration" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_3" Value="_DailyOfferEnd_2" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_3" Value="_DailyOfferStart_3 + _OffersTestDuration" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_4" Value="_DailyOfferEnd_3" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_4" Value="_DailyOfferStart_4 + _OffersTestDuration" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_5" Value="_DailyOfferEnd_4" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_5" Value="_DailyOfferStart_5 + _OffersTestDuration" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_6" Value="_DailyOfferEnd_5" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_6" Value="_DailyOfferStart_6 + _OffersTestDuration" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_7" Value="_DailyOfferEnd_6" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_7" Value="_DailyOfferStart_7 + _OffersTestDuration" />
+
+      <!-- Проверка старта офферов -->
+      <CheckOffersStart />
+      <Activate ActionID="ShowOfferBuyDialogForJustStartedOffers" />
+
+     </Actions>
+  </Quest>
+  
+<Quest Name="Test_StopOffer" Priority="9999">
+    <Actions>
+	
+
+      <SetVariable Scope="Local" Name="DailyOffer_Enabled" Value="0" />
+	  
+      <SetVariable Scope="Local" Name="OffersTestDuration" Value="0" />
+      <SetVariable Scope="Local" Name="OffersStartTime" Value="0" />
+	  
+      <SetVariable Scope="Users" Name="DailyOfferStart_1" Value="0" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_1" Value="0" />
+	  
+      <SetVariable Scope="Users" Name="DailyOfferStart_2" Value="0" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_2" Value="0" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_3" Value="0" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_3" Value="0" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_4" Value="0" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_4" Value="0" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_5" Value="0" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_5" Value="0" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_6" Value="0" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_6" Value="0" />
+	  
+	  <SetVariable Scope="Users" Name="DailyOfferStart_7" Value="0" />
+      <SetVariable Scope="Users" Name="DailyOfferEnd_7" Value="0" />
+      <!-- Проверка старта офферов -->
+      <CheckOffersStart />
+      <Activate ActionID="ShowOfferBuyDialogForJustStartedOffers" />
+
+     </Actions>
+  </Quest>
+  
+	<Quest Name="Test_Repeat" Priority="9999" Unresumable="0">
+	
+	<Actions>
+	  <Foreach Type="PaidItems" Name="FindRepeatPaymentItem" />
+      <!--      <Foreach Type="PaidItems" Name="FindRepeatPaymentItem" />
+      <Discount Item="_LastRealPurchase" NewAmount="_promo_Multiplier * ?Item[_LastRealPurchase].RecieveGold" Period="?Timer[Timer_RepeatPayment].Value" Toggle="1" />-->
+      <ActivateTimer Name="Timer_RepeatPayment" Value="1800" />
+      <ShowMapButton Name="Button_RepeatPayment" Image="?Concat[?Item[_LastRealPurchase].Name,@_sale]" Timer="Timer_RepeatPayment" ShowType="Story" />
+      <Activate ActionID="IntermissionChestRemoval" />
+      <Activate ActionID="RepeatPaymentDialog" />
+	
+	</Actions>
+	</Quest>
+	
+	<Quest Name="Test_GemsPromo" Priority="9999" Unresumable="0">
+		<Actions>
+			<EndTimer Name="Timer_IncreasePayment"/>
+			<HideMapButton Name="Button_IncreasePayment"/>
+			<Switch Value="_GemsPromoCount">
+				<Case Value="1">
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Bonus" Value="Bag_Gems"/>
+				</Case>
+				<Case Value="2">
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Bonus" Value="Chest_Gems"/>
+				</Case>
+				<Default>
+					<SetVariable Scope="Global" Name="GemsPromoCount" Value="0"/>
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Bonus" Value="Casket_Gems"/>
+				</Default>
+			</Switch>
+			<SetVariable Scope="Global" Name="GemsPromoCount" Value="_GemsPromoCount + 1"/>
+			<If>
+				<Conditions>
+					<Operator Type="Or">
+						<Equal Value1="_Shroud_Loss" Value2="1"/>
+						<Equal Value1="_CurrentZone" Value2="ZONE_7"/>
+					</Operator>
+				</Conditions>
+				<Then>
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Bonus" Value="?Concat[_promo_IncreasePayment_Item_Bonus,@_Zone7]"/>
+				</Then>
+			</If>
+			<SetVariable Scope="Users" Name="promo_PrePurchase" Value="Pile_Gems" />
+			<Activate ActionID="IncreasePayment_Launch" />
+
+		</Actions>
+	</Quest>
+
+	<Quest Name="Test_CoinsPromo" Priority="9999" Unresumable="0">
+		<Actions>
+			<EndTimer Name="Timer_IncreasePayment"/>
+			<HideMapButton Name="Button_IncreasePayment"/>
+			<Switch Value="_CoinsPromoCount">
+				<Case Value="1">
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Chest_Coins"/>
+				</Case>
+				<Default>
+					<SetVariable Scope="Global" Name="CoinsPromoCount" Value="0"/>
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Bag_Coins"/>
+				</Default>
+			</Switch>
+			
+			<SetVariable Scope="Global" Name="CoinsPromoCount" Value="_CoinsPromoCount + 1"/>
+			<SetVariable Scope="Global" Name="Zone" Value="?Slice[_CurrentZone,5,10]"/>
+			
+			<If>
+				<Conditions>
+					<GreaterEqual Value1="_Zone" Value2="2"/>
+					<LessEqual Value1="_Zone" Value2="6"/>
+				</Conditions>
+				<Then>
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="?Concat[_promo_IncreasePayment_Item_Gold,@_,_Zone]"/>
+				</Then>
+			</If>
+			<If>
+				<Conditions>
+					<Equal Value1="_Zone" Value2="7"/>
+				</Conditions>
+				<Then>
+					<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="?Concat[_promo_IncreasePayment_Item_Gold,@_Zone7]"/>
+				</Then>
+			</If>
+			
+			<If>
+				<Conditions>
+					<Equal Value1="_Zone" Value2="IM"/>
+				</Conditions>
+				<Then>
+					<Switch Value="_CurrentDuel">
+						<Case Value="ZONE_1|Duel_INTERMISSION|1">
+							<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Bag_Coins_Platinum"/>
+						</Case>
+						<Case Value="ZONE_2|Duel_INTERMISSION|1">
+							<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Bag_Coins_Platinum_2"/>
+						</Case>
+						<Case Value="ZONE_3|Duel_INTERMISSION|1">
+							<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Bag_Coins_Platinum_3"/>
+						</Case>
+						<Case Value="ZONE_4|Duel_INTERMISSION|1">
+							<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Bag_Coins_Platinum_4"/>
+						</Case>
+						<Case Value="ZONE_5|Duel_INTERMISSION|1">
+							<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Bag_Coins_Platinum_5"/>
+						</Case>
+						<Case Value="ZONE_6|Duel_INTERMISSION|1">
+							<SetVariable Scope="Users" Name="promo_IncreasePayment_Item_Gold" Value="Bag_Coins_Platinum_6"/>
+						</Case>
+						<Default>
+						</Default>
+					</Switch>
+				</Then>
+			</If>
+			
+			<SetVariable Scope="Users" Name="promo_PrePurchase" Value="Pile_Coins" />
+			<Activate ActionID="IncreasePayment_Launch" />
+
+		</Actions>
+	</Quest>	
+	
+</Quests>

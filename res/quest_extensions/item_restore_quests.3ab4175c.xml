@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+  <Quest Name="StarterPackRestore">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_STARTER_PACK_TONFA|,?Sum[?Multi[100,?Player[].Level],30]]" PutOn="1" Quantity="1" />
+      <GiveItem Name="?Concat[HELM_XMAS14_HORNS|,?Sum[?Multi[100,?Player[].Level],30]]" PutOn="1" Quantity="1" />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_STARTER_PACK_TONFA].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[HELM_XMAS14_HORNS].UpgradeLevel" />
+      
+      <SetVariable Name="StarterPackOfferEnded" Scope="Users" Value="1" />
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_STARTER_PACK_TONFA" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  
+    <!-- Restore pack to user -->
+  <Quest Name="PremiumPackZone1Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_KUSARIGAMA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SUPER_SPIKED|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_GREEN_MASK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_KUSARIGAMA].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SUPER_SPIKED].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_GREEN_MASK].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_SUPER_KUSARIGAMA" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  
+    <!-- Restore pack to user -->
+  <Quest Name="PremiumPackZone2Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_HW14_SCYTHE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SUPER_CROW|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_VIKING|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_SHURIKENS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_HW14_SCYTHE].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SUPER_CROW].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_VIKING].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SHURIKENS].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_HW14_SCYTHE" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+    <!-- Restore pack to user -->
+  <Quest Name="PremiumPackZone3Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_BIG_SWORD|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SPIKE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SPIKE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_FIRE_BALL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_BIG_SWORD].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SPIKE].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SPIKE].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_FIRE_BALL].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_SUPER_BIG_SWORD" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  
+  <!-- Restore pack to user -->
+  <Quest Name="PremiumPackZone4Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_KHOPESH|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_DRAGON|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SUPER_SCARAB|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_MASS_BOMB|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_NEEDLE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GivePerk ApplyTo="Item" Item="RANGED_NEEDLE">
+        <Perk Name="PERK_ITEM_SPECIAL_FRENZY_RANGED">
+          <Set Aspect="4000"/> <!-- нужно так, потому что GivePerk лишь обрезает значение, но само не выставляет -->
+        </Perk>
+	  </GivePerk>
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_KHOPESH].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_DRAGON].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SUPER_SCARAB].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_MASS_BOMB].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_NEEDLE].UpgradeLevel" />
+      
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_SUPER_KHOPESH" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+    <!-- Restore pack to user -->
+  <Quest Name="PremiumPackZone5Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUPER_STAFF|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_DARK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SUPER_HORNED|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_FIRE_PILLAR|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_SHURIKEN_OF_DARKNESS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUPER_STAFF].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_DARK].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SUPER_HORNED].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_FIRE_PILLAR].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SHURIKEN_OF_DARKNESS].UpgradeLevel" />
+      
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_SUPER_STAFF" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  
+    <Quest Name="PremiumPackZone6Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_INDIAN_KATAR|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[ARMOR_SUPER_SAMURAI|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+      <GiveItem Name="?Concat[HELM_SUPER_SAMURAI|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[MAGIC_ASTEROID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <GiveItem Name="?Concat[RANGED_SUPER_DAGGERS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_INDIAN_KATAR].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SUPER_SAMURAI].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_SUPER_SAMURAI].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_ASTEROID].UpgradeLevel" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SUPER_DAGGERS].UpgradeLevel" />
+      
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_INDIAN_KATAR" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  
+    <!-- Restore pack to user -->
+  <Quest Name="WeaponOfferZone1Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_LYNX_CLAWS_PAID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1"  />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_LYNX_CLAWS_PAID].UpgradeLevel" />
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_LYNX_CLAWS_PAID" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  
+  
+  <Quest Name="WeaponOfferZone2Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_HERMIT_SWORDS_PAID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1"  />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_HERMIT_SWORDS_PAID].UpgradeLevel" />
+      
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_HERMIT_SWORDS_PAID" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  
+  <Quest Name="WeaponOfferZone3Restore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_BUTCHER_KNIVES_PAID|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1"  />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_BUTCHER_KNIVES_PAID].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_BUTCHER_KNIVES_PAID" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+  <Quest Name="NY20OfferRestore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[NY20_HELM_HAT|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" />
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[NY20_HELM_HAT].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="NY20_HELM_HAT" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Helm" />
+    </Actions>
+  </Quest>
+  
+  
+  <Quest Name="NY21OfferRestore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[ARMOR_NY18_MANTLE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_NY18_MANTLE].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="ARMOR_NY18_MANTLE" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Armor" />
+    </Actions>
+  </Quest>
+  
+  
+   
+<Quest Name="CNY21OfferRestore" Priority="100">
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_CHNY21_JIAN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_CHNY21_JIAN].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_CHNY21_JIAN" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+    
+<Quest Name="IE21OfferRestore" Priority="100">   <!-- checked -->
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_IND21_GLAIVEBOW|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <GiveItem Name="?Concat[RANGED_IND21_CHAKRAM|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_IND21_GLAIVEBOW].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_IND21_CHAKRAM].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_IND21_GLAIVEBOW" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="AE21OfferRestore" Priority="100">   
+    <Actions>
+      <GiveItem Name="?Concat[HELM_AE21_ROACH|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_AE21_ROACH].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="HELM_AE21_ROACH" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Helm" />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="Summer21OfferRestore" Priority="100">   
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_SUMMER21_SWORD|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUMMER21_SWORD].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_SUMMER21_SWORD" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  
+    <!-- Restore pack to user -->
+  <Quest Name="RaidBeginnerPackRestore" Priority="100">   <!-- Make Second version for restore, to avoid abusing sphere collection. 1 quest - full. second quest - only item mb do it as a gift-->
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_RAIDSTARTER_SUPER_SABERS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_RAIDSTARTER_SUPER_SABERS].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_RAIDSTARTER_SUPER_SABERS" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="PremiumPackBoatFestivalRestore" Priority="100">
+    <Actions>
+	  <GiveItem Name="?Concat[RANGED_BOAT_FESTIVAL_SUPER_SHURIKEN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	  <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_BOAT_FESTIVAL_SUPER_SHURIKEN].UpgradeLevel" />
+
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="RANGED_BOAT_FESTIVAL_SUPER_SHURIKEN" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Ranged" />
+    </Actions>
+  </Quest>
+  
+  
+	<Quest Name="Premium_Pack_ZoneRaid4Restore" Priority="100">
+    <Actions>
+		<GiveItem Name="?Concat[WEAPON_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="WEAPON_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+
+		<GiveItem Name="?Concat[ARMOR_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="ARMOR_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+		
+		<GiveItem Name="?Concat[HELM_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="HELM_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+		
+		<GiveItem Name="?Concat[RANGED_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="RANGED_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+		
+		<GiveItem Name="?Concat[MAGIC_C1_Z4_NEO_WANDERER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+	    <GivePerk ApplyTo="Item" Item="MAGIC_C1_Z4_NEO_WANDERER">
+			<Perk Name="PERK_ARCANE_MARTIAL_ART_SET_NEO_WANDERER">
+			  <Set Aspect="1867"/> 
+			</Perk>
+	    </GivePerk>
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[RANGED_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[MAGIC_C1_Z4_NEO_WANDERER].UpgradeLevel" />
+
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_C1_Z4_NEO_WANDERER" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="CNY22OfferRestore" Priority="100">  
+    <Actions>
+      <GiveItem Name="?Concat[MAGIC_CHNY22_WATERBALL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <GiveItem Name="?Concat[RANGED_CHNY22_WEIGHED_KUNAI|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" /> 
+      <SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_CHNY22_WATERBALL].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_CHNY22_WEIGHED_KUNAI].UpgradeLevel" />
+	  
+	  <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="MAGIC_CHNY22_WATERBALL" />
+	  <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Magic" />
+    </Actions>
+  </Quest>
+  
+<!--	  
+  <Quest Name="Anniversary10Th_1_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[RANGED_SUMMER21_ANCIENT_CHAKRAM|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SUMMER21_ANCIENT_CHAKRAM].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="RANGED_SUMMER21_ANCIENT_CHAKRAM" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Ranged" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_2_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[ARMOR_SUMMER21_LEGIONER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<GiveItem Name="?Concat[WEAPON_SUMMER21_TRIDENT|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_SUMMER21_TRIDENT].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_SUMMER21_LEGIONER].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_SUMMER21_TRIDENT" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_3_OfferRestore" Priority="100">  
+    <Actions>
+	
+		<GiveItem Name="?Concat[ARMOR_BP_S2_SKANDA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[HELM_BP_S2_SKANDA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_BP_S2_SKANDA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_BP_S2_SKANDA].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_BP_S2_SKANDA].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_BP_S2_SKANDA].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_BP_S2_SKANDA" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_4_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[MAGIC_BP_S2_SKANDA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[RANGED_BP_S2_SKANDA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_BP_S2_SKANDA].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_BP_S2_SKANDA].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="MAGIC_BP_S2_SKANDA" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Magic" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_5_OfferRestore" Priority="100">  
+    <Actions>
+	
+		<GiveItem Name="?Concat[ARMOR_AE21_WARRIOR|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_AE21_SPEAR|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[RANGED_AE21_TOMAHAWK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_AE21_SPEAR].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_AE21_WARRIOR].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_AE21_TOMAHAWK].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_AE21_SPEAR" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_6_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[MAGIC_AE21_SPIRIT_PILLAR|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_AE21_SPIRIT_PILLAR].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="MAGIC_AE21_SPIRIT_PILLAR" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Magic" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_7_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[WEAPON_HW15_BROOM|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_HW15_BROOM].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_HW15_BROOM" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_8_OfferRestore" Priority="100">  
+    <Actions>
+	
+		<GiveItem Name="?Concat[ARMOR_HW15_WICKED_VEIL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[HELM_HW15_WITCH|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_HW15_WICKED_VEIL].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_HW15_WITCH].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="ARMOR_HW15_WICKED_VEIL" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Armor" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_9_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[HELM_2_HW16_SET|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[ARMOR_HW16_SET|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[RANGED_HW16_SET|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_HW16_SET].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_2_HW16_SET].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_HW16_SET].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="RANGED_HW16_SET" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Ranged" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_10_OfferRestore" Priority="100">  
+    <Actions>
+	
+		<GiveItem Name="?Concat[WEAPON_1_HW16_SET|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_1_HW16_SET].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_1_HW16_SET" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_11_OfferRestore" Priority="100">  
+    <Actions>
+	
+		<GiveItem Name="?Concat[RANGED_HW20_SKULL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_HW17_DAGGERS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_HW17_DAGGERS].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_HW20_SKULL].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_HW17_DAGGERS" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_12_OfferRestore" Priority="100">  
+    <Actions>
+	
+		<GiveItem Name="?Concat[WEAPON_HW17_STAFF|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[HELM_HW17_CYLINDER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[ARMOR_HW17_CLOAK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_HW17_STAFF].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_HW17_CLOAK].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_HW17_CYLINDER].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_HW17_STAFF" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_13_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[ARMOR_WOODOO_HW20|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[HELM_WOODOO_HW20|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_WOODOO_HW20].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_WOODOO_HW20].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="ARMOR_WOODOO_HW20" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Armor" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_14_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[RANGED_HW17_NEEDLES|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[MAGIC_HW17_VOODOO|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_HW17_VOODOO].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_HW17_NEEDLES].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="MAGIC_HW17_VOODOO" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Magic" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_15_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[ARMOR_C4_Z1_WARLOCK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[HELM_C4_Z1_WARLOCK|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_C4_Z1_WARLOCK_STAFF|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_C4_Z1_WARLOCK_STAFF].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_C4_Z1_WARLOCK].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_C4_Z1_WARLOCK].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_C4_Z1_WARLOCK_STAFF" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_16_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[HELM_BP_S4_SCRIPTWRITER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[ARMOR_BP_S4_SCRIPTWRITER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_BP_S4_SCRIPTWRITER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_BP_S4_SCRIPTWRITER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_BP_S4_SCRIPTWRITER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_BP_S4_SCRIPTWRITER].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_BP_S4_SCRIPTWRITER" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_17_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[NY20_HELM_HORNS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[ARMOR_NY18_MANTLE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_NY18_MANTLE].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[NY20_HELM_HORNS].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="ARMOR_NY18_MANTLE" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Armor" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_18_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[NY21_HELM_BREAD|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[NY21_ARMOR_CUIRASS|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_NY18_MACE|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_NY18_MACE].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[NY21_ARMOR_CUIRASS].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[NY21_HELM_BREAD].UpgradeLevel" />
+				
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_NY18_MACE" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_19_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[ARMOR_BP_S1_GUARDIAN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[HELM_BP_S1_GUARDIAN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_BP_S1_GUARDIAN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_BP_S1_GUARDIAN].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_BP_S1_GUARDIAN].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_BP_S1_GUARDIAN].UpgradeLevel" />
+				
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_BP_S1_GUARDIAN" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_20_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[ARMOR_BP_S5_TIME_SHIFTER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[HELM_BP_S5_TIME_SHIFTER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<GiveItem Name="?Concat[WEAPON_BP_S5_TIME_SHIFTER|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_BP_S5_TIME_SHIFTER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_BP_S5_TIME_SHIFTER].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_BP_S5_TIME_SHIFTER].UpgradeLevel" />
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_BP_S5_TIME_SHIFTER" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  
+    <Quest Name="Anniversary10Th_21_OfferRestore" Priority="100">  
+    <Actions>
+		<GiveItem Name="?Concat[WEAPON_C2_Z4_REVIVAL_NAGINATA|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<GiveItem Name="?Concat[ARMOR_C2_Z4_REVIVIAL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<GiveItem Name="?Concat[HELM_C2_Z4_REVIVIAL|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<GiveItem Name="?Concat[RANGED_C2_Z4_REVIVIAL_SHURIKEN|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<GiveItem Name="?Concat[MAGIC_C2_Z4_REVIVIAL_SKYFIST|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+		<GiveItem Name="?Concat[RANGED_SUN_CHAKRAM|,?Sum[?Multi[100,?Player[].Level],230]]" PutOn="1" Quantity="1" PackItem="1" />
+
+		<SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_C2_Z4_REVIVAL_NAGINATA].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredArmorLevel" Scope="Users" Value="?Purchase[ARMOR_C2_Z4_REVIVIAL].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredHelmLevel" Scope="Users" Value="?Purchase[HELM_C2_Z4_REVIVIAL].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_C2_Z4_REVIVIAL_SHURIKEN].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredRangedLevel" Scope="Users" Value="?Purchase[RANGED_SUN_CHAKRAM].UpgradeLevel" />
+		<SetVariable Name="BestAcquiredMagicLevel" Scope="Users" Value="?Purchase[MAGIC_C2_Z4_REVIVIAL_SKYFIST].UpgradeLevel" />
+		
+		<SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="WEAPON_C2_Z4_REVIVAL_NAGINATA" />
+		<SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="Weapon" />
+    </Actions>
+  </Quest>
+  -->
+</Quests>

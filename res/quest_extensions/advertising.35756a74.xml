@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+  <Include File="quest_extensions/cashback_quests.xml" />
+
+  <Quest Name="ShowAd" Unresumable="1" Priority="-100" Group="Advertising">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Not="1" Value1="_$FightResult" Value2="Surrender" />
+      <Equal Value1="?Fight[_$Fight].Zone" Value2="Punchbag" Not="1" />
+      <Or>
+        <Equal Value1="?Fight[_$Fight].Zone" Value2="ZONE_1" Not="1" />
+        <GreaterEqual Value1="?Fight[ZONE_1|BOSS_LYNX|3].WinCount" Value2="1" />
+      </Or>
+      <Equal Value1="_$Fight" Value2="ZONE_6|FINAL_BATTLE|1" Not="1"/>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+      <Greater Not="1" Value1="?UniformIntRandom[1,100]" Value2="?SessionSettings[].AdvertRate" />
+    </Conditions>
+    <Actions>
+      <ShowAd Type="Interstitial" Lock="Visible" >
+        <Error />
+        <Success />
+      </ShowAd>
+    </Actions>
+  </Quest>
+
+  <Quest Name="EnergyRefillShowAdVideo" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="EnergyRefillShowAdVideo" />
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <If>
+        <Conditions>
+          <Equal Value1="?SysInfo[].Connection" Value2="1" />
+        </Conditions>
+        <Then>
+          <ShowAd Type="Video" Lock="Visible">
+            <Error>
+              <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+              <Activate ActionID="EnergyRefillDialogue" />
+            </Error>
+            <Success>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+            </Success>
+          </ShowAd>
+        </Then>
+        <Else>
+          <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+            <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+            <Button Type="Left" Color="Beige" Text="OK" />
+          </Dialog>
+          <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+          <Activate ActionID="EnergyRefillDialogue" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+
+  <Quest Name="RewardedVideo" Unresumable="1">
+    <Events>
+      <ShowRewardedVideo />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions>
+      <If>
+        <Conditions>
+          <Equal Value1="?SysInfo[].Connection" Value2="1" />
+        </Conditions>
+        <Then>
+         <ShowAd Type="RewardedVideo" Lock="Visible">
+            <Error>
+              <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+            </Error>
+            <Success>
+              <Dialog Type="NoAvatar" Title="VideoSuccessTitle">
+                <Line Text="VideoSuccessMessage{img::MiscSprites.ruby}{1}" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+            </Success>
+          </ShowAd>
+        </Then>
+        <Else>
+          <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+            <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+            <Button Type="Left" Color="Beige" Text="OK" />
+          </Dialog>
+          <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+
+  <Quest Name="FightEndMultiplierRewardedVideo" Unresumable="1">
+    <Events>
+      <AfterFightVideoMultiplier />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions>
+      <If>
+        <Conditions>
+          <Equal Value1="?SysInfo[].Connection" Value2="1" />
+        </Conditions>
+        <Then>
+          <ShowAd Type="VideoMultiplier" Lock="Visible">
+            <Error>
+              <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+            </Error>
+            <Success>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+            </Success>
+          </ShowAd>
+        </Then>
+        <Else>
+          <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+            <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+            <Button Type="Left" Color="Beige" Text="OK" />
+          </Dialog>
+          <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+
+  <Quest Name="SkipDeliveryRewardedVideo" Unresumable="1">
+    <Events>
+      <SkipDeliveryRewardedVideo />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions>
+      <If>
+        <Conditions>
+          <Equal Value1="?SysInfo[].Connection" Value2="1" />
+        </Conditions>
+        <Then>
+          <ShowAd Type="SkipDelivery" Lock="Visible">
+            <Error>
+              <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+            </Error>
+            <Success>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+            </Success>
+          </ShowAd> 
+        </Then>
+        <Else>
+          <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+            <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+            <Button Type="Left" Color="Beige" Text="OK" />
+          </Dialog>
+          <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+
+  <Quest Name="LotterySpinRewardedVideo" Unresumable="1">
+    <Events>
+      <LotterySpinRewardedVideo />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions>
+      <If>
+        <Conditions>
+          <Equal Value1="?SysInfo[].Connection" Value2="1" />
+        </Conditions>
+        <Then>
+          <ShowAd Type="LotterySpin" Lock="Visible">
+            <Error>
+              <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+            </Error>
+            <Success>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+            </Success>
+          </ShowAd> 
+        </Then>
+        <Else>
+          <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+            <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+            <Button Type="Left" Color="Beige" Text="OK" />
+          </Dialog>
+          <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+
+  <Quest Name="DailyRefreshRewardedVideo" Unresumable="1">
+    <Events>
+      <DailyRefreshRewardedVideo />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions>
+      <If>
+        <Conditions>
+          <Equal Value1="?SysInfo[].Connection" Value2="1" />
+        </Conditions>
+        <Then>
+          <ShowAd Type="DailyRefresh" Lock="Visible">
+            <Error>
+              <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+            </Error>
+            <Success>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+            </Success>
+          </ShowAd> 
+        </Then>
+        <Else>
+          <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+            <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+            <Button Type="Left" Color="Beige" Text="OK" />
+          </Dialog>
+          <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+  
+  <Quest Name="RaidFightRewardedVideo" Unresumable="1">
+    <Events>
+      <RaidFightRewardedVideo />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions>
+      <If>
+        <Conditions>
+          <Equal Value1="?SysInfo[].Connection" Value2="1" />
+        </Conditions>
+        <Then>
+          <ShowAd Type="RaidFight" Lock="Visible">
+            <Error>
+              <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+            </Error>
+            <Success>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+            </Success>
+          </ShowAd> 
+        </Then>
+        <Else>
+          <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+            <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+            <Button Type="Left" Color="Beige" Text="OK" />
+          </Dialog>
+          <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+
+  <Quest Name="SurvivalRestartInit" Unresumable="1">
+    <Events>
+      <ApplicationStart />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+    </Conditions>
+    <Actions>
+      <!-- Выставляем дефолтное значение лимита на просмотр SurvivalRestartRewardedVideo за один бой -->
+      <SetVariable Scope="Users" Name="SurvivalRestartLimitPerFight" Value="1" />
+      <SetVariable Scope="Users" Name="SurvivalRestartTimerValue" Value="5" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SurvivalRestartResetCounterPerFight" Unresumable="1">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+      <Equal Value1="?Fight[_$Fight].Type" Value2="SURVIVAL" />
+    </Conditions>
+    <Actions>
+      <!-- Сбрасываем текущий счетчик просмотров SurvivalRestartRewardedVideo за один бой -->
+      <SetVariable Scope="Global" Name="SurvivalRestartCounterPerFight" Value="0" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SurvivalRestartActivate" Unresumable="1">
+    <Events>
+      <FightPreEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+      <Equal Value1="?Fight[_$Fight].Type" Value2="SURVIVAL" />
+      <Equal Value1="_$FightResult" Value2="Loss" />
+      <Equal Value1="?AdAvailable[SurvivalRestart]" Value2="1" />
+      <Less Value1="_SurvivalRestartCounterPerFight" Value2="_SurvivalRestartLimitPerFight" />
+    </Conditions>
+    <Actions>
+      <!-- Заводим таймер и создаем диалог в отдельном квесте, вызываемом через Activate. 
+      Т.к. такие квесты выполняются из Update, это позволит создать диалог, 
+      затем обновить позицию таймера в диалоге на том же фрейме (позиция таймеров 
+      относительно границ текста также обновляется из Update), чтобы избежать дерганья -->
+      <Activate ActionID="SurvivalRestartShowDialog" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SurvivalRestartShowDialog" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].AdvertisingSupport" Value2="1" />
+      <Equal Value1="_$ActionID" Value2="SurvivalRestartShowDialog" />
+    </Conditions>
+    <Actions>
+      <ActivateTimer Name="Timer_SurvivalRestartRewardedVideo" Value="_SurvivalRestartTimerValue" />
+      <Dialog Type="Multiline" Title="dlgSurvivalRestartRewardedVideoTitle" Image="img_video" ImageScale="0.55" >
+        <Line Text="dlgSurvivalRestartRewardedVideo">
+          <Timer Name="Timer_SurvivalRestartRewardedVideo" />
+        </Line>
+        <Button Type="Right" Color="Beige" Text="OK">
+          <EndTimer Name="Timer_SurvivalRestartRewardedVideo" />
+          <If>
+            <Conditions>
+              <Equal Value1="?SysInfo[].Connection" Value2="1" />
+            </Conditions>
+            <Then>
+              <ShowAd Type="SurvivalRestart" Lock="Visible">
+                <Error>
+                  <Dialog Type="NoAvatar" Title="dlgNotAvaliableTitle">
+                    <Line Text="dlgNotAvaliableMessage" ButtonText="OK" />
+                    <Button Type="Left" Color="Beige" Text="OK" />
+                  </Dialog>
+                  <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+                  <!-- Запускаем FightEnd с небольшим Delay, чтобы квесты добавленные в очередь обработки не отработали сразу в бою -->
+                  <FightEnd Delay="0.05" />
+                </Error>
+                <Cancel>
+                  <!-- Запускаем FightEnd с небольшим Delay, чтобы квесты добавленные в очередь обработки не отработали сразу в бою -->
+                  <FightEnd Delay="0.05" />
+                </Cancel>
+                <Success>
+                  <SetVariable Scope="Global" Name="SurvivalRestartCounterPerFight" Value="_SurvivalRestartCounterPerFight + 1" />
+                  <SetVariable Scope="Users" Name="ShowVideoError" Value="0" />
+                  <FightRestartRound PlayerLife="1" />
+                </Success>
+              </ShowAd> 
+            </Then>
+            <Else>
+              <Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+                <Line Text="dlgNotNetworkMessage" ButtonText="OK" />
+                <Button Type="Left" Color="Beige" Text="OK" />
+              </Dialog>
+              <SetVariable Scope="Users" Name="ShowVideoError" Value="1" />
+              <!-- Запускаем FightEnd с небольшим Delay, чтобы квесты добавленные в очередь обработки не отработали сразу в бою -->
+              <FightEnd Delay="0.05" />
+            </Else>
+          </If>
+        </Button>
+        <Button Type="Left" Color="Beige" Text="CANCEL">
+          <EndTimer Name="Timer_SurvivalRestartRewardedVideo" />
+          <!-- Запускаем FightEnd с небольшим Delay, чтобы квесты добавленные в очередь обработки не отработали сразу в бою -->
+          <FightEnd Delay="0.05" />
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+</Quests>

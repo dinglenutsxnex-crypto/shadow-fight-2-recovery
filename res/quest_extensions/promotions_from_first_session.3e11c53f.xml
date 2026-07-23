@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+
+  <!-- =============================== -->
+  <!-- First Purchase Addition Bonus   -->
+  <!-- =============================== -->
+  
+  <Quest Name="FirstGemPurchaseBonusLaunch" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+	  <!-- <Greater Value1="?Fight[ZONE_1|Tournament|1].WinCount" Value2="0" /> --> <!-- для тестов -->
+      <!-- <Equal Value1="_$Fight" Value2="ZONE_1|Tournament|8" /> -->
+      <Equal Value1="_FirstGemPurchaseBonusActive" Value2="0" /> <!-- акцию раньше не активировали -->
+      <Equal Value1="_$FightResult" Value2="Win" />
+	  <Greater Value1="?Fight[ZONE_1|Tournament|12].WinCount" Value2="0" />
+	  <Equal Value1="?Fight[ZONE_2|Tournament|1].WinCount" Value2="0" />
+    </Conditions>
+    <Actions>
+	  <SetVariable Scope="Users" Name="FirstGemPurchaseBonusActive" Value="1" /> <!-- активируем акцию -->
+	  <Dialog Type="Multiline" Title="_Title_Assistant" Image="_Avatar_Assistant_1">
+        <Line Text="FirstGemPurchaseBonusOpen" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Green" Text="dlgStoryBtnShowme">
+          <OpenShop Tab="Ruby" Item="Pile_Gems" />
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+  
+  <Quest Name="FirstGemPurchaseBonusDisable" Priority="100"> 
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+	  <Equal Value1="_FirstGemPurchaseBonusActive" Value2="1" /> <!-- если акция активна -->
+      <Greater Value1="?Fight[ZONE_2|Tournament|1].WinCount" Value2="0" />
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Users" Name="FirstGemPurchaseBonusActive" Value="3" /> <!-- вырубаем акцию -->
+    </Actions>
+  </Quest>
+  
+  <Quest Name="FirstGemPurchaseBonusGive" Priority="100"> 
+    <Events>
+		<Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Item[_$Purchase].SubType" Value2="Bonus" /> <!-- если только что купили гемы -->
+      <Equal Value1="_FirstGemPurchaseBonusActive" Value2="1" /> <!-- если акция активна -->
+    </Conditions>
+    <Actions>
+	  <SetVariable Scope="Users" Name="FirstGemPurchaseBonusActive" Value="2" /> <!-- вырубаем акцию -->
+	  <GiveCurrency Type="Gold" Value="_FirstGemPurchaseBonus" /> <!-- начисляем золото -->
+	  <UpdateShop /> <!-- обновим магаз, что бы пропало золото с позиций -->	  
+      <Dialog Type="Multiline" Title="_Title_Assistant" Image="_Avatar_Assistant_1">
+        <Line Text="FirstGemPurchaseBonusClose{img::MiscSprites.Gold}{_FirstGemPurchaseBonus}" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Green" Text="dlgStoryBtnTake" /> <!-- Text="dlgStoryBtnTake" -->
+      </Dialog>
+    </Actions>
+  </Quest>
+  
+</Quests>

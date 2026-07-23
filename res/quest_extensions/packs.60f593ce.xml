@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+	<!-- Начало закачки -->
+	<Quest Name="DownloadPacksStart" Group="Packs" Priority="2500" Unresumable="1">
+		<Events>
+			<RequestDownloadPacks />
+		</Events>
+		<Actions>
+			<!-- Возможные настройки закачки паков передаются через глобальные переменнын. -->
+			<!-- В данный момент есть следующие настройки: -->
+			<!-- 1. DownloadPacksForced - принуждать ли пользователя к закачке паков -->
+			<!-- Если 1 - качаем паки без возможности отказатся -->
+			<!-- Если 0 - перед началом и после каждой ошибки спрашиваем пользователя насчет того качать ли паки -->
+
+			<!-- Определяем тип загрузки - принудительный или с возможностью отмены -->
+			<If>
+				<Conditions>
+					<Equal Value1="_DownloadPacksForced" Value2="1" />
+				</Conditions>
+				<Then>
+					<SetVariable Scope="Global" Name="DownloadPacksQuest" Value="DownloadPacksForced" />
+				</Then>	
+				<Else>
+					<SetVariable Scope="Global" Name="DownloadPacksQuest" Value="DownloadPacksOptional" />
+				</Else>
+			</If>
+			<!-- Кастомизация алиаса диалога загрузки бандлов -->
+			<If>
+				<Conditions>
+					<Operator Type="Or">
+						<Equal Value1="_DownloadPacksAliasOverride" Value2="0" Not="1" />
+						<Equal Value1="_DownloadPacksAliasOverride" Value2="" Not="1" />
+					</Operator>
+				</Conditions>
+				<Then>
+					<SetVariable Scope="Global" Name="DownloadPacksDialogContent" Value="_DownloadPacksAliasOverride" />
+				</Then>	
+				<Else>
+					<SetVariable Scope="Global" Name="DownloadPacksDialogContent" Value="dlgServiceDownloadDemandForced{_$PacksSummarySize}" />
+				</Else>
+			</If>
+			<Run Name="_DownloadPacksQuest" />
+		</Actions>
+	</Quest>
+
+	<!-- Callback при его наличии -->
+	<Quest Name="DownloadPacksEnd" Group="Packs" Priority="10000" Unresumable="1">
+		<Actions>
+			<!-- Проверяем, скачали ли бандл в итоге -->
+			<If>
+				<Conditions>
+					<Operator Type="Or">
+						<Equal Value1="_DownloadPacksCancel" Value2="1" />
+						<Equal Value1="_DownloadPacksFailed" Value2="1" />
+					</Operator>
+				</Conditions>
+				<Then>
+					<RunCallback Name="OnDownloadPacksEnd" >
+						<Arg Value="0" />
+					</RunCallback>
+				</Then>	
+				<Else>
+					<RunCallback Name="OnDownloadPacksEnd" >
+						<Arg Value="1" />
+					</RunCallback>
+				</Else>
+			</If>
+		</Actions>
+	</Quest>
+
+  <!-- Диалог принудительной закачки, без возможности отмены -->
+  <Quest Name="DownloadPacksForced" Group="Packs" Priority="2000" Unresumable="1">
+		<Actions>
+			<Dialog Type="NoAvatar" Title="dlgServiceTitlePackDownload" IgnoreBack="1">
+				<Line Text="_DownloadPacksDialogContent" ButtonText="dlgStoryBtnMore"/>
+				<Button Type="Right" Color="Beige" Text="dlgServiceAgreeBtn">
+					<Run Name="DownloadPacksProcess"/>
+				</Button>
+			</Dialog>
+		</Actions>
+	</Quest>
+
+	<!-- Диалог опциональной закачки, с возможностью отмены -->
+	<Quest Name="DownloadPacksOptional" Group="Packs" Priority="2000" Unresumable="1">
+		<Actions>
+			<Dialog Type="NoAvatar" Title="dlgServiceTitlePackDownload" IgnoreBack="1">
+				<Line Text="_DownloadPacksDialogContent" ButtonText="dlgStoryBtnMore"/>
+				<Button Type="Right" Color="Beige" Text="dlgServiceAgreeBtn">
+					<Run Name="DownloadPacksProcess"/>
+				</Button>
+				<Button Type="Left" Color="Red" Text="dlgServiceDenyBtn">
+					<SetVariable Scope="Global" Name="DownloadPacksCancel" Value="1" />
+					<Run Name="DownloadPacksEnd"/>
+				</Button>
+			</Dialog>
+		</Actions>
+	</Quest>
+
+	<!-- Закачка бандлов -->
+	<Quest Name="DownloadPacksProcess" Group="Packs" Priority="1190" Unresumable="1">
+		<Actions>
+			<SetVariable Scope="Global" Name="DownloadPacksCancel" Value="0" />
+			<SetVariable Scope="Global" Name="DownloadPacksFailed" Value="0"/>
+			<SetVariable Scope="Global" Name="CurrentPackNumber" Value="0" />
+			<Foreach Type="Packs" Name="DownloadPackProcess" />
+			<Run Name="DownloadPacksEnd"/>
+			<!-- Если в бандлах содержится информация, которая не будет корректно использована до перезапуска (на данный момент это мувзы, квесты, модели) - делаем рестарт игры, на стороне кода. -->
+		</Actions>
+	</Quest>
+
+	<!-- Закачка одного пака -->
+	<Quest Name="DownloadPackProcess" Group="Packs" Priority="9999" Unresumable="1">
+    <Conditions>
+			<Equal Value1="_DownloadPacksFailed" Value2="0"/>
+		</Conditions>
+    <Actions>
+    	<SetVariable Scope="Global" Name="CurrentPackNumber" Value="_CurrentPackNumber + 1" />
+			<DownloadPack Pack="_$Iterator" Lock="Silent" ProgressBarTitle="Downloading{_CurrentPackNumber}{_$PacksCount}{?Pack[_$Iterator].Size}" >
+				<Error>
+					<SetVariable Scope="Global" Name="Foreach_Break" Value="1" />
+					<Run Name="ShowErrorDialog"/>
+				</Error>
+			</DownloadPack>
+    </Actions>
+  </Quest>
+
+	<!-- Диалог ошибки при закачке пака -->
+	<Quest Name="ShowErrorDialog" Group="Packs" Priority="2000" Unresumable="1">
+	  <Actions>
+	  	<SetVariable Scope="Global" Name="DownloadPacksFailed" Value="1" />
+	  	<Dialog Type="NoAvatar" Title="dlgNotNetworkTitle">
+				<Line Text="dlgServiceDownloadError" ButtonText="dlgStoryBtnMore" />
+				<Button Type="Right" Color="Beige" Text="dlgServiceBtnRetry">
+				  <Activate ActionID="RestartPackDownload" />
+				</Button>
+			</Dialog>
+	  </Actions>
+ 	</Quest>
+
+ 	<!-- Рестарт закачки пака -->
+ 	<!-- Мы вынуждены запускать квесты через Activate, потому что запуск одного и того же квеста циклически через Run вызывает ошибки квестовой системы -->
+ 	<Quest Name="RestartPackDownload" Group="Packs" Priority="9999" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="RestartPackDownload" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="DownloadPacksRetry" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="ForcedPackDownloadRetry" Group="Packs" Priority="9999" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="DownloadPacksRetry" />
+    </Conditions>
+    <Actions>
+	  <UpdatePacksData />
+	  <Run Name="_DownloadPacksQuest" />
+    </Actions>
+  </Quest>
+</Quests>

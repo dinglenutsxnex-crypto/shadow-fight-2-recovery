@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+  
+  <!-- Starter Pack Promotion-->
+  <Quest Name="StarterPackLaunch" Priority="-20">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="_$Fight" Value2="ZONE_1|Tournament|2" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal  Value1="?Item[WEAPON_STARTER_PACK_TONFA].Quantity" Value2="0" />
+      <Greater Not="1" Value1="?Timer[Timer_StarterPack].Value" Value2="0" />
+      <Greater Not="1" Value1="?Timer[Timer_FirstPayment].Value" Value2="0" />
+      <Greater Not="1" Value1="?Timer[Timer_RepeatPayment].Value" Value2="0" />
+      <Greater Not="1" Value1="?Timer[Timer_IncreasePayment].Value" Value2="0" />
+      <Greater Not="1" Value1="?Timer[sale_Timer].Value" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <Activate ActionID="StarterPackDialogLaunch" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackPress">
+    <Events>
+      <MapButtonPress />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonName" Value2="Button_StarterPack" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="StarterPackDialog" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackDialogLaunch" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Not="1" Value1="_TmpPackDialogState01" Value2="Ended" />
+      <Equal Value1="_$ActionID" Value2="StarterPackDialogLaunch" />
+      <Greater Not="1" Value1="_DiscipleFlag" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <If>
+        <Conditions>
+          <Or>
+            <Equal Value1="_$LevelUp" Value2="0" />
+            <Equal Value1="_TmpPackDialogState01" Value2="Run" />
+          </Or>
+        </Conditions>
+        <Then>
+          <ActivateTimer Name="Timer_StarterPack" Value="86400" />
+          <ShowMapButton Name="Button_StarterPack" Image="starter_pack" Timer="Timer_StarterPack" ShowType="Story" />
+          <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+            <Line Text="dlgStarterPackOffer1{img::MiscSprites.tick_red}"/>
+            <Line Text="dlgStarterPackOffer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{30}"/>
+            <Line Text="dlgStarterPackOffer3{img::MiscSprites.tick_red}{img::MiscSprites.gold}{1000}"/>
+            <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+            <Line Text="dlgStarterPackOffer5{img::MiscSprites.tick_red}"/>
+            <PriceLine Text="dlgStarterPackPrice{?Item[Pack_Starter].RealPrice}" TextColor="0xfefe95" />
+            <Button Type="Right" Color="Green" Text="dlgBuyButton">
+              <SetVariable Scope="Users" Name="TmpBuyingValue" Value="Pack_Starter" />
+              <BuyItem Name="Pack_Starter" Currency="Real" />
+            </Button>
+            <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+              <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+                <Line Text="dlgStarterPackRefusal">
+                  <Timer Name="Timer_StarterPack" />
+                </Line>
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Button>
+          </Dialog>
+          <SetVariable Scope="Users" Name="TmpPackDialogState01" Value="Ended" />
+        </Then>
+        <Else>
+          <SetVariable Scope="Users" Name="TmpPackDialogState01" Value="Wait" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackDialogLaunchWait" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="_$SceneTo" Value2="Map" />
+      <Equal Value1="_TmpPackDialogState01" Value2="Wait" />
+    </Conditions>
+    <Actions>
+      <ChangeScene Destination="Map" />
+      <SetVariable Scope="Users" Name="TmpPackDialogState01" Value="Run" />
+      <Activate ActionID="StarterPackDialogLaunch" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackDialogLaunchPostpone" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="LevelUpPostpone" />
+      <Equal Value1="_TmpPackDialogState01" Value2="Wait" />
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Users" Name="TmpPackDialogState01" Value="Run" />
+      <Activate ActionID="StarterPackDialogLaunch" />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="StarterPackDialogLaunchBuyed" Unresumable="1">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Equal Value1="_TmpBuyingValue" Value2="Pack_Starter" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetVariable Scope="Users" Name="TmpBuyingValue" Value="0" />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="StarterPackDialogLaunchCancelBuy" Unresumable="1">
+    <Events>
+      <PurchaseUnsuccessful />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Purchase[_$PurchaseUnsuccessful].Failure" Value2="UserCancelled" />
+      <Equal Value1="_TmpBuyingValue" Value2="Pack_Starter" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetVariable Scope="Users" Name="TmpBuyingValue" Value="0" />
+      <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+        <Line Text="dlgStarterPackRefusal">
+          <Timer Name="Timer_StarterPack" />
+        </Line>
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+    </Actions>
+  </Quest>
+  
+  <Quest Name="StarterPackDialog" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="StarterPackDialog" />
+      <Equal Value1="_DiscipleFlag" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+        <Line Text="dlgStarterPackOffer1{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgStarterPackOffer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{30}"/>
+        <Line Text="dlgStarterPackOffer3{img::MiscSprites.tick_red}{img::MiscSprites.gold}{1000}"/>
+        <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+        <Line Text="dlgStarterPackOffer5{img::MiscSprites.tick_red}"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Pack_Starter].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Pack_Starter" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="StarterPackDialog" />
+          <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_StarterPack" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackDialogNoSurprise" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="StarterPackDialog" />
+      <Equal Not="1" Value1="_DiscipleFlag" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+        <Line Text="dlgStarterPackOffer1{img::MiscSprites.tick_red}"/>
+        <Line Text="dlgStarterPackOffer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{30}"/>
+        <Line Text="dlgStarterPackOffer3{img::MiscSprites.tick_red}{img::MiscSprites.gold}{1000}"/>
+        <PriceLine Text="dlgStarterPackPrice{?Item[Pack_Starter].RealPrice}" TextColor="0xfefe95" />
+        <Button Type="Right" Color="Green" Text="dlgBuyButton">
+          <BuyItem Name="Pack_Starter" Currency="Real" />
+        </Button>
+        <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+          <ClearQuestQueue Name="StarterPackDialog" />
+          <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+            <Line Text="dlgStarterPackRefusal">
+              <Timer Name="Timer_StarterPack" />
+            </Line>
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+  
+  <Quest Name="StarterPackDialogLaunchNoSurprise" Unresumable="1" Priority="-20" >
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Not="1" Value1="_TmpPackDialogState01" Value2="Ended" />
+      <Equal Value1="_$ActionID" Value2="StarterPackDialogLaunch" />
+      <Equal Not="1" Value1="_DiscipleFlag" Value2="0" />
+    </Conditions>
+    <Actions Place="Map">
+      <If>
+        <Conditions>
+          <Or>
+            <Equal Value1="_$LevelUp" Value2="0" />
+            <Equal Value1="_TmpPackDialogState01" Value2="Run" />
+          </Or>
+        </Conditions>
+        <Then>
+          <ActivateTimer Name="Timer_StarterPack" Value="86400" />
+          <ShowMapButton Name="Button_StarterPack" Image="starter_pack" Timer="Timer_StarterPack" ShowType="Story" />
+          <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+      <Line Text="dlgStarterPackOffer1{img::MiscSprites.tick_red}"/>
+      <Line Text="dlgStarterPackOffer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{30}"/>
+      <Line Text="dlgStarterPackOffer3{img::MiscSprites.tick_red}{img::MiscSprites.gold}{1000}"/>
+      <PriceLine Text="dlgStarterPackPrice{?Item[Pack_Starter].RealPrice}" TextColor="0xfefe95" />
+            <Button Type="Right" Color="Green" Text="dlgBuyButton">
+              <SetVariable Scope="Users" Name="TmpBuyingValue" Value="Pack_Starter" />
+              <BuyItem Name="Pack_Starter" Currency="Real" />
+            </Button>
+            <Button Type="Left" Color="Red" Text="dlgLaterBtn" >
+              <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+                <Line Text="dlgStarterPackRefusal">
+                  <Timer Name="Timer_StarterPack" />
+                </Line>
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Button>
+          </Dialog>
+          <SetVariable Scope="Users" Name="TmpPackDialogState01" Value="Ended" />
+        </Then>
+        <Else>
+          <SetVariable Scope="Users" Name="TmpPackDialogState01" Value="Wait" />
+        </Else>
+      </If>
+    </Actions>
+  </Quest>
+  
+
+  <Quest Name="StarterPackBought">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="StarterPackBoughtFirstSuperItem" />
+      <Equal Value1="_FirstSuperItemFlag" Value2="1"/>
+      <Operator Type="Or">
+        <GreaterEqual Value1="?Item[Pack_Starter].Quantity" Value2="1" />
+        <GreaterEqual Value1="?Item[Pack_Starter_2].Quantity" Value2="1" />
+      </Operator>
+    </Conditions>
+    <Actions>
+      <Activate ActionID="StarterPackGive" />
+    <Activate ActionID="StarterPackGoToShop" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackGive">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="StarterPackGive" />
+    </Conditions>
+    <Actions>
+      <GiveItem Name="?Concat[WEAPON_STARTER_PACK_TONFA|,?Sum[?Multi[100,?Player[].Level],30]]" PutOn="1" Quantity="1" />
+      <GiveItem Name="?Concat[HELM_XMAS14_HORNS|,?Sum[?Multi[100,?Player[].Level],30]]" PutOn="1" Quantity="1" />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[WEAPON_STARTER_PACK_TONFA].UpgradeLevel" />
+      <SetVariable Name="BestAcquiredWeaponLevel" Scope="Users" Value="?Purchase[HELM_XMAS14_HORNS].UpgradeLevel" />
+      <SetVariable Name="StarterPackOfferEnded" Scope="Users" Value="1" />
+      <EndTimer Name="Timer_StarterPack"/>
+      <HideMapButton Name="Button_StarterPack"/>
+      <Activate ActionID="AllStarterPacks_SilentUpdate" />
+      <UpdateShopItems />
+      <OpenShop Tab="Weapon" Item="WEAPON_STARTER_PACK_TONFA"/>
+    </Actions>
+  </Quest>
+  
+  
+  <Quest Name="StarterPackGoToShop">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="StarterPackGoToShop" />
+    </Conditions>
+    <Actions>
+    <OpenShop Tab="Weapon" Item="WEAPON_STARTER_PACK_TONFA"/>
+    </Actions>
+  </Quest>
+  
+  <!-- перезапускаем проверку, если игрок перешел в новую зону, что бы паки довыдать, до которых он дошел (если покупал) -->
+  <Quest Name="SilentUpdate_ForcedRestart">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Or>
+         <Equal Value1="_$Fight" Value2="ZONE_1|BOSS_LYNX|6" />
+         <Equal Value1="_$Fight" Value2="ZONE_2|BOSS_HERMIT|6" />
+         <Equal Value1="_$Fight" Value2="ZONE_3|BOSS_BUTCHER|6" />
+         <Equal Value1="_$Fight" Value2="ZONE_4|BOSS_WASP|6" />
+         <Equal Value1="_$Fight" Value2="ZONE_5|BOSS_HUNTRESS|6" />
+         <Equal Value1="_$Fight" Value2="ZONE_6|BOSS_SAMURAI|6" />
+      </Or>
+    </Conditions>
+    <Actions>
+        <SetVariable Scope="Global" Name="SilentUpdate_ForcedStart_Checked" Value="0" />
+    </Actions>
+  </Quest>
+  
+   <!-- активируем проверку итемов по заходу в магазин. до этого, квест AllStarterPacks_SilentUpdate запускался только после покупки пака -->
+  <Quest Name="SilentUpdate_ForcedStart">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$SceneTo" Value2="Shop" />
+    <Equal Value1="_SilentUpdate_ForcedStart_Checked" Value2="1" Not="1" />
+    </Conditions>
+    <Actions>
+    <Activate ActionID="AllStarterPacks_SilentUpdate" />
+    </Actions>
+  </Quest>
+  
+  <!-- fix restore all or equivalent - verify and give items from packs -->
+  <Quest Name="AllStarterPacks_SilentUpdate">
+    <Events>
+    <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="AllStarterPacks_SilentUpdate" />
+      <!-- <Equal Value1="?SysInfo[].F2P" Value2="1" /> -->
+      <Equal Value1="_$StoryTutorialStep" Value2="END" />
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="?Player[].HasPayments" Value2="1" />   <!-- for player that do not pay it will be faster. All packs that are restored here is paid-->
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Global" Name="RestoredItemToOpen"  Value="0" />
+      <SetVariable Scope="Global" Name="RestoredItemTabToOpen"  Value="0" />
+      <!-- Disciple -->
+      <If>
+        <Conditions>
+          <Operator Type="And">
+            <Equal Value1="_DiscipleFlag" Value2="1" Not="1" />
+            <Equal Value1="_DiscipleFlag" Value2="2" Not="1" />
+          </Operator>
+        </Conditions>
+        <Then>
+            <SetVariable Scope="Users" Name="DiscipleFlag" Value="1" />
+        </Then>
+      </If>
+      
+      <CheckPremiumPack PremiumPack="Pack_Starter" PackAssert=""  RestoreQuest="StarterPackRestore" >
+        <Item ItemName="WEAPON_STARTER_PACK_TONFA" />
+      </CheckPremiumPack>
+
+      <CheckPremiumPack PremiumPack="Pack_Starter_2" PackAssert=""  RestoreQuest="StarterPackRestore" >
+        <Item ItemName="WEAPON_STARTER_PACK_TONFA"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_Zone1" PackAssert=""  RestoreQuest="PremiumPackZone1Restore" >
+        <Item ItemName="WEAPON_SUPER_KUSARIGAMA"/>
+        <Item ItemName="ARMOR_SUPER_SPIKED"/>
+        <Item ItemName="HELM_GREEN_MASK"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_Zone2" PackAssert="ZONE_2"  RestoreQuest="PremiumPackZone2Restore" >
+        <Item ItemName="WEAPON_HW14_SCYTHE"/>
+        <Item ItemName="ARMOR_SUPER_CROW"/>
+        <Item ItemName="HELM_VIKING"/>
+        <Item ItemName="RANGED_SHURIKENS"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_Zone3" PackAssert="ZONE_3"  RestoreQuest="PremiumPackZone3Restore" >
+        <Item ItemName="WEAPON_SUPER_BIG_SWORD"/>
+        <Item ItemName="ARMOR_SPIKE"/>
+        <Item ItemName="HELM_SPIKE"/>
+        <Item ItemName="MAGIC_FIRE_BALL"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_Zone4" PackAssert="ZONE_4"  RestoreQuest="PremiumPackZone4Restore" >
+        <Item ItemName="WEAPON_SUPER_KHOPESH"/>
+        <Item ItemName="ARMOR_DRAGON"/>
+        <Item ItemName="HELM_SUPER_SCARAB"/>
+        <Item ItemName="RANGED_NEEDLE"/>
+        <Item ItemName="MAGIC_MASS_BOMB"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_Zone5" PackAssert="ZONE_5"  RestoreQuest="PremiumPackZone5Restore" >
+        <Item ItemName="WEAPON_SUPER_STAFF"/>
+        <Item ItemName="ARMOR_DARK"/>
+        <Item ItemName="HELM_SUPER_HORNED"/>
+        <Item ItemName="RANGED_SHURIKEN_OF_DARKNESS"/>
+        <Item ItemName="MAGIC_FIRE_PILLAR"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_Zone6" PackAssert="ZONE_6"  RestoreQuest="PremiumPackZone6Restore" >
+        <Item ItemName="WEAPON_INDIAN_KATAR"/>
+        <Item ItemName="ARMOR_SUPER_SAMURAI"/>
+        <Item ItemName="HELM_SUPER_SAMURAI"/>
+        <Item ItemName="RANGED_SUPER_DAGGERS"/>
+        <Item ItemName="MAGIC_ASTEROID"/>
+      </CheckPremiumPack>
+	  
+	  <CheckPremiumPack PremiumPack="Premium_Pack_ZoneRaid4" PackAssert="CLANS"  RestoreQuest="Premium_Pack_ZoneRaid4Restore" >
+        <Item ItemName="WEAPON_C1_Z4_NEO_WANDERER"/>
+        <Item ItemName="ARMOR_C1_Z4_NEO_WANDERER"/>
+        <Item ItemName="HELM_C1_Z4_NEO_WANDERER"/>
+        <Item ItemName="RANGED_C1_Z4_NEO_WANDERER"/>
+        <Item ItemName="MAGIC_C1_Z4_NEO_WANDERER"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_WeaponOfferZone1" PackAssert="ZONE_RAID"  RestoreQuest="WeaponOfferZone1Restore" >
+        <Item ItemName="WEAPON_LYNX_CLAWS_PAID"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Premium_Pack_WeaponOfferZone2" PackAssert="ZONE_2"  RestoreQuest="WeaponOfferZone2Restore" >
+        <Item ItemName="WEAPON_HERMIT_SWORDS_PAID"/>
+      </CheckPremiumPack> 
+
+      <CheckPremiumPack PremiumPack="Premium_Pack_WeaponOfferZone3" PackAssert="ZONE_2"  RestoreQuest="WeaponOfferZone3Restore" >
+        <Item ItemName="WEAPON_BUTCHER_KNIVES_PAID"/>
+      </CheckPremiumPack> 
+
+      <!-- <CheckPremiumPack PremiumPack="Premium_Pack_WeaponOfferZone4" PackAssert="CLANS"  RestoreQuest="WeaponOfferZone4Restore" > -->
+        <!-- <Item ItemName="WEAPON_WASP_NAGINATA_PAID"/> -->
+      <!-- </CheckPremiumPack>  -->
+      
+      <!-- <CheckPremiumPack PremiumPack="Premium_Pack_WeaponOfferZone5" PackAssert="CLANS"  RestoreQuest="WeaponOfferZone5Restore" > -->
+        <!-- <Item ItemName="WEAPON_WIDOW_FANS_PAID"/> -->
+      <!-- </CheckPremiumPack>  -->
+
+      <!-- <CheckPremiumPack PremiumPack="Premium_Pack_WeaponOfferZone6" PackAssert="CLANS"  RestoreQuest="WeaponOfferZone6Restore" > -->
+        <!-- <Item ItemName="WEAPON_SHOGUN_KATANA_PAID"/> -->
+      <!-- </CheckPremiumPack>     -->
+
+      <CheckPremiumPack PremiumPack="EventPack" PackAssert="CLANS"  RestoreQuest="NY20OfferRestore" >
+        <Item ItemName="NY20_HELM_HAT"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="NY21EventPack" PackAssert="CLANS"  RestoreQuest="NY21OfferRestore" >
+        <Item ItemName="ARMOR_NY18_MANTLE"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="CHNY21EventPack" PackAssert="CLANS"  RestoreQuest="CNY21OfferRestore" >
+        <Item ItemName="WEAPON_CHNY21_JIAN"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="IE21EventPack" PackAssert="CLANS"  RestoreQuest="IE21OfferRestore" >
+        <Item ItemName="WEAPON_IND21_GLAIVEBOW"/>
+        <Item ItemName="RANGED_IND21_CHAKRAM"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="AE21EventPack" PackAssert="CLANS"  RestoreQuest="AE21OfferRestore" >
+        <Item ItemName="HELM_AE21_ROACH"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="Summer21EventPack" PackAssert="CLANS"  RestoreQuest="Summer21OfferRestore" >
+        <Item ItemName="WEAPON_SUMMER21_SWORD"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="RaidBeginnerPack" PackAssert="CLANS"  RestoreQuest="RaidBeginnerPackRestore" >
+        <Item ItemName="WEAPON_RAIDSTARTER_SUPER_SABERS"/>
+      </CheckPremiumPack>
+      
+      <CheckPremiumPack PremiumPack="BoatFestival22Pack" PackAssert="CLANS"  RestoreQuest="PremiumPackBoatFestivalRestore" >
+        <Item ItemName="RANGED_BOAT_FESTIVAL_SUPER_SHURIKEN"/>
+      </CheckPremiumPack>
+	  
+	 <CheckPremiumPack PremiumPack="CNY22EventPack" PackAssert="CLANS"  RestoreQuest="CNY22OfferRestore" >
+        <Item ItemName="MAGIC_CHNY22_WATERBALL"/>
+        <Item ItemName="RANGED_CHNY22_WEIGHED_KUNAI"/>
+      </CheckPremiumPack>
+	  <!--
+	<CheckPremiumPack PremiumPack="Anniversary10Th_1" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_1_OfferRestore" >
+		<Item ItemName="RANGED_SUMMER21_ANCIENT_CHAKRAM"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_2" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_2_OfferRestore" >
+		<Item ItemName="ARMOR_SUMMER21_LEGIONER"/>
+		<Item ItemName="WEAPON_SUMMER21_TRIDENT"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_3" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_3_OfferRestore" >
+		<Item ItemName="WEAPON_BP_S2_SKANDA"/>
+		<Item ItemName="HELM_BP_S2_SKANDA"/>
+		<Item ItemName="ARMOR_BP_S2_SKANDA"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_4" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_4_OfferRestore" >
+		<Item ItemName="RANGED_BP_S2_SKANDA"/>
+		<Item ItemName="MAGIC_BP_S2_SKANDA"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_5" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_5_OfferRestore" >
+		<Item ItemName="RANGED_AE21_TOMAHAWK"/>
+		<Item ItemName="WEAPON_AE21_SPEAR"/>
+		<Item ItemName="ARMOR_AE21_WARRIOR"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_6" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_6_OfferRestore" >
+		<Item ItemName="MAGIC_AE21_SPIRIT_PILLAR"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_7" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_7_OfferRestore" >
+		<Item ItemName="WEAPON_HW15_BROOM"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_8" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_8_OfferRestore" >
+		<Item ItemName="HELM_HW15_WITCH"/>
+		<Item ItemName="ARMOR_HW15_WICKED_VEIL"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_9" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_9_OfferRestore" >
+		<Item ItemName="RANGED_HW16_SET"/>
+		<Item ItemName="ARMOR_HW16_SET"/>
+		<Item ItemName="HELM_2_HW16_SET"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_10" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_10_OfferRestore" >
+		<Item ItemName="WEAPON_1_HW16_SET"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_11" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_11_OfferRestore" >
+		<Item ItemName="WEAPON_HW17_DAGGERS"/>
+		<Item ItemName="RANGED_HW20_SKULL"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_12" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_12_OfferRestore" >
+		<Item ItemName="ARMOR_HW17_CLOAK"/>
+		<Item ItemName="HELM_HW17_CYLINDER"/>
+		<Item ItemName="WEAPON_HW17_STAFF"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_13" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_13_OfferRestore" >
+		<Item ItemName="HELM_WOODOO_HW20"/>
+		<Item ItemName="ARMOR_WOODOO_HW20"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_14" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_14_OfferRestore" >
+		<Item ItemName="MAGIC_HW17_VOODOO"/>
+		<Item ItemName="RANGED_HW17_NEEDLES"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_15" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_15_OfferRestore" >
+		<Item ItemName="WEAPON_C4_Z1_WARLOCK_STAFF"/>
+		<Item ItemName="HELM_C4_Z1_WARLOCK"/>
+		<Item ItemName="ARMOR_C4_Z1_WARLOCK"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_16" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_16_OfferRestore" >
+		<Item ItemName="WEAPON_BP_S4_SCRIPTWRITER"/>
+		<Item ItemName="ARMOR_BP_S4_SCRIPTWRITER"/>
+		<Item ItemName="HELM_BP_S4_SCRIPTWRITER"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_17" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_17_OfferRestore" >
+		<Item ItemName="ARMOR_NY18_MANTLE"/>
+		<Item ItemName="NY20_HELM_HORNS"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_18" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_18_OfferRestore" >
+		<Item ItemName="WEAPON_NY18_MACE"/>
+		<Item ItemName="NY21_ARMOR_CUIRASS"/>
+		<Item ItemName="NY21_HELM_BREAD"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_19" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_19_OfferRestore" >
+		<Item ItemName="WEAPON_BP_S1_GUARDIAN"/>
+		<Item ItemName="HELM_BP_S1_GUARDIAN"/>
+		<Item ItemName="ARMOR_BP_S1_GUARDIAN"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_20" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_20_OfferRestore" >
+		<Item ItemName="WEAPON_BP_S5_TIME_SHIFTER"/>
+		<Item ItemName="HELM_BP_S5_TIME_SHIFTER"/>
+		<Item ItemName="ARMOR_BP_S5_TIME_SHIFTER"/>
+	</CheckPremiumPack>
+	<CheckPremiumPack PremiumPack="Anniversary10Th_21" PackAssert="CLANS"  RestoreQuest="Anniversary10Th_21_OfferRestore" >
+		<Item ItemName="WEAPON_C2_Z4_REVIVAL_NAGINATA"/>
+		<Item ItemName="ARMOR_C2_Z4_REVIVIAL"/>
+		<Item ItemName="HELM_C2_Z4_REVIVIAL"/>
+		<Item ItemName="RANGED_C2_Z4_REVIVIAL_SHURIKEN"/>
+		<Item ItemName="MAGIC_C2_Z4_REVIVIAL_SKYFIST"/>
+		<Item ItemName="RANGED_SUN_CHAKRAM"/>
+	</CheckPremiumPack>
+      
+      -->
+      <Activate ActionID="OpenRestoredItem" />
+    <SetVariable Scope="Global" Name="SilentUpdate_ForcedStart_Checked" Value="1" />
+    </Actions>
+  </Quest>
+  
+  
+  <Quest Name="OpenRestoredItem" Priority="-100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="OpenRestoredItem" />
+    </Conditions>
+    <Actions>
+       <If>
+            <Conditions>
+            <!-- placed it here coz otherwise it wont be added to stack. these vars are filled after activate action -->
+                  <Equal Value1="_RestoredItemToOpen" Value2="0" Not="1" />
+                  <Equal Value1="_RestoredItemTabToOpen" Value2="0" Not="1"/>
+            </Conditions>
+            <Then>
+              <OpenShop Tab="_RestoredItemTabToOpen" Item="_RestoredItemToOpen"/>
+            </Then>
+       </If> 
+      <UpdateShopItems />
+    </Actions>
+  </Quest>
+  
+  <Quest Name="StarterPackBoughtFirstSuperItem_Activator">
+    <Events>
+      <Purchase />
+    </Events>
+    <Conditions>
+      <Operator Type="Or">
+        <Equal Value1="?Purchase[_$Purchase].Name" Value2="Pack_Starter" />
+        <Equal Value1="?Purchase[_$Purchase].Name" Value2="Pack_Starter_2" />
+      </Operator>
+      <Equal Value1="_$StoryTutorialStep" Value2="END" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="StarterPackBoughtFirstSuperItem" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackBoughtFirstSuperItem">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ActionID" Value2="StarterPackBoughtFirstSuperItem" />
+      <Operator Type="Or">
+        <GreaterEqual Value1="?Item[Pack_Starter].Quantity" Value2="1" />
+        <GreaterEqual Value1="?Item[Pack_Starter_2].Quantity" Value2="1" />
+      </Operator>
+      <Equal Value1="_FirstSuperItemFlag" Value2="1" Not="1"/>
+    </Conditions>
+    <Actions>
+      <Activate ActionID="StarterPackGive" />
+    <Activate ActionID="StarterPackGoToShop" />
+      <Dialog Type="Regular" Title="characterMay" Image="character_may_3">
+        <Line Text="dlgSuperItemAvailable"/>
+        <Button Type="Right" Color="Green" Text="OK" />
+      </Dialog>
+      <SetVariable Name="FirstSuperItemFlag" Scope="Users" Value="1" />
+      <ClearQuestQueue Name="FirstSuperItemAvailable" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackDismiss">
+    <Events>
+      <TimerEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$TimerName" Value2="Timer_StarterPack" />
+    </Conditions>
+    <Actions>
+      <EndTimer Name="Timer_StarterPack"/>
+      <HideMapButton Name="Button_StarterPack"/>
+      <SetVariable Name="StarterPackOfferEnded" Scope="Users" Value="1" />
+    <SetVariable Name="StarterPack_CheckFight" Scope="Users" Value="1" />
+    <Activate ActionID="StarterPackLastChance" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="StarterPackOnRestart" Priority="10" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="PseudoSessionStart" />
+    <Equal Value1="_$InLottery" Value2="1" Not="1" />
+      <Greater Value1="?Timer[Timer_StarterPack].Value" Value2="0" />
+    </Conditions>
+    <Actions>
+      <Activate ActionID="StarterPackDialog" />
+    </Actions>
+  </Quest>
+  
+  <!-- проверка на выход на карту -->
+  <Quest Name="StarterPack_CheckMap" Unresumable="1" Priority="99999">
+    <Events>
+      <ChangeTab />
+    </Events>
+    <Conditions>
+      <Equal Value1="_StarterPack_CheckFight" Value2="1" />
+    </Conditions>
+    <Actions>
+    <If>
+      <Conditions>
+        <Equal Value1="_$SceneTo" Value2="Map" />
+      </Conditions>
+      <Then>
+        <Activate ActionID="StarterPackLastChance" />
+      </Then>
+    </If> 
+    <ChangeScene Destination="_$SceneTo" />
+    </Actions>
+  </Quest>
+
+  <!-- диалог. последний шанс -->
+  <Quest Name="StarterPackLastChance" Unresumable="1" Priority="100">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].ChinaF2P" Value2="0" />
+      <Equal Value1="_$ActionID" Value2="StarterPackLastChance" />
+    </Conditions>
+    <Actions Place="Map">
+    <If>
+      <Conditions>
+        <Equal Value1="_$SceneTo" Value2="Map" />
+      </Conditions>
+        <Then>
+          <SetVariable Name="StarterPack_CheckFight" Scope="Users" Value="0" />
+          <EndTimer Name="Timer_StarterPack"/>
+          <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2" ProfitImage="profit50" ImageScale="0.9"> 
+            <Line Text="LastChance" />
+            <Line Text="LastChance1" />
+            <Button Type="Right" Color="Green" Text="dlgStoryBtnShowme" >
+              <Dialog Type="Multiline" Title="dlgStarterPackTitle" Image="starter_pack2">
+              <Line Text="dlgStarterPackOffer1{img::MiscSprites.tick_red}"/>
+              <Line Text="dlgStarterPackOffer2{img::MiscSprites.tick_red}{img::MiscSprites.ruby}{30}"/>
+              <Line Text="dlgStarterPackOffer3{img::MiscSprites.tick_red}{img::MiscSprites.gold}{1000}"/>
+              <Line Text="dlgStarterPackOffer4{img::MiscSprites.tick_red}" Hide="?SysInfo[].AdvertisingSupport == 0"/>
+              <Line Text="dlgStarterPackOffer5{img::MiscSprites.tick_red}"/>
+              <PriceLine Text="dlgStarterPackPrice{?Item[Pack_Starter].RealPrice}" TextColor="0xfefe95" />
+              <Button Type="Right" Color="Green" Text="dlgBuyButton">
+                <BuyItem Name="Pack_Starter" Currency="Real" />
+              </Button>
+              <Button Type="Left" Color="Red" Text="compareCloseBtn" >
+                <ClearQuestQueue Name="StarterPackDialogLastChance" />
+              </Button>
+              </Dialog>
+            </Button>
+          </Dialog>
+        </Then>
+        <Else>
+          <ClearQuestQueue Name="StarterPackLastChance" />
+        </Else>
+      </If> 
+    </Actions>
+  </Quest>
+
+</Quests>

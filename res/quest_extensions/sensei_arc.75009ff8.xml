@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+
+  <!--Zone1-->
+  <Quest Name="SenseiZone1Notify">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_1|Tournament|3" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Sensei_remembers0" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ShowBattle Name="ZONE_1|SENSEI_MEMORIES" Locked="0" />
+      <ShowBattle Name="ZONE_2|SENSEI_MEMORIES" Locked="1" />
+      <ShowBattle Name="ZONE_3|SENSEI_MEMORIES" Locked="1" />
+      <ShowBattle Name="ZONE_4|SENSEI_MEMORIES" Locked="1" />
+      <ShowBattle Name="ZONE_5|SENSEI_MEMORIES" Locked="1" />
+      <ShowBattle Name="ZONE_6|SENSEI_MEMORIES" Locked="1" />
+      <SetMapFocus Battle="ZONE_1|SENSEI_MEMORIES|" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SenseiIntro">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_1|SENSEI_MEMORIES|1" />
+      <Equal Value1="_Zone1Sensei" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <ActScreen Lock="Silent">
+        <Line Text="ActScreenSensei1" Frames="240" />
+        <Line Text="Sensei_arc_intro1" Frames="300" />
+      </ActScreen>
+      <Dialog Type="Regular" Title="NAME_PRINCE" Image="character_prince">
+        <Line Text="Prince_Intro" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_LYNX" Image="boss_lynx_young" Mirrored="1">
+        <Line Text="Lynx_Sensei_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Lynx_Sensei_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_LYNX" Image="boss_lynx_young" Mirrored="1">
+        <Line Text="Lynx_Sensei_3" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="character_Savage" Image="character_savage" IgnoreBack="1">
+        <Line Text="Guard1_Lynx_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="ZONE_1|SENSEI_MEMORIES|1" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone1Sensei" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Philosopher_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_1|SENSEI_MEMORIES|2" />
+      <Equal Value1="_Zone1PhilosopherGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="character_Philosopher" Image="character_Philosopher" IgnoreBack="1">
+        <Line Text="Guard2_Lynx_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone1PhilosopherGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Lynx_young_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_1|SENSEI_MEMORIES|3" />
+      <Equal Value1="_LynxYoungGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_LYNX" Image="boss_lynx_young" Mirrored="1">
+        <Line Text="LynxYoung_Greetings" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="LynxYoungGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Sensei_zone1_guards_beaten" Priority="999">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_Sensei_zone1_complete" Value2="1" Not="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_$Fight" Value2="ZONE_1|SENSEI_MEMORIES|3" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_PRINCE" Image="character_prince">
+        <Line Text="Prince_zone1_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_PRINCE" Image="character_prince">
+        <Line Text="Prince_zone1_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_PRINCE" Image="character_prince">
+        <Line Text="Prince_zone1_3" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone1_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <SetVariable Scope="Users" Name="Sensei_zone1_complete" Value="1" />
+    </Actions>
+  </Quest>
+
+  <!--Zone2-->
+  <Quest Name="SenseiZone2Notify">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <GreaterEqual Value1="?Fight[ZONE_2|Tournament|3].WinCount" Value2="1" />
+      <GreaterEqual Value1="?Fight[ZONE_1|SENSEI_MEMORIES|3].WinCount" Value2="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_Zone2MemoriesOpened" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Sensei_remembers1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ShowBattle Name="ZONE_2|SENSEI_MEMORIES" Locked="0" />
+      <SetMapFocus Battle="ZONE_2|SENSEI_MEMORIES|" />
+      <SetVariable Scope="Users" Name="Zone2MemoriesOpened" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SenseiZone2Enter">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_2|SENSEI_MEMORIES|1" />
+      <Equal Value1="_Zone2Sensei" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Zone2_SenseiReminder" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ActScreen Lock="Silent">
+        <Line Text="ActScreenSensei2" Frames="240" />
+      </ActScreen>
+      <Dialog Type="Regular" Title="NAME_HERMIT" Image="boss_hermit_young">
+        <Line Text="Hermit_zone2_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_HERMIT" Image="boss_hermit_young">
+        <Line Text="Hermit_zone2_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="character_Asian" Image="character_asian" IgnoreBack="1">
+        <Line Text="Guard1_Hermit_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="ZONE_2|SENSEI_MEMORIES|1" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone2Sensei" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Ronin_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_2|SENSEI_MEMORIES|2" />
+      <Equal Value1="_Zone2RoninGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="character_Ronin" Image="character_ronin" IgnoreBack="1">
+        <Line Text="Guard2_Hermit_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone2RoninGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Hermit_young_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_2|SENSEI_MEMORIES|3" />
+      <Equal Value1="_HermitYoungGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_HERMIT" Image="boss_hermit_young">
+        <Line Text="HermitYoung_Greetings" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="HermitYoungGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Sensei_zone2_guards_beaten" Priority="999">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_Sensei_zone2_complete" Value2="1" Not="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_$Fight" Value2="ZONE_2|SENSEI_MEMORIES|3" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone2_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_HERMIT" Image="boss_hermit_young">
+        <Line Text="Hermit_zone2_3" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_PRINCE" Image="character_prince">
+        <Line Text="Prince_zone2_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_HERMIT" Image="boss_hermit_young">
+        <Line Text="Hermit_zone2_4" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <SetVariable Scope="Users" Name="Sensei_zone2_complete" Value="1" />
+    </Actions>
+  </Quest>
+
+  <!--Zone3-->
+  <Quest Name="SenseiZone3Notify">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <GreaterEqual Value1="?Fight[ZONE_3|Tournament|3].WinCount" Value2="1" />
+      <GreaterEqual Value1="?Fight[ZONE_2|SENSEI_MEMORIES|3].WinCount" Value2="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_Zone3MemoriesOpened" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Sensei_remembers1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ShowBattle Name="ZONE_3|SENSEI_MEMORIES" Locked="0" />
+      <SetMapFocus Battle="ZONE_3|SENSEI_MEMORIES|" />
+      <SetVariable Scope="Users" Name="Zone3MemoriesOpened" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SenseiZone3Enter">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_3|SENSEI_MEMORIES|1" />
+      <Equal Value1="_Zone3Sensei" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Zone3_SenseiReminder" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ActScreen Lock="Silent">
+        <Line Text="ActScreenSensei3" Frames="240" />
+      </ActScreen>
+      <Dialog Type="Regular" Title="NAME_BUTCHER" Image="boss_butcher_young">
+        <Line Text="Butcher_zone3_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_PRINCE" Image="character_prince">
+        <Line Text="Prince_zone3_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone3_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_BUTCHER" Image="boss_butcher_young">
+        <Line Text="Butcher_zone3_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="character_Sadist" Image="character_sadist">
+        <Line Text="Guard1_Butcher_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="ZONE_3|SENSEI_MEMORIES|1" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone3Sensei" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Fanatic_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_3|SENSEI_MEMORIES|2" />
+      <Equal Value1="_Zone3FanaticGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="character_Fanatic" Image="character_fanatic" IgnoreBack="1">
+        <Line Text="Guard2_Butcher_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone3FanaticGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Butcher_young_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_3|SENSEI_MEMORIES|3" />
+      <Equal Value1="_ButcherYoungGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_BUTCHER" Image="boss_butcher_young">
+        <Line Text="ButcherYoung_Greetings" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="ButcherYoungGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Sensei_zone3_guards_beaten" Priority="999">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_Sensei_zone3_complete" Value2="1" Not="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_$Fight" Value2="ZONE_3|SENSEI_MEMORIES|3" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_BUTCHER" Image="boss_butcher_young">
+        <Line Text="Butcher_zone3_3" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone3_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_BUTCHER" Image="boss_butcher_young">
+        <Line Text="Butcher_zone3_4" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_BUTCHER" Image="boss_butcher_young">
+        <Line Text="Butcher_zone3_5" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_BUTCHER" Image="boss_butcher_young">
+        <Line Text="Butcher_zone3_6" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <SetVariable Scope="Users" Name="Sensei_zone3_complete" Value="1" />
+    </Actions>
+  </Quest>
+
+  <!--Zone4-->
+  <Quest Name="SenseiZone4Notify">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <GreaterEqual Value1="?Fight[ZONE_4|Tournament|3].WinCount" Value2="1" />
+      <GreaterEqual Value1="?Fight[ZONE_3|SENSEI_MEMORIES|3].WinCount" Value2="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_Zone4MemoriesOpened" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Sensei_remembers1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ShowBattle Name="ZONE_4|SENSEI_MEMORIES" Locked="0" />
+      <SetMapFocus Battle="ZONE_4|SENSEI_MEMORIES|" />
+      <SetVariable Scope="Users" Name="Zone4MemoriesOpened" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SenseiZone4Enter">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_4|SENSEI_MEMORIES|1" />
+      <Equal Value1="_Zone4Sensei" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Zone4_SenseiReminder" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ActScreen Lock="Silent">
+        <Line Text="ActScreenSensei4" Frames="240" />
+      </ActScreen>
+      <Dialog Type="Regular" Title="NAME_WASP" Image="boss_wasp_young">
+        <Line Text="Wasp_zone4_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone4_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_WASP" Image="boss_wasp_young">
+        <Line Text="Wasp_zone4_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="character_Pirate" Image="character_pirate" IgnoreBack="1">
+        <Line Text="Guard1_Wasp_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="ZONE_4|SENSEI_MEMORIES|1" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone4Sensei" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Indean_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_4|SENSEI_MEMORIES|2" />
+      <Equal Value1="_Zone4IndeanGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="character_Indean" Image="character_indean" IgnoreBack="1">
+        <Line Text="Guard2_Wasp_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone4IndeanGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Wasp_young_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_4|SENSEI_MEMORIES|3" />
+      <Equal Value1="_WaspYoungGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_WASP" Image="boss_wasp_young">
+        <Line Text="WaspYoung_Greetings" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="WaspYoungGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Sensei_zone4_guards_beaten" Priority="999">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_Sensei_zone4_complete" Value2="1" Not="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_$Fight" Value2="ZONE_4|SENSEI_MEMORIES|3" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_WASP" Image="boss_wasp_young">
+        <Line Text="Wasp_zone4_3" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_WASP" Image="boss_wasp_young">
+        <Line Text="Wasp_zone4_4" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_WASP" Image="boss_wasp_young">
+        <Line Text="Wasp_zone4_5" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone4_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <SetVariable Scope="Users" Name="Sensei_zone4_complete" Value="1" />
+    </Actions>
+  </Quest>
+
+  <!--Zone5-->
+  <Quest Name="SenseiZone5Notify">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <GreaterEqual Value1="?Fight[ZONE_5|Tournament|3].WinCount" Value2="1" />
+      <GreaterEqual Value1="?Fight[ZONE_4|SENSEI_MEMORIES|3].WinCount" Value2="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_Zone5MemoriesOpened" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Sensei_remembers1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ShowBattle Name="ZONE_5|SENSEI_MEMORIES" Locked="0" />
+      <SetMapFocus Battle="ZONE_5|SENSEI_MEMORIES|" />
+      <SetVariable Scope="Users" Name="Zone5MemoriesOpened" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SenseiZone5Enter">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_5|SENSEI_MEMORIES|1" />
+      <Equal Value1="_Zone5Sensei" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Zone5_SenseiReminder" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ActScreen Lock="Silent">
+        <Line Text="ActScreenSensei5" Frames="240" />
+      </ActScreen>
+      <Dialog Type="Regular" Title="NAME_WIDOW" Image="boss_widow_young" Mirrored="1">
+        <Line Text="Widow_zone5_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_WIDOW" Image="boss_widow_young" Mirrored="1">
+        <Line Text="Widow_zone5_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="character_Sister" Image="character_sister" IgnoreBack="1">
+        <Line Text="Guard1_Widow_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="ZONE_5|SENSEI_MEMORIES|1" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone5Sensei" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Blind_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_5|SENSEI_MEMORIES|2" />
+      <Equal Value1="_Zone5BlindGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="character_Blind" Image="character_blind" Mirrored="1" IgnoreBack="1">
+        <Line Text="Guard2_Widow_Sensei" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone5BlindGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Widow_young_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_5|SENSEI_MEMORIES|3" />
+      <Equal Value1="_WidowYoungGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="NAME_WIDOW" Image="boss_widow_young" Mirrored="1">
+        <Line Text="WidowYoung_Greetings" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <Fight Name="_$Fight" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="WidowYoungGreetings" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Sensei_zone5_guards_beaten" Priority="999">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_Sensei_zone5_complete" Value2="1" Not="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_$Fight" Value2="ZONE_5|SENSEI_MEMORIES|3" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone5_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_WIDOW" Image="boss_widow_young" Mirrored="1">
+        <Line Text="Widow_zone5_3" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_WIDOW" Image="boss_widow_young" Mirrored="1">
+        <Line Text="Widow_zone5_4" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <SetVariable Scope="Users" Name="Sensei_zone5_complete" Value="1" />
+    </Actions>
+  </Quest>
+
+  <!--Zone6-->
+  <Quest Name="SenseiZone6Notify">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <GreaterEqual Value1="?Fight[ZONE_6|Tournament|3].WinCount" Value2="1" />
+      <GreaterEqual Value1="?Fight[ZONE_5|SENSEI_MEMORIES|3].WinCount" Value2="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_Zone6MemoriesOpened" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Sensei_remembers2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ShowBattle Name="ZONE_6|SENSEI_MEMORIES" Locked="0" />
+      <SetMapFocus Battle="ZONE_6|SENSEI_MEMORIES|" />
+      <SetVariable Scope="Users" Name="Zone6MemoriesOpened" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="SenseiZone6Enter">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_6|SENSEI_MEMORIES|1" />
+      <Equal Value1="_Zone6Sensei" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="Zone6_SenseiReminder" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ActScreen Lock="Silent">
+        <Line Text="ActScreenSensei6" Frames="240" />
+      </ActScreen>
+      <Dialog Type="Regular" Title="NAME_PRINCE_EVIL" Image="character_prince_evil">
+        <Line Text="Prince_zone6_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_SHOGUN" Image="boss_shogun_young">
+        <Line Text="Shogun_zone6_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <SetVariable Scope="Users" Name="Zone6ShogunGreetings" Value="1" />
+          <Fight Name="ZONE_6|SENSEI_MEMORIES|1" />
+        </Button>
+      </Dialog>
+      <SetVariable Scope="Users" Name="Zone6Sensei" Value="1" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="Prince_greetings" Group="FightEnter" Unresumable="1">
+    <Events>
+      <FightEnter />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$Fight" Value2="ZONE_6|SENSEI_MEMORIES|2" />
+      <Equal Value1="_Zone6PrinceGreetings" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone6_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="NAME_PRINCE_EVIL" Image="character_prince_evil">
+        <Line Text="Prince_zone6_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgStoryBtnFight">
+          <SetVariable Scope="Users" Name="Zone6PrinceGreetings" Value="1" />
+          <Fight Name="ZONE_6|SENSEI_MEMORIES|2" />
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <Quest Name="Sensei_zone6_guards_beaten" Priority="999">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="_Sensei_zone6_complete" Value2="1" Not="1" />
+      <Equal Value1="_$FightResult" Value2="Win" />
+      <Equal Value1="_$Fight" Value2="ZONE_6|SENSEI_MEMORIES|2" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="Regular" Title="characterAncient" Image="character_ancient">
+        <Line Text="Ancient_zone6_1" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei_young">
+        <Line Text="Sensei_zone6_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <Dialog Type="Regular" Title="characterAncient" Image="character_ancient">
+        <Line Text="Ancient_zone6_2" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+      <ActScreen Lock="Silent">
+        <Line Text="Sensei_arc_outro" Frames="180" />
+      </ActScreen>
+      <SetVariable Scope="Users" Name="Sensei_zone6_complete" Value="1" />
+    </Actions>
+  </Quest>
+
+  <!--Tech part-->
+  <Quest Name="SenseiLoss">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="?Fight[_$Fight].Battle" Value2="SENSEI_MEMORIES" />
+      <Equal Value1="_$FightResult" Value2="Loss" />
+    </Conditions>
+    <Actions>
+      <Dialog Type="Regular" Title="characterSensei" Image="character_sensei">
+        <Line Text="?Concat[Sensei_defeat, ?UniformIntRandom[1,5]]" />
+        <Button Type="Right" Color="Beige" Text="OK" />
+      </Dialog>
+    </Actions>
+  </Quest>
+
+</Quests>

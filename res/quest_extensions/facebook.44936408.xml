@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+
+  <Quest Name="FBLikeCheck" Priority="998" Unresumable="1">
+    <Events>
+      <SessionStart />
+    </Events>
+    <Conditions>
+      <Equal Not="1" Value1="?SysInfo[].FacebookLiked" Value2="1" />
+      <Equal Value1="_FBLikePress" Value2="1" />
+    </Conditions>
+    <Actions>
+      <FacebookAPICall Type="LikeCheck">
+        <Error>
+          <SetVariable Scope="Users" Name="FBLikePress" Value="0" />
+        </Error>
+        <Success>
+          <GiveCurrency Type="Bonus" Value="1" />
+        </Success>
+      </FacebookAPICall>
+    </Actions>
+  </Quest>
+
+  <Quest Name="FBLikePress" Priority="998" Unresumable="1">
+    <Events>
+      <FreeSectionButton />
+    </Events>
+    <Conditions>
+      <Equal Value1="_$ButtonType" Value2="FacebookLike" />
+    </Conditions>
+    <Actions>
+      <SetVariable Scope="Users" Name="FBLikePress" Value="0" />
+      <FacebookAPICall Type="Login">
+        <Error>
+          <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+          <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+            <Line Text="dlgServiceFBLoginFail{img::MiscSprites.facebook}" ButtonText="dlgStoryBtnMore" />
+            <Button Type="Right" Color="Beige" Text="OK" />
+          </Dialog>
+        </Error>
+        <Success>
+          <SetVariable Scope="Users" Name="FBLikePress" Value="1" />
+          <SetFBIndicator Value="On" />
+          <SetVariable Scope="Users" Name="FBconnected" Value="1" />
+          <SetVariable Scope="Users" Name="FacebookReminded" Value="1" />
+          <Activate ActionID="FBReward" />
+          <OpenUrl URL="?SysInfo[].FBLikeUrl" ALT_URL="?SysInfo[].FBLikeAltUrl" />
+        </Success>
+      </FacebookAPICall>
+    </Actions>
+  </Quest>
+
+  <Quest Name="FBSetIndicator" Priority="998" Unresumable="1">
+    <Events>
+      <SessionStart />
+    </Events>
+    <Conditions>
+      <Equal Value1="_FBconnected" Value2="1" />
+    </Conditions>
+    <Actions>
+      <SetFBIndicator Value="On" />
+    </Actions>
+  </Quest>
+
+  <Quest Name="FBReward" Priority="998" Unresumable="1">
+    <Events>
+      <Activate />
+    </Events>
+    <Conditions>
+      <Equal Value1="_FBReward" Value2="1" Not="1" />
+      <Equal Value1="_$ActionID" Value2="FBReward" />
+    </Conditions>
+    <Actions>
+      <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+        <Line Text="dlgServiceFBReward{img::MiscSprites.facebook}" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Green" Text="dlgStoryBtnTakeGems{img::MiscSprites.ruby}{5}">
+          <SetVariable Scope="Users" Name="FBReward" Value="1" />
+          <GiveCurrency Type="Bonus" Value="5" />
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <Quest Name="FBFirstTimeOffer" Priority="998" Unresumable="1">
+    <Events>
+      <FightEnd />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].GamingService" Value2="Facebook" Not="1" />
+      <Greater Value1="?Fight[ZONE_1|BOSS_LYNX|2].WinCount" Value2="0" />
+      <Equal Value1="_$Fight" Value2="ZONE_1|BOSS_LYNX|2" Not="1" />
+      <Equal Value1="_FacebookOffered" Value2="1" Not="1" />
+      <Equal Value1="_FacebookReminded" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetVariable Scope="Users" Name="FacebookOffered" Value="1" />
+      <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+        <Line Text="dlgServiceFBInvite{img::MiscSprites.facebook}{5}{img::MiscSprites.ruby}" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Left" Color="Beige" Text="CANCEL">
+          <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+        </Button>
+        <Button Type="Right" Color="Beige" Text="dlgServiceBtnLogin">
+          <FacebookAPICall Type="Login">
+            <Error>
+              <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+              <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+                <Line Text="dlgServiceFBLoginFail{img::MiscSprites.facebook}" ButtonText="dlgStoryBtnMore" />
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Error>
+            <Success>
+              <SetFBIndicator Value="On" />
+              <SetVariable Scope="Users" Name="FBconnected" Value="1" />
+              <SetVariable Scope="Users" Name="ShareFlag" Value="1" />
+              <SetVariable Scope="Users" Name="FacebookReminded" Value="1" />
+              <Activate ActionID="FBReward" />
+            </Success>
+          </FacebookAPICall>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <Quest Name="FBFirstTimeSettingsReminder" Priority="998" Unresumable="1">
+    <Events>
+      <LoginFacebook />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].GamingService" Value2="Facebook" Not="1" />
+      <Equal Value1="_FacebookReminded" Value2="1" Not="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <SetVariable Scope="Users" Name="FacebookOffered" Value="1" />
+      <SetVariable Scope="Users" Name="FacebookReminded" Value="1" />
+      <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+        <Line Text="dlgServiceFBInvite{img::MiscSprites.facebook}{5}{img::MiscSprites.ruby}" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Left" Color="Beige" Text="CANCEL">
+          <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+        </Button>
+        <Button Type="Right" Color="Beige" Text="dlgServiceBtnLogin">
+          <FacebookAPICall Type="Login">
+            <Error>
+              <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+              <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+                <Line Text="dlgServiceFBLoginFail{img::MiscSprites.facebook}" ButtonText="dlgStoryBtnMore" />
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Error>
+            <Success>
+              <SetFBIndicator Value="On" />
+              <SetVariable Scope="Users" Name="FBconnected" Value="1" />
+              <SetVariable Scope="Users" Name="ShareFlag" Value="1" />
+              <Activate ActionID="FBReward" />
+            </Success>
+          </FacebookAPICall>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <Quest Name="FacebookCommonLogin" Priority="998" Unresumable="1">
+    <Events>
+      <LoginFacebook />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].GamingService" Value2="Facebook" Not="1" />
+      <Equal Value1="_FacebookReminded" Value2="1" />
+      <Equal Value1="_FBconnected" Value2="1" Not="1" />     
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+        <Line Text="dlgServiceFBLogin{img::MiscSprites.facebook}" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Left" Color="Beige" Text="CANCEL">
+          <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+        </Button>
+        <Button Type="Right" Color="Beige" Text="dlgServiceBtnLogin">
+          <FacebookAPICall Type="Login">
+            <Error>
+              <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+              <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+                <Line Text="dlgServiceFBLoginFail{img::MiscSprites.facebook}" ButtonText="dlgStoryBtnMore" />
+                <Button Type="Right" Color="Beige" Text="OK" />
+              </Dialog>
+            </Error>
+            <Success>
+              <SetFBIndicator Value="On" />
+              <SetVariable Scope="Users" Name="FBconnected" Value="1" />
+              <SetVariable Scope="Users" Name="ShareFlag" Value="1" />
+              <Activate ActionID="FBReward" />
+            </Success>
+          </FacebookAPICall>
+        </Button>
+      </Dialog>
+    </Actions>
+  </Quest>
+
+  <Quest Name="FacebookCommonLogout" Priority="998" Unresumable="1">
+    <Events>
+      <LoginFacebook />
+    </Events>
+    <Conditions>
+      <Equal Value1="?SysInfo[].GamingService" Value2="Facebook" Not="1" />
+      <Equal Value1="_FacebookReminded" Value2="1" />
+      <Equal Value1="_FBconnected" Value2="1" />
+    </Conditions>
+    <Actions Place="Map">
+      <Dialog Type="NoAvatar" Title="dlgServiceFBTitle">
+        <Line Text="dlgServiceFBLogout{img::MiscSprites.facebook}" ButtonText="dlgStoryBtnMore" />
+        <Button Type="Right" Color="Beige" Text="dlgServiceBtnLogout">
+          <FacebookAPICall Type="Logout">
+            <Error />
+            <Success>
+              <SetFBIndicator Value="Off" />
+              <SetVariable Scope="Users" Name="FBconnected" Value="0" />
+              <SetVariable Scope="Users" Name="ShareFlag" Value="0" />
+            </Success>
+          </FacebookAPICall>
+        </Button>
+        <Button Type="Left" Color="Beige" Text="CANCEL" />
+      </Dialog>
+    </Actions>
+  </Quest>
+
+</Quests>
