@@ -1,0 +1,1 @@
+- [WebGL2 preview limitation](webgl2-preview.md) — the recovered Haxe game boots, but Replit's screenshot browser cannot create WebGL2 and needs a graceful fallback.

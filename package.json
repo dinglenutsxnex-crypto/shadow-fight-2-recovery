@@ -1,0 +1,13 @@
+{
+  "name": "shadow-fight-2-recovery",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Runnable local copy and analysis tools for the recovered Shadow Fight 2 web build.",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "beautify": "node tools/beautify-bundles.mjs",
+    "analyze-map": "node tools/analyze-map.mjs"
+  }
+}
