@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
+    "split": "node tools/split-bundle.mjs",
+    "build": "node tools/build.mjs",
     "beautify": "node tools/beautify-bundles.mjs",
     "analyze-map": "node tools/analyze-map.mjs"
   }

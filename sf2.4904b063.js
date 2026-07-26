@@ -146,66 +146,85 @@ Sy("findLastIndex", function (Ka) {
       };
 });
 (function (Ka, va) {
+// 010-runtime-utils.js — Haxe runtime helpers: string, array, number utilities
+// Edit here. Run `npm run build` to reassemble the full bundle.
+
   function Ra() {
     return ob.DM(this, "");
   }
+
   function qb(a, b) {
     return a < b ? -1 : a > b ? 1 : 0;
   }
+
   function Fd(a) {
     return a != null ? (a != null ? a.length == 0 : !0) : !0;
   }
+
   function Ty(a, b) {
     b == null && (b = 2);
     return a.toFixed(b);
   }
+
   function hy(a) {
     if (li(a)) return parseFloat(a);
     throw 18;
   }
+
   function bd(a) {
     return li(a) ? parseFloat(a) : null;
   }
+
   function kc(a, b) {
     b == null && (b = 0);
     return a != null && ((a = bd(a)), a != null) ? a : b;
   }
+
   function Kg(a, b) {
     b == null && (b = 0);
     a = K.parseInt(a);
     return a != null ? a : b;
   }
+
   function li(a) {
     if (!Az.match(a)) return !1;
     a = parseFloat(a);
     return isNaN(a) ? !1 : isFinite(a);
   }
+
   function Cb(a, b) {
     return a.indexOf(b) != -1;
   }
+
   function lc(a) {
     let b = 0,
       c = a.length;
     for (; b < c; ) if (a.charCodeAt(b++) > 32) return !1;
     return !0;
   }
+
   function Xa(a) {
     return a != null ? a == "" : !0;
   }
+
   function qd(a, b) {
     return a.indexOf(b) == 0;
   }
+
   function Zf(a, b) {
     return a.length < b.length ? !1 : a.slice(-b.length) == b;
   }
+
   function Rc(a, b, c) {
     c == null && (c = "");
     return a.replaceAll(b, c);
   }
+
   function Uy(a, b) {
     b == null && (b = 0);
     return a != null && K.parseInt(a) != null ? K.parseInt(a) : b;
   }
+
   function nf(a, b, c) {
     c == null && (c = 0);
     if (c == 0) return J.substr(a, 0, b);
@@ -214,9 +233,11 @@ Sy("findLastIndex", function (Ka) {
     c > a.length && (c = a.length);
     return a.substring(0, b) + a.substring(c);
   }
+
   function mi(a, b) {
     return a == "" ? [] : a.split(b);
   }
+
   function Lg(a) {
     let b = 0,
       c = a.length;
@@ -226,6 +247,7 @@ Sy("findLastIndex", function (Ka) {
     }
     return !1;
   }
+
   function Ms(a, b) {
     if (a.length != b.length) return a.length - b.length;
     let c = 0,
@@ -236,14 +258,17 @@ Sy("findLastIndex", function (Ka) {
     }
     return 0;
   }
+
   function iy(a, b) {
     return b.includes(a);
   }
+
   function Vy(a, b, c, d) {
     d.x = a.x + (b.x - a.x) * c;
     d.y = a.y + (b.y - a.y) * c;
     d.z = a.z + (b.z - a.z) * c;
   }
+
   function Wy(a, b, c) {
     var d = a.x - b.x;
     let e = a.y - b.y;
@@ -252,17 +277,20 @@ Sy("findLastIndex", function (Ka) {
     c.b = (b.x - a.x) / d;
     c.c = -(c.a * a.x + c.b * a.y);
   }
+
   function Xy(a, b) {
     let c = new Ck(0, 0, 0);
     Wy(a, b, c);
     return c;
   }
+
   function Bz(a, b) {
     let c = a.x * b.y - a.y * b.x;
     a = a.x * b.x + a.y * b.y;
     b = 1 / Math.sqrt(c * c + a * a);
     return Math.atan2(c * b, a * b) * 57.29577951308232;
   }
+
   function Cz(a, b, c, d, e, f, g, h, k, l) {
     c += f;
     if (ic.o2(c))
@@ -315,6 +343,7 @@ Sy("findLastIndex", function (Ka) {
                   !0)
                 : !1;
   }
+
   function Dz(a, b, c, d, e) {
     if (
       (ic.cA(a.x, b.x, 1e-10) && ic.cA(a.y, b.y, 1e-10)) ||
@@ -345,6 +374,7 @@ Sy("findLastIndex", function (Ka) {
       ? ((e.x = a.x + h * (b.x - a.x)), (e.y = a.y + h * (b.y - a.y)), !0)
       : !1;
   }
+
   function Ns(a, b, c, d, e, f, g) {
     return Math.abs(a) <= b
       ? ((e.x = d.x - a * c.a),
@@ -356,11 +386,13 @@ Sy("findLastIndex", function (Ka) {
           : ic.m4(d.x - g.x) + ic.m4(d.y - g.y) <= b * b)
       : !1;
   }
+
   function xb(a, b) {
     b == null && (b = 0);
     a = parseFloat(a);
     return isNaN(a) ? b : Math.trunc(a);
   }
+
   function $f(a, b, c) {
     c == null && (c = 0);
     b == null && (b = 0);
@@ -371,6 +403,7 @@ Sy("findLastIndex", function (Ka) {
           u.I(a.attributes.get("Max"), c),
         );
   }
+
   function of(a, b, c) {
     c == null && (c = 0);
     b == null && (b = 0);
@@ -381,6 +414,7 @@ Sy("findLastIndex", function (Ka) {
           u.H(a.attributes.get("Max"), c),
         );
   }
+
   function jy(a, b, c) {
     c == null && (c = 0);
     b == null && (b = 0);
@@ -390,6 +424,7 @@ Sy("findLastIndex", function (Ka) {
       (d.y = u.H(a.attributes.get("Out"), c)));
     return d;
   }
+
   function Yy(a) {
     if (a == null) return null;
     var b = new Ua("[ \t:;]", "g").split(a);
@@ -408,16 +443,20 @@ Sy("findLastIndex", function (Ka) {
     a = bd(a[1]);
     return b == null || a == null ? null : new H(b, a, 0, 1);
   }
+
   function ky(a, b) {
     let c = a.A(b);
     return c != null ? c : a.appendChild(b);
   }
+
   function Mg(a, b) {
     return a == null ? null : a.A(b);
   }
+
   function Zy(a, b) {
     return a == null ? null : a.attributes.get(b);
   }
+
   function ag(a, b, c, d) {
     if (a != null) {
       a = a.children;
@@ -429,10 +468,12 @@ Sy("findLastIndex", function (Ka) {
     }
     return null;
   }
+
   function ly(a, b) {
     a -= Math.floor(a / b) * b;
     return a < 0 ? 0 : a > b ? b : a;
   }
+
   function Ez() {
     let a = new Gd();
     if (my == null) return (a.complete(!1), a.ef);
@@ -449,6 +490,7 @@ Sy("findLastIndex", function (Ka) {
     }
     return a.ef;
   }
+
   function Fz(a) {
     var b = a.data;
     let c = b.id;
@@ -460,6 +502,7 @@ Sy("findLastIndex", function (Ka) {
       : ((b = new qc(b.data, b.width, b.height, b.isCompressed)),
         a.complete(b));
   }
+
   function Gz(a, b) {
     function c(f) {
       return new Promise(function (g, h) {
@@ -539,6 +582,7 @@ Sy("findLastIndex", function (Ka) {
       });
     return e.ef;
   }
+
   function az(a) {
     function b(c, d, e, f) {
       return c | (d << 8) | (e << 16) | (f << 24);
@@ -570,6 +614,7 @@ Sy("findLastIndex", function (Ka) {
         return 0;
     }
   }
+
   function bz(a) {
     switch (a) {
       case 1:
@@ -589,6 +634,7 @@ Sy("findLastIndex", function (Ka) {
         return 0;
     }
   }
+
   function cz(a) {
     a = new cd(mb.ll(a));
     let b = new Ps();
@@ -632,6 +678,7 @@ Sy("findLastIndex", function (Ka) {
     b.Hha[0] = (a.fa() << 24) | (a.fa() << 16) | (a.fa() << 8) | a.fa();
     return b;
   }
+
   function dz(a) {
     switch (a.split("/")[0]) {
       case "preview_bosses":
@@ -646,6 +693,7 @@ Sy("findLastIndex", function (Ka) {
         return null;
     }
   }
+
   function Hz() {
     function a(d, e) {
       Qs.v[d] = e;
@@ -706,6 +754,7 @@ Sy("findLastIndex", function (Ka) {
     a("ScrollLock", 174);
     a("PrintScreen", 175);
   }
+
   function Iz(a) {
     return a instanceof Array
       ? function () {
@@ -715,9 +764,11 @@ Sy("findLastIndex", function (Ka) {
         ? w(a, a.iterator)
         : a.iterator;
   }
+
   function Qe(a) {
     return a instanceof Array ? new pf(a) : a.iterator();
   }
+
   function w(a, b) {
     if (b == null) return null;
     b.r7 == null && (b.r7 = va.Ona++);
@@ -727,8 +778,13 @@ Sy("findLastIndex", function (Ka) {
     return c;
   }
   Ka.SF2 = Ka.SF2 || {};
+
   var bg = bg || {},
     T;
+
+// 020-event-interfaces.js
+// Domain: tree-ue  |  1 class(es)  |  tree root(s): ue
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class ue {
     constructor() {
       this.Zg = !1;
@@ -742,6 +798,10 @@ Sy("findLastIndex", function (Ka) {
   }
   ue.g = "0";
   Object.assign(ue.prototype, { j: ue });
+
+// 021-scene-graph.js
+// Domain: renderer-textures  |  33 class(es)  |  tree root(s): Db, Ua, Ss, ya, Og, Ts, dd, J, oy, Qb, Ja, Kb, Qg, ed, dg, la, Vk, H, Dc, Ec, tf, y, K, uf, Eb
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Db {
     constructor(a) {
       this.active = !0;
@@ -3002,6 +3062,10 @@ Sy("findLastIndex", function (Ka) {
     }
   }
   Eb.g = "22";
+
+// 022-dom-canvas-bridge.js
+// Domain: renderer-textures  |  11 class(es)  |  tree root(s): E, Db, ra, Pg, Xk, ia, Lb, X, $k, V, Jz
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class E {
     static get(a, b) {
       b == null && (b = 0);
@@ -3449,6 +3513,10 @@ Sy("findLastIndex", function (Ka) {
       return a.pi.includes(b);
     }
   }
+
+// 023-data-types.js
+// Domain: tree-fd  |  16 class(es)  |  tree root(s): fd, gd, al, rb, m, Ia, Ca, $s, ja, Fb, at, ui, ez, bt, vf, ct
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class fd {
     constructor() {
       this.Hc = new Map();
@@ -3768,6 +3836,10 @@ Sy("findLastIndex", function (Ka) {
   }
   ct.g = "37";
   Object.assign(ct.prototype, { j: ct });
+
+// 024-errors.js
+// Domain: errors  |  7 class(es)  |  tree root(s): Sc, cg, Dk, qy, Vs
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Sc extends Error {
     constructor(a, b, c) {
       super(a);
@@ -3913,6 +3985,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Vs.g = "3E";
   Object.assign(Vs.prototype, { j: Vs });
+
+// 025-camera-viewport.js
+// Domain: ai  |  31 class(es)  |  tree root(s): ae, mc, be, Db, Ys, Ws, Rg, ti, Sc, wi, et, ft, gt, dl, fb, ry, fz, xi, Uc, el, zi, it, fl, jt, ot, jb, p
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class ae {
     constructor(a, b) {
       this.time = 0;
@@ -7443,6 +7519,10 @@ Sy("findLastIndex", function (Ka) {
   }
   p.g = "5D";
   Object.assign(p.prototype, { j: p });
+
+// 026-settings-keys.js
+// Domain: tree-il  |  9 class(es)  |  tree root(s): il, rt, st, Bf, Uc, jl, wt, fg, ut
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class il {
     constructor() {
       this.type = this.value = 0;
@@ -7703,6 +7783,10 @@ Sy("findLastIndex", function (Ka) {
   }
   ut.g = "66";
   Object.assign(ut.prototype, { j: ut });
+
+// 027-game-data-model.js
+// Domain: tree-Kd  |  25 class(es)  |  tree root(s): Kd, xt, yt, el, Xg, kl, Uc, Bt, ll, ml, Ki, Ht, Ft, gg, Et, ah, Dt, vt, zt, Zg
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Kd {
     constructor() {
       this.vn = this.NF = !1;
@@ -10049,6 +10133,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Zg.g = "7F";
   Object.assign(Zg.prototype, { j: Zg });
+
+// 028-scene-camera.js
+// Domain: audio  |  42 class(es)  |  tree root(s): Ct, At, ch, ql, Ni, Jt, Kt, Lt, ty, ud, eh, Oi, Jd, I, nt, Ot, Pt, kt, lt, Mt, xf, Qt, Rt, mt, Nt, sl, gh, Bi, nl, gz, pt, St, Tt, Kz, Ai, fd
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Ct {
     constructor(a) {
       this.ga = this.p$ = this.Ssa = null;
@@ -12274,6 +12362,10 @@ Sy("findLastIndex", function (Ka) {
   ul.g = "A7";
   ul.u = fd;
   Object.assign(ul.prototype, { j: ul });
+
+// 029-combat-rules.js
+// Domain: audio  |  11 class(es)  |  tree root(s): Ut, Wt, Yt, Xt, ca, du, cu, wl, uy, bu, Zt
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Ut {
     constructor() {
       this.isActive = !1;
@@ -14476,6 +14568,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Zt.g = "B2";
   Object.assign(Zt.prototype, { j: Zt });
+
+// 030-content-loader.js
+// Domain: physics  |  21 class(es)  |  tree root(s): vl, iz, gb, Db, jz, gu, Ef, Za, iu, Nc, vy, hu, yl, ze, Cf, Ri, ju, wd
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class vl {
     constructor() {
       this.RZ = this.CE = this.PP = this.el = this.HP = this.Fna = 0;
@@ -17927,6 +18023,10 @@ Sy("findLastIndex", function (Ka) {
   }
   wd.g = "C6";
   Object.assign(wd.prototype, { j: wd });
+
+// 031-quest-triggers.js
+// Domain: animation  |  28 class(es)  |  tree root(s): tu, su, ru, Si, vu, yd, qu, pu, ou, nu, mu, lu, ku, fd, Gl, yu, Yc, Hl, Eu, Du, Cu, Bu, El, uu, Fu, Fl, wd, de
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class tu {
     constructor() {
       this.td = new Map();
@@ -21037,6 +21137,10 @@ Sy("findLastIndex", function (Ka) {
   }
   de.g = "E2";
   Object.assign(de.prototype, { j: de });
+
+// 032-ai-tactics.js
+// Domain: ai  |  17 class(es)  |  tree root(s): kd, Kl, P, Ll, Ml, Hu, Iu, Nl, Nd, Ju, Ue, cc, Ku, tb, Lu, Ti, jh
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class kd {
     constructor(a, b) {
       b == null && (b = 0);
@@ -22302,6 +22406,10 @@ Sy("findLastIndex", function (Ka) {
     }
   }
   jh.g = "F3";
+
+// 033-quest-conditions.js
+// Domain: physics  |  28 class(es)  |  tree root(s): yc, Gu, Mu, wu, Nu, Gc, Ou, Ui, sa, zd, jc, Ul, Pu, Qu, Ru, Vi, Vl, Wi, ta, Fa, kh, Uu
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class yc {
     constructor() {
       this.f$ = 0;
@@ -24574,6 +24682,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Uu.g = "10F";
   Object.assign(Uu.prototype, { j: Uu });
+
+// 034-quest-actions-base.js
+// Domain: camera  |  21 class(es)  |  tree root(s): eb, Vu, mz
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class eb {
     constructor(a) {
       this.type = a;
@@ -25120,6 +25232,10 @@ Sy("findLastIndex", function (Ka) {
     }
   }
   mz.g = "124";
+
+// 035-quest-event-handlers.js
+// Domain: combat  |  28 class(es)  |  tree root(s): Ha, Xl, Ae, ng
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Ha {
     constructor(a) {
       this.fl = 0;
@@ -26009,6 +26125,10 @@ Sy("findLastIndex", function (Ka) {
   }
   ng.g = "140";
   Object.assign(ng.prototype, { j: ng });
+
+// 036-quest-action-library.js
+// Domain: tree-ub  |  38 class(es)  |  tree root(s): ub, lz, fe, Zm, Yu, Tu, Wl, Wu, ee, Xi, Zu, zu, Au, Vc, fd, $u, Di, $m, Md, Ff, qt, xc
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class ub {
     constructor(a) {
       a == null && (a = 0);
@@ -28233,6 +28353,10 @@ Sy("findLastIndex", function (Ka) {
   Il.g = "166";
   Il.u = xc;
   Object.assign(Il.prototype, { j: Il });
+
+// 037-perk-areas.js
+// Domain: tree-av  |  12 class(es)  |  tree root(s): av, Vt, bv, cv, ue, an, dv, ev, xl, fv
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class av {
     constructor() {
       this.RP = m.l();
@@ -29047,6 +29171,10 @@ Sy("findLastIndex", function (Ka) {
   }
   fv.g = "172";
   Object.assign(fv.prototype, { j: fv });
+
+// 038-quest-rule-system.js
+// Domain: ai  |  53 class(es)  |  tree root(s): Mb, gv, kn, $t, fu, cb, eu
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Mb {
     constructor(a, b) {
       this.LFa = 2147483647;
@@ -31554,6 +31682,10 @@ Sy("findLastIndex", function (Ka) {
   uj.g = "1A7";
   uj.u = Ga;
   Object.assign(uj.prototype, { j: uj });
+
+// 039-ui-widgets.js
+// Domain: ui  |  24 class(es)  |  tree root(s): hv, ye, iv, xy, Ee, Y, Cc, rd, Wb, kv, Xc, An, ov, xa, Mc, yy, Cn, qv, qg, qh, we, zy, yj, hz
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class hv {
     constructor(a) {
       a.attributes.get("Level") != null
@@ -32558,6 +32690,10 @@ Sy("findLastIndex", function (Ka) {
     }
   }
   hz.g = "1BF";
+
+// 040-quest-engine.js
+// Domain: combat-perks  |  10 class(es)  |  tree root(s): S, Fe, Oz, Yb, tg, Wo, Cj, rv, ce
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class S {
     constructor() {
       this.MR = 0;
@@ -34828,6 +34964,10 @@ Sy("findLastIndex", function (Ka) {
   ce.g = "1C8";
   ce.Rb = [al];
   Object.assign(ce.prototype, { j: ce });
+
+// 041-xml-game-data.js
+// Domain: tree-oc  |  66 class(es)  |  tree root(s): oc, ba, vd, Db, ha, nz, sv, S, tv, vh, uv, vv
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class oc {
     constructor() {
       this.Rh = "";
@@ -38001,6 +38141,10 @@ Sy("findLastIndex", function (Ka) {
   Ko.g = "20A";
   Ko.u = S;
   Object.assign(Ko.prototype, { j: Ko });
+
+// 042-combat-system.js
+// Domain: physics  |  52 class(es)  |  tree root(s): wv, S, xv, yv, Ay, Zo, zv, hd, yh, By, vg, Jj, pg, Bv, Bl, cp, ue, Cv, zh, ih, Dv, Ie, td
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class wv {
     constructor() {
       this.actions = new Yb();
@@ -39835,6 +39979,10 @@ Sy("findLastIndex", function (Ka) {
     }
   }
   td.g = "23E";
+
+// 043-render-pipeline.js
+// Domain: combat  |  51 class(es)  |  tree root(s): Rd, Fv, Bh, Gv, Hv, Iv, qz, Cy, Bn, Z, wj, th, Ej, nv, Yo, lv, mv, Fj, Jv, Lv, Mv, Nv, Eh, Pv, Qv, Rv, Tv, Uv, Wv, ip, Xv, Yv, Zv, aw, bw, cw, ew, fw, hw, iw, jw, lw, mw, ow, pw, v
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Rd {
     constructor() {
       this.hha = this.Lg = !1;
@@ -42146,6 +42294,10 @@ Sy("findLastIndex", function (Ka) {
     }
   }
   v.g = "270";
+
+// 044-perk-system.js
+// Domain: physics  |  65 class(es)  |  tree root(s): Xu, rw, Ch, qw, sw, Pa, $v, Od, Dy, ie, dw, hg, $g, Vv, Li, jp, Sv, au, pv, lp, uw, vw, ww, tw, Hj, xw, Gt, zf, pl, yw, Kv, ol, bh, gn, Gj, zw, Su, Af, ic, kp, xd, ua, db, sb, ge, Kj, Je, Aw, Bw, Cw, Dw, Ew, Nb, Ob, mp, zc, xu, Fw, Ov, im, gw, kw, nw, Gw, Hw
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Xu {
     constructor() {
       this.oz = this.currentFrame = this.JS = this.currentScale = this.tM = 0;
@@ -44750,6 +44902,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Hw.g = "2B1";
   Object.assign(Hw.prototype, { j: Hw });
+
+// 045-quest-definitions.js
+// Domain: tree-Kf  |  42 class(es)  |  tree root(s): Kf, Fp, Iw, It, Nj, Be, Lw, xe, id, Nw, Mw, Jw, If, fd
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Kf {
     constructor(a) {
       this.Pb = 1;
@@ -47242,6 +47398,10 @@ Sy("findLastIndex", function (Ka) {
   bc.g = "2DB";
   bc.u = fd;
   Object.assign(bc.prototype, { j: bc });
+
+// 046-fight-system.js
+// Domain: ai  |  43 class(es)  |  tree root(s): np, Ow, fd, Jp, Kw, Kf, Pw, Lc, ib, hl
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class np {
     constructor(a) {
       this.yz = 0;
@@ -49565,6 +49725,10 @@ Sy("findLastIndex", function (Ka) {
   }
   hl.g = "306";
   Object.assign(hl.prototype, { j: hl });
+
+// 047-math-layout.js
+// Domain: tree-tt  |  28 class(es)  |  tree root(s): tt, fa, Ey, mq, nq, Qw, Oj, sy, rz, Fy, oq, Rw, Mf, Jh, Oa, sf, qq, Of, rq, wb, Sw, Tw, Pb, Gy
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class tt {
     constructor(a, b, c, d, e, f, g) {
       g == null && (g = 0);
@@ -50416,6 +50580,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Gy.g = "31F";
   Object.assign(Gy.prototype, { j: Gy });
+
+// 048-canvas-input.js
+// Domain: renderer-canvas  |  6 class(es)  |  tree root(s): sd, Pf, tq, qc, Pj, jd
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class sd {
     constructor(a) {
       this.type = a;
@@ -50557,6 +50725,10 @@ Sy("findLastIndex", function (Ka) {
   jd.g = "325";
   jd.Rb = [Pj];
   Object.assign(jd.prototype, { j: jd });
+
+// 049-math-matrix.js
+// Domain: tree-Kh  |  6 class(es)  |  tree root(s): Kh, Fc
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Kh {
     constructor(a, b) {
       this.Zk = null;
@@ -51285,6 +51457,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Fc.g = "32B";
   Object.assign(Fc.prototype, { j: Fc });
+
+// 050-canvas-renderer.js
+// Domain: renderer-canvas  |  9 class(es)  |  tree root(s): Oh, Qf, ve, Qj, Lh
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Oh {
     constructor() {
       this.context = null;
@@ -53543,6 +53719,10 @@ Sy("findLastIndex", function (Ka) {
   Jq.g = "334";
   Jq.u = af;
   Object.assign(Jq.prototype, { j: Jq });
+
+// 051-sprite-renderer.js
+// Domain: renderer-canvas  |  17 class(es)  |  tree root(s): zq, Aq, Bq, Cq, Dq, hb, Eq, Ud, Fq, Gq, Hq, Ph, Iq, Pb, Of
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class zq {
     constructor() {
       this.ae = Zb;
@@ -55889,6 +56069,10 @@ Sy("findLastIndex", function (Ka) {
   Nh.g = "345";
   Nh.u = Of;
   Object.assign(Nh.prototype, { j: Nh });
+
+// 052-sprite-base.js
+// Domain: tree-Ke  |  25 class(es)  |  tree root(s): Ke, bx, ax, oq, Xj, Pb, dx, ex, Ev, Xw, Yw, Zw, $w, cx
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Ke {
     constructor(a) {
       this.L = a;
@@ -58187,6 +58371,10 @@ Sy("findLastIndex", function (Ka) {
   }
   cx.g = "35E";
   Object.assign(cx.prototype, { j: cx });
+
+// 053-ui-layout.js
+// Domain: ai  |  49 class(es)  |  tree root(s): gx, fx, Pb, hx, Yj, ix, jx, kx, lx, xq, yq, mx, md, Ps, te, nx, Dd, Uh, px, qx, rx, sx, ak, Os, ne, ox, wc, Lq, Mq, Nq, qi, Xs, Iy, Jy, Oq, Pq, Ky, Ly, Dg, Ke, sd
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class gx {
     constructor(a, b, c) {
       this.x = a;
@@ -60365,6 +60553,10 @@ Sy("findLastIndex", function (Ka) {
   wf.g = "38F";
   wf.u = sd;
   Object.assign(wf.prototype, { j: wf });
+
+// 054-shaders.js
+// Domain: shaders  |  31 class(es)  |  tree root(s): Wa, ux, Sq, Uq, Qk, Wq, Yq, $q, Rk, ar, cr, er, Xh, Sk, ck, jr, lr
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Wa {
     constructor() {
       this.Wc = [];
@@ -62688,6 +62880,10 @@ Sy("findLastIndex", function (Ka) {
   mr.g = "3AD";
   mr.u = Wa;
   Object.assign(mr.prototype, { j: mr });
+
+// 055-ui-screens.js
+// Domain: shaders  |  35 class(es)  |  tree root(s): nr, or, Jh, vx, lb, Wa, wx, xx, yx, tx, Kc, Qf, Oh, Db, rr, ob, ae, $d, oz, zx
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class nr {
     constructor() {
       this.Yn = [];
@@ -65136,6 +65332,10 @@ Sy("findLastIndex", function (Ka) {
   xh.g = "3CF";
   xh.u = ef;
   Object.assign(xh.prototype, { j: xh });
+
+// 056-settings-screen.js
+// Domain: combat  |  32 class(es)  |  tree root(s): Ax, Db, ur, Ye, Ke, Of, Qc, Bx, Gg, Zh, fk, Df, Pz, $h
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Ax {
     constructor(a, b) {
       function c(e, f) {
@@ -67679,6 +67879,10 @@ Sy("findLastIndex", function (Ka) {
   zr.g = "3EE";
   zr.u = O;
   Object.assign(zr.prototype, { j: zr });
+
+// 057-ui-components.js
+// Domain: combat  |  18 class(es)  |  tree root(s): ph, Db, ae, Dx
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class ph {
     constructor(a, b, c, d, e, f, g, h, k, l, n) {
       this.ge = null;
@@ -69965,6 +70169,10 @@ Sy("findLastIndex", function (Ka) {
   ai.g = "400";
   ai.u = ma;
   Object.assign(ai.prototype, { j: ai });
+
+// 058-fight-ui.js
+// Domain: ui  |  27 class(es)  |  tree root(s): Ex, Db, Fx, Gx, Hx, Ix, fd, Kx, Jx, Fh, Lx, Cl
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Ex {
     constructor(a, b, c, d, e) {
       this.pxb = a;
@@ -72416,6 +72624,10 @@ Sy("findLastIndex", function (Ka) {
   Pr.g = "41B";
   Pr.u = O;
   Object.assign(Pr.prototype, { j: Pr });
+
+// 059-map-ui.js
+// Domain: combat  |  34 class(es)  |  tree root(s): Mx, Db, Nx, Ox, Px, ae, Qx
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Mx {
     constructor() {
       this.mM = this.ZR = 0;
@@ -75296,6 +75508,10 @@ Sy("findLastIndex", function (Ka) {
   tk.g = "43D";
   tk.u = $a;
   Object.assign(tk.prototype, { j: tk });
+
+// 060-shop-ui.js
+// Domain: ui  |  42 class(es)  |  tree root(s): Vb, ig, Db, di, Rx, Wf, ae, Xo, Sx
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Vb {
     constructor() {
       this.pv = new Fb();
@@ -79412,6 +79628,10 @@ Sy("findLastIndex", function (Ka) {
   us.g = "467";
   us.u = Fg;
   Object.assign(us.prototype, { j: us });
+
+// 061-menu-ui.js
+// Domain: ui  |  34 class(es)  |  tree root(s): re, ae, Dj, Db, pz, rg, wh, Sc, mb, Ng, Tx, Qd, ac, Yk, Ux, Vx, vs, ws, xs, Xx, jf, pf, Uw, Ny, Vg, Zk
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class re {
     static kEa(a) {
       return a != null ? (a.Dh <= p.Dc ? !0 : a.Qz()) : !1;
@@ -81668,6 +81888,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Zk.g = "48A";
   Object.assign(Zk.prototype, { j: Zk });
+
+// 062-save-storage.js
+// Domain: audio  |  42 class(es)  |  tree root(s): Zs, Oy, Py, pi, dc, fc, pa, Nz, Ck, Db, Da, Uk, Dh, ug, zk, Qa, Zx, Bk, Xf, zs, Ji, Yx, aa, je, wa, Yf, $x, ay, Jf, Cs, by, py, G, cy, wz, Tc, La, Us
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Zs {
     static Wea() {
       try {
@@ -83858,6 +84082,10 @@ Sy("findLastIndex", function (Ka) {
   }
   Us.g = "4B6";
   Object.assign(Us.prototype, { j: Us });
+
+// 063-perk-effects.js
+// Domain: audio  |  11 class(es)  |  tree root(s): Pe, dy, Pk, Cx, ey, nc
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Pe {
     constructor(a, b) {
       this.n = a;
@@ -84177,6 +84405,10 @@ Sy("findLastIndex", function (Ka) {
   rf.g = "4C2";
   rf.u = nc;
   Object.assign(rf.prototype, { j: rf });
+
+// 064-ai-controllers.js
+// Domain: input  |  22 class(es)  |  tree root(s): Zd, Hs, Is, fy, nc, si, We, rc, Gd, Uz, Rs, Rb, u, ki
+// Edit here. Run `npm run build` to reassemble the full bundle.
   class Zd {
     constructor() {
       this.buttons = [];
@@ -85753,6 +85985,10 @@ Sy("findLastIndex", function (Ka) {
   Array.g = "4D7";
   Date.prototype.j = Date;
   Date.g = "4D8";
+
+// 990-constants.js — Global constants: regex patterns, config tables, lookup arrays
+// Edit here. Run `npm run build` to reassemble the full bundle.
+
   var Yz = {},
     Wz = {},
     Xz = Number,
@@ -85992,6 +86228,7 @@ Sy("findLastIndex", function (Ka) {
   ia.vQa = 4;
   ia.ProcessingInstruction = 5;
   ia.Document = 6;
+
   var Az = new Ua("^[-+]?(\\d+\\.?\\d*|\\.\\d+)([eE][-+]?\\d+)?$", "");
   vf.cLa = new bt();
   cg.VERSION = new ct("1.1.22");
@@ -86082,6 +86319,7 @@ Sy("findLastIndex", function (Ka) {
   I.Tfb = 230;
   Bi.uHa = "OfferTimer_";
   Bi.QYa = "Textures/buttons/map/";
+
   var Ld = {
     qAb: 1e4,
     Evb: !0,
@@ -86137,6 +86375,7 @@ Sy("findLastIndex", function (Ka) {
   Nc.SG = m.l();
   Nc.Yca = -1;
   ze.yua = 0;
+
   var Lz = 1.5,
     kz = 55,
     Mz = 0.5;
@@ -86196,6 +86435,7 @@ Sy("findLastIndex", function (Ka) {
   kg.eAa = new ac();
   Vc.BC = new H(0, 0, 0, 1);
   xc.D$ = m.l();
+
   var wy = "Body Head Fists NoRanged NoMagic NoRaidCharge".split(" ");
   Ee.o7 = "TimeDaysShort";
   Ee.YTa = "TimeHourShort";
@@ -86208,6 +86448,7 @@ Sy("findLastIndex", function (Ka) {
   Y.wG = new Fb();
   Cc.A7 = "%%ERROR%%";
   Cc.dUa = " \n.?!,:;()[]{}<>*+#&'\"\\|/\u2018`~".split("");
+
   var jv = "en de it fr pt ru es tr ja ko".split(" ");
   xa.KYa = !1;
   tg.ywa = new Map();
@@ -86399,6 +86640,7 @@ Sy("findLastIndex", function (Ka) {
   })(this);
   qc.FPa = !0;
   qc.flipY = !0;
+
   var Qz = 0,
     ny = new jd(),
     ni = null,
@@ -86409,6 +86651,7 @@ Sy("findLastIndex", function (Ka) {
   Hd.gD = Nf;
   Zb.gD = Td;
   af.Hfb = 1;
+
   var Vw = "#000000";
   new hb(0, 0, 100, 100);
   Ud.kda = !0;
@@ -86424,6 +86667,7 @@ Sy("findLastIndex", function (Ka) {
     [1, 0, 2, 0],
     [0, 1, 2, 3],
   ];
+
   var Rz = [0, 2, 3, 1],
     Sz = [0, 2, 3, 4, 5, 6, 7, 1],
     Tz = [
@@ -86439,6 +86683,7 @@ Sy("findLastIndex", function (Ka) {
   Vh.uab = [5120, 5121, 5122, 5123, 5126];
   Id.aZ = [0, 1, 774, 775, 770, 771, 772, 773];
   Id.Z2a = [512, 513, 514, 515, 516, 517, 518, 519];
+
   var My = new rr();
   ma.Qq = new hb(0, 0, 0, 0);
   ma.fZ = new H(0, 0, 0, 1);
@@ -86447,6 +86692,7 @@ Sy("findLastIndex", function (Ka) {
   Bb.STa = new H(0.78, 0.78, 0.78, 1);
   Qc.active = !1;
   Qc.list = [];
+
   var vr = new rr();
   Ib.YP = !1;
   Pd.Foa = (function () {
@@ -87980,6 +88226,7 @@ Sy("findLastIndex", function (Ka) {
   La.xgb = new fb();
   nc.Hp = new fb();
   rf.Y6 = 0.5;
+
   var Qs = null;
   se.hq = -32768;
   lf.maxTouchPoints = va.navigator.maxTouchPoints;
@@ -87993,6 +88240,7 @@ Sy("findLastIndex", function (Ka) {
     a.v.apos = "'";
     return a;
   })(this);
+
 })(
   typeof exports != "undefined"
     ? exports
